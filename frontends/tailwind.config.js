@@ -8,7 +8,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif']
+        'poppins': ['Poppins', 'sans-serif'],
+        'poppins-semibold': ['Poppins-semibold', 'sans-serif']
+        
       },
         spacing: {
           '786px': '786px',

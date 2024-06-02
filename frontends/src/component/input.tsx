@@ -29,12 +29,12 @@ interface variable {
 function Input({ placeholder,type,label}: variable) {
   return (
     <>
-      <div className=" border-b border-black py-2  font-poppins mb-10">
+      <div className="border-b border-black py-2 font-poppins mb-5">
         <label>
-          <p>{label} <span className="text-red-500">*</span></p>
+          <p className="text-xl">{label} <span className="text-red-500">*</span></p>
         </label>
         <input
-          className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+          className="appearance-none bg-transparent border-nonetext-gray-700 leading-tight focus:outline-none mt-4 w-full"
           type={type}
           placeholder={placeholder}
         />
