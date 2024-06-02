@@ -8,7 +8,7 @@ interface Props {
 }
 
 function Button ({className,text}: Props) {
-  return <button className={`px-4 py-1 ${className}`}>{text}</button>;
+  return <button className={`px-4 py-1 h-12 ${className}`}>{text}</button>;
 }
 
 export default Button;
