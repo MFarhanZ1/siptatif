@@ -7,6 +7,7 @@ import {
 import App from "./App.tsx";
 import "./index.css";
 import Login from "./Login/main.tsx";
+import Input from "./component/input.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login/>,
+  },
+  {
+    path: "/input",
+    element: <Input placeholder={""} type={"text"} label={""}/>,
   },
 ]);
 

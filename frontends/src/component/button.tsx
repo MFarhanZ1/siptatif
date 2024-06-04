@@ -2,8 +2,8 @@
 interface Props {
   className: string;
   text : string;
-  // onClick : () => void;
-  // type : string;
+  onClick?: () => void;
+  type?: string;
 
 }
 

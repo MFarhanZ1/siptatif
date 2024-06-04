@@ -3,23 +3,7 @@ import Card from "../component/card";
 import Input from "../component/input";
 import topimage from "../images/png/Top App Title.png";
 import "../index.css";
-import seeicon from "../icons/see.svg";
-import notseeicon from "../icons/notsee.svg";
-import { useState } from "react";
-
 function Login() {
-  const [icon, setIcon] = useState(notseeicon);
-  const [show, setShow] = useState('password');
-
-  function handlerPassword() {
-    if (show === 'password') {
-      setIcon(seeicon);
-      setShow('text');
-    } else {
-      setIcon(notseeicon);
-      setShow('password');
-    }
-  }
   return (
     <>
       <div className="flex flex-col bg-[#e7f8f1] h-screen font-poppins">
@@ -51,14 +35,13 @@ function Login() {
               <div className="relative">
                 <Input
                   placeholder="**********"
-                  type={show}
+                  type="password"
                   label="Password:"
+                  password = {true}
                 />
-                {/* logo icon password */}
-                  <img src={icon} className="absolute top-3 right-3 mt-10" onClick={handlerPassword}/>
               </div>
               <div className="flex justify-end">
-                <p className="hover:bg-[#d1d5db] hover:rounded-lg p-1 cursor-pointer font-bold underline">
+                <p className="p-1 cursor-pointer font-bold underline">
                   Lupa Password?
                 </p>
               </div>
