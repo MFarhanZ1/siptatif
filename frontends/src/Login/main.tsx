@@ -3,7 +3,6 @@ import Card from "../component/card";
 import Input from "../component/input";
 import topimage from "../images/png/Top App Title.png";
 import "../index.css";
-
 function Login() {
   return (
     <>
@@ -32,19 +31,25 @@ function Login() {
           {/* form login */}
           <div className="w-4/12">
             <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
-              <h1 className="text-[42px] text-center ml-1 underline mb-6 font-poppins-semibold">Login Page</h1>
+              <h1 className="text-[42px] text-center ml-1 underline mb-6 font-poppins-semibold">
+                Login Page
+              </h1>
+              {/* form input */}
               <Input
                 placeholder="contoh@students.uin-suska.ac.id"
                 type="text"
                 label="Email:"
               />
-              <Input
-                placeholder="**********"
-                type="password"
-                label="Password:"
-              />
+              <div className="relative">
+                <Input
+                  placeholder="**********"
+                  type="password"
+                  label="Password:"
+                  password = {true}
+                />
+              </div>
               <div className="flex justify-end">
-                <p className="hover:bg-[#d1d5db] hover:rounded-lg p-1 cursor-pointer font-bold underline">
+                <p className="p-1 cursor-pointer font-bold underline">
                   Lupa Password?
                 </p>
               </div>
