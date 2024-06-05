@@ -4,9 +4,9 @@
 
 @font-face{
   font-family: 'poppins';
-  src: url('./fonts/Poppins-Regular.ttf');
+  src: url('../assets/fonts/Poppins-Regular.ttf');
 }
 @font-face{
   font-family: 'poppins-semibold';
-  src: url('./fonts/Poppins-SemiBold.ttf');
+  src: url('../assets/fonts/Poppins-SemiBold.ttf');
 }

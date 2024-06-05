@@ -1,48 +1,54 @@
 import "../index.css";
-import notseeicon from "../icons/notsee.svg";
-import seeicon from "../icons/see.svg";
+import notseeicon from "../../assets/icons/notsee.svg";
+import seeicon from "../../assets/icons/see.svg";
 import { useState } from "react";
 
-interface Variable {
+interface InputProps {
   placeholder: string;
+  className?: string;
   type: string;
   label: string;
-  password?: boolean;
   value?: string;
+  name?: string;
+  required?: boolean;
+  id?: string;
   onchange?:(e: React.ChangeEvent<HTMLInputElement>) => void;
+  oninvalid?:(e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Input({ placeholder, type, label, password, value, onchange}: Variable) {
+function Input({ placeholder, type, label, value, name, onchange, id, className, required=false, oninvalid}: InputProps) {
   const [icon, setIcon] = useState(notseeicon);
-  const [show, setShow] = useState(password ? 'password' : type);
-
-  function handlerPassword() {
-    if (show === 'password') {
-      setIcon(seeicon);
-      setShow('text');
-    } else {
-      setIcon(notseeicon);
-      setShow('password');
-    }
-  }
+  const [inputType, setInputType] = useState(type);
 
   return (
-    <div className="border-b border-black py-2 font-poppins mb-5 relative">
+    <div className={`border-b border-black py-2 font-poppins relative ${className}`}>
       <label>
         <p className="text-xl">{label} <span className="text-red-500">*</span></p>
       </label>
       <input
         className="appearance-none bg-transparent border-none text-gray-700 leading-tight focus:outline-none mt-4 w-full"
-        type={show}
+        type={inputType}
+        id={id}
         placeholder={placeholder}
         value={value}
+        name={name}
         onChange={onchange}
+        required={required}
+        onInvalid={oninvalid}
       />
-      {password && (
+      {type === 'password' && (
         <img
           src={icon}
-          className="absolute top-3 right-3 mt-10 cursor-pointer"
-          onClick={handlerPassword}
+          className="absolute top-3 right-1 mt-10 cursor-pointer"
+          onClick={() => {
+            if (inputType === 'password') {
+              setIcon(seeicon);
+              setInputType('text');
+            } else {
+              setIcon(notseeicon);
+              setInputType('password');
+            }
+          }}
           alt="Toggle Password Visibility"
         />
       )}
