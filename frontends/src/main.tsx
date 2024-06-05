@@ -1,27 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
-import Login from "./Login/main.tsx";
-import Input from "./component/input.tsx";
+import Login from "./pages/Login/main.tsx";
+import Register from "./pages/Register/main.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
   },
   {
     path: "/login",
-    element: <Login/>,
+    element: <Login />,
   },
   {
-    path: "/input",
-    element: <Input placeholder={""} type={"text"} label={""}/>,
-  },
+    path: "/register",
+    element: <Register />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
