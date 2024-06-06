@@ -23,19 +23,7 @@ app.use(express.json());
 app.post("/kirim-link-verifikasi", validasi_email, kirim_link_verifikasi);
 app.post("/verifikasi-token", verifikasi_token);
 
-app.get('/', (req, res) => {
-	db.query('SELECT * FROM unverified_emails', (err, result) => {
-		if (err) {
-			console.log(err);
-		} else {
-			res.json({
-				results: result.rows
-			});
-		}
-	})
-})
-
-app.listen(port, '192.168.158.133', () => {
+app.listen(port, () => {
 	console.log(`SIPTATIF API Started on port ${port}`);
 });
 
