@@ -1,6 +1,6 @@
-import Button from "../../component/Button";
-import Card from "../../component/Card";
-import Input from "../../component/Input";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import Input from "../../components/Input";
 const FormRegister = () => {
     return (
         <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
@@ -22,7 +22,7 @@ const FormRegister = () => {
           required={true}
         />
         <Input
-          placeholder="******"
+          placeholder="*********"
           type="password"
           label="Password:"
           className="mb-3"
@@ -30,7 +30,7 @@ const FormRegister = () => {
           required={true}
         />
         <Input
-          placeholder="******"
+          placeholder="*********"
           type="password"
           label="Confirm Password:"
           className="mb-3"
