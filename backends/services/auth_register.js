@@ -21,7 +21,7 @@ const verifikasi_token = async (req, res) => {
     res.json({
         response: true,
         message: 'Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman pengisian form!',
-        results: result.rows
+        results: result.rows[0]
     });
 }
 
