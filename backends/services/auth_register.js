@@ -17,10 +17,11 @@ const verifikasi_token = async (req, res) => {
     }
     
     // db.query('DELETE FROM unverified_emails WHERE verification_token = $1', [__token_verification]);
+    
     res.json({
         response: true,
         message: 'Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman pengisian form!',
-        results: result.rows
+        results: result.rows[0]
     });
 }
 
