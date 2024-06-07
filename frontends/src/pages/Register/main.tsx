@@ -34,6 +34,7 @@ function Register() {
 							timer: 4000,
 						}).then(() => {
 							setIsEmailValid(true);
+							setEmail(data.results.email);
 						});
 					} else {
 						Swal.fire({
@@ -68,9 +69,7 @@ function Register() {
 				</div>
 				{/* form login */}
 				<div className="w-4/12">
-					{isEmailValid ? <FormRegister email={email} /> : <VerifyEmail onValid={(email) =>{
-						setEmail(email);
-					}}/>}
+					{isEmailValid ? <FormRegister email={email}/> : <VerifyEmail/>}
 				</div>{" "}
 				{/* end of form login */}
 			</div>{" "}
