@@ -1,7 +1,14 @@
+import { useState } from "react";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
 import Input from "../../components/Input";
+
 const FormRegister = () => {
+ 
+  const [nama, setNama] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
     return (
         <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
       <h1 className="text-[42px] text-center ml-1 underline mb-6 font-poppins-semibold">
@@ -11,6 +18,7 @@ const FormRegister = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          console.log(email);
         }}
       >
         <Input
@@ -18,7 +26,7 @@ const FormRegister = () => {
           type="text"
           label="Nama:"
           className="mb-3"
-        //   onchange={(e) => setEmail(e.target.value)}
+          onchange={(e) => setNama(e.target.value)}
           required={true}
         />
         <Input
@@ -26,7 +34,7 @@ const FormRegister = () => {
           type="password"
           label="Password:"
           className="mb-3"
-        //   onchange={(e) => setEmail(e.target.value)}
+          onchange={(e) => setPassword(e.target.value)}
           required={true}
         />
         <Input
@@ -34,7 +42,7 @@ const FormRegister = () => {
           type="password"
           label="Confirm Password:"
           className="mb-3"
-        //   onchange={(e) => setEmail(e.target.value)}
+          onchange={(e) => setPasswordConfirm(e.target.value)}
           required={true}
         />
         <Button

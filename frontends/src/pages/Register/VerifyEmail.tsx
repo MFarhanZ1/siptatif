@@ -5,12 +5,17 @@ import Input from "../../components/Input";
 import Timer from "../../components/Timer";
 import Swal from "sweetalert2";
 
-const VerifyEmail = () => {
+interface VerifyEmailProps {
+	onValid: (email: string) => void;
+}
+
+const VerifyEmail = ({onValid}: VerifyEmailProps) => {
 	const [isClickedVerif, setisClickedVerif] = useState(false);
 	const [allowButton, setAllowButton] = useState("pointer");
 
 	const [email, setEmail] = useState("");
-
+	onValid(email);
+	
 	return (
 		<Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
 			<h1 className="text-[42px] text-center ml-1 underline mb-6 font-poppins-semibold">
@@ -35,7 +40,6 @@ const VerifyEmail = () => {
 							if (data.response) {
 								setisClickedVerif(!isClickedVerif);
 								setAllowButton("not-allowed");
-
 								Swal.fire({
 									title: "Link verifikasi sukses dikirim!",
 									html: data.message,
