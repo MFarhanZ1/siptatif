@@ -3,6 +3,7 @@ import Button from "../../component/Button";
 import Card from "../../component/Card";
 import Input from "../../component/Input";
 import Timer from "../../component/Timer";
+import Swal from "sweetalert2";
 
 const VerifyEmail = () => {
   const [isClickedVerif, setisClickedVerif] = useState(false);
@@ -22,8 +23,14 @@ const VerifyEmail = () => {
 
           setAllowButton("not-allowed");
           setisClickedVerif(!isClickedVerif);
-          console.log(email);
-
+          // console.log(email);
+          Swal.fire({
+            title: "Verifikasi Email",
+            html: `Verifikasi email berhasil terkirim ke email ${email}.`,
+            icon: "info",
+            showConfirmButton: false,
+            timer: 2000,
+          });
           fetch("http://192.168.158.133:3000/kirim-link-verifikasi", {
             method: "POST",
             headers: {

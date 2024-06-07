@@ -1,8 +1,10 @@
+// import { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 import topimage from "../../../assets/images/pngs/siptatif-logo.png";
 import FormRegister from "./FormRegister";
 import VerifyEmail from "./VerifyEmail";
 import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 function Register() {
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [searchParams] = useSearchParams("");
@@ -28,7 +30,7 @@ function Register() {
           })
       }
   },[tokenVerification])
-  
+console.log("register")
   return (
     <div className="flex flex-col bg-[#e7f8f1] h-screen font-poppins">
       {/* marquee information */}
