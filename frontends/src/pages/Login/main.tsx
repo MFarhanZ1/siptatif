@@ -1,6 +1,6 @@
-import Button from "../../component/Button";
-import Card from "../../component/Card";
-import Input from "../../component/Input";
+import Button from "../../components/Button"
+import Card from "../../components/Card";
+import Input from "../../components/Input";
 import siptatifImage from "../../../assets/images/pngs/siptatif-logo.png";
 import "../../index.css";
 import { useState } from "react";
