@@ -25,5 +25,5 @@ elif [ "$COMMAND" = "install" ]; then
     cd ../frontends
     start "" bun install -y
 else
-    echo "Invalid COMMAND. Please provide either 'start' or 'stop'."
+    echo "Invalid COMMAND. Please provide either 'start', 'install', or 'stop'."
 fi
