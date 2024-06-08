@@ -1,3 +1,4 @@
+// import { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 import topimage from "../../../assets/images/pngs/siptatif-logo.png";
 import FormRegister from "./FormRegister";
@@ -7,6 +8,7 @@ import Swal from "sweetalert2";
 function Register() {
 	const [isEmailValid, setIsEmailValid] = useState(false);
 	const [searchParams] = useSearchParams("");
+	const [email, setEmail] = useState("fafararadra");
 	const tokenVerification = searchParams.get("__token_verification");
 
 	useEffect(() => {
@@ -32,6 +34,7 @@ function Register() {
 							timer: 4000,
 						}).then(() => {
 							setIsEmailValid(true);
+							setEmail(data.results.email);
 						});
 					} else {
 						Swal.fire({
@@ -66,7 +69,7 @@ function Register() {
 				</div>
 				{/* form login */}
 				<div className="w-4/12">
-					{isEmailValid ? <FormRegister /> : <VerifyEmail />}
+					{isEmailValid ? <FormRegister email={email}/> : <VerifyEmail/>}
 				</div>{" "}
 				{/* end of form login */}
 			</div>{" "}
