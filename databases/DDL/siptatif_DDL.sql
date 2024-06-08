@@ -9,6 +9,8 @@ CREATE TABLE role (
 CREATE TABLE akun (
 	email 		VARCHAR(255) NOT NULL,
 	password	VARCHAR(255) NOT NULL,
+	created_at	TIMESTAMP DEFAULT NOW() NOT NULL,
+	updated_at	TIMESTAMP DEFAULT NOW() NOT NULL,
 	id_role		INT NOT NULL,
 	CONSTRAINT PK_Akun PRIMARY KEY (email),
 	CONSTRAINT FK_Akun_Role FOREIGN KEY (id_role) REFERENCES role (id)
@@ -16,10 +18,14 @@ CREATE TABLE akun (
 
 -- pembuatan TABLE mahasiswa 
 CREATE TABLE mahasiswa (
-	nim	 VARCHAR(12) NOT NULL,
-	nama VARCHAR(255) NOT NULL,
-	email VARCHAR(255) NOT NULL,
+	nim	 				VARCHAR(12) NOT NULL,
+	nama 				VARCHAR(255) NOT NULL,
+	no_hp				VARCHAR(15),
+	username_telegram 	VARCHAR(255),
+	email 				VARCHAR(255) NOT NULL,
 	CONSTRAINT PK_Mahasiswa PRIMARY KEY (nim),
+	CONSTRAINT UQ_Mahasiswa_NO_HP UNIQUE (no_hp),
+	CONSTRAINT UQ_Mahasiswa_USERNAME_TELEGRAM UNIQUE (username_telegram),
 	CONSTRAINT FK_Mahasiswa_Akun FOREIGN KEY(email) REFERENCES akun (email)
 );
 
