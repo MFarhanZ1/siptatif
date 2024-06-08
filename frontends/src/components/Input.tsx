@@ -23,7 +23,7 @@ function Input({ placeholder, type, label, value, name, onchange, id, className,
   return (
     <div className={`border-b border-black py-2 font-poppins relative ${className}`}>
       <label>
-        <p className="text-xl">{label} <span className="text-red-500">*</span></p>
+        <p className="text-xl">{label} {required && <span className="text-red-500">*</span>} </p>
       </label>
       <input
         className="appearance-none bg-transparent border-none text-gray-700 leading-tight focus:outline-none mt-4 w-full"

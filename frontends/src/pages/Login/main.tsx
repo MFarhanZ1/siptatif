@@ -13,8 +13,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
-
   return (
     <>
       <div className="flex flex-col bg-[#e7f8f1] h-screen font-poppins">
