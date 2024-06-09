@@ -1,3 +1,5 @@
+# inspired by https://github.com/deaaprizal/cuymodoro
+
 #!/bin/bash
 # for unix environtment
 # use git bash if you are using windows operating system

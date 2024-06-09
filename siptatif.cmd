@@ -1,3 +1,5 @@
+@REM inspired by https://github.com/deaaprizal/cuymodoro
+
 @REM running all app level instance
 @REM run app.cmd in your windows terminal
 @REM [app.cmd start] - starting new app instance fe & be 
