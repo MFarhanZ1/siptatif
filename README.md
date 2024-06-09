@@ -1,3 +1,7 @@
+<!-- docs inspired by 
+- https://github.com/tailwindlabs/tailwindcss
+- https://github.com/deaaprizal/cuymodoro -->
+
 <div align="center" style="margin-bottom: 59px;">
   <a href="https://github.com/MFarhanZ1/siptatif">
     <img width="650px" src="https://i.ibb.co.com/hK9WK0D/rtnepsql.png" alt="RTNEPSQL Logo" />
