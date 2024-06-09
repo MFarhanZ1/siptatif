@@ -1,14 +1,18 @@
-// import { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 import topimage from "../../../assets/images/pngs/siptatif-logo.png";
 import FormRegister from "./FormRegister";
 import VerifyEmail from "./VerifyEmail";
 import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { LoadingFullScreen } from "../../components/Loading";
+
 function Register() {
+	const [isLoading, setIsLoading] = useState(false);
+
 	const [isEmailValid, setIsEmailValid] = useState(false);
+	const [email, setEmail] = useState("");
+
 	const [searchParams] = useSearchParams("");
-	const [email, setEmail] = useState("fafararadra");
 	const tokenVerification = searchParams.get("__token_verification");
 
 	useEffect(() => {
@@ -24,7 +28,6 @@ function Register() {
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
 					if (data.response) {
 						Swal.fire({
 							title: "Yeay, verifikasi anda berhasil!",
@@ -51,6 +54,10 @@ function Register() {
 
 	return (
 		<div className="flex flex-col bg-[#e7f8f1] h-screen font-poppins">
+			
+			{/* Loading screen at full size */}
+			{isLoading && <LoadingFullScreen />}
+			
 			{/* marquee information */}
 			<div className="bg-[#FAAE2B] font-poppins overflow-hidden whitespace-nowrap ">
 				<p className="inline-block animate-marquee">
@@ -69,7 +76,18 @@ function Register() {
 				</div>
 				{/* form login */}
 				<div className="w-4/12">
-					{isEmailValid ? <FormRegister email={email}/> : <VerifyEmail/>}
+					
+					{/* different form depends on isEmailValid */}
+					{isEmailValid ? (
+						<FormRegister email={email} />
+					) : (
+						<VerifyEmail
+							onButtonClicked={({boolIsLoading}) => {
+								setIsLoading(boolIsLoading);
+							}}
+						/>
+					)}
+
 				</div>{" "}
 				{/* end of form login */}
 			</div>{" "}
