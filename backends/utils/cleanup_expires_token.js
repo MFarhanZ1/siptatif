@@ -11,4 +11,4 @@ const cleanUpExpiredTokens = async () => {
 };
 
 // Schedule the task to run every hour
-cron.schedule('* * * * *', cleanUpExpiredTokens);
+cron.schedule('*/3 * * * *', cleanUpExpiredTokens);
