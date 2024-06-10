@@ -1,18 +1,9 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import router from "./routers/main";
 
 const App = () => {
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate('/login');
-  }, [])
-
   return (
-    <>
-      <h1>root</h1>
-    </>
+      <RouterProvider router={router} />
   );
 }
 
