@@ -4,7 +4,7 @@ import seeicon from "../../assets/icons/see.svg";
 import { useState } from "react";
 
 interface InputProps {
-	placeholder: string;
+	placeholder?: string;
 	className?: string;
 	type: string;
 	label: string;
@@ -12,8 +12,14 @@ interface InputProps {
 	name?: string;
 	required?: boolean;
 	id?: string;
+	maxLength?: number;
+	pattern?: string;
+	max?: string;
+	minLength?: number;
 	onchange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	oninvalid?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	oninput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	autocomplete?: string;
 }
 
 function Input({
@@ -27,16 +33,22 @@ function Input({
 	className,
 	required = false,
 	oninvalid,
+	oninput,
+	max,
+	minLength,
+	maxLength,
+	pattern,
+	autocomplete
 }: InputProps) {
 
 	const [icon, setIcon] = useState(notseeicon);
 	const [inputType, setInputType] = useState(type);
 
 	return (
-		<div className={`border-b border-black py-2 font-poppins ${className}`}>
+		<div className={`border-b border-black py-2 font-poppins mb-3 ${className}`}>
 			<label>
 				<p className="text-xl">
-					{label} {required && <span className="text-red-500">*</span>}{" "}
+					{label} {required ? <span className="text-red-500">*</span> : <span className="text-sm underline italic">(Opsional)</span>}{" "}
 				</p>
 			</label>
 
@@ -52,6 +64,12 @@ function Input({
 					required={required}
 					onChange={onchange}
 					onInvalid={oninvalid}
+					onInput={oninput}
+					maxLength={maxLength}
+					pattern={pattern}
+					max={max}
+					minLength={minLength}
+					autoComplete={autocomplete}
 				/>
 
 				{type === "password" && (
