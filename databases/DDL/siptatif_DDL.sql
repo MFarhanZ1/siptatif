@@ -21,11 +21,13 @@ CREATE TABLE mahasiswa (
 	nim	 				VARCHAR(12) NOT NULL,
 	nama 				VARCHAR(255) NOT NULL,
 	no_hp				VARCHAR(15),
+	id_telegram 		VARCHAR(255),
 	username_telegram 	VARCHAR(255),
 	email 				VARCHAR(255) NOT NULL,
 	CONSTRAINT PK_Mahasiswa PRIMARY KEY (nim),
 	CONSTRAINT UQ_Mahasiswa_NO_HP UNIQUE (no_hp),
 	CONSTRAINT UQ_Mahasiswa_USERNAME_TELEGRAM UNIQUE (username_telegram),
+	CONSTRAINT UQ_Mahasiswa_ID_TELEGRAM UNIQUE (id_telegram),
 	CONSTRAINT FK_Mahasiswa_Akun FOREIGN KEY(email) REFERENCES akun (email)
 );
 
