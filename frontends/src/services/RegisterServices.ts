@@ -2,7 +2,7 @@ const verifyEmailService = async(request: React.FormEvent<HTMLFormElement>) => {
 
 	const form = new FormData(request.target as HTMLFormElement);
 
-	let response = await fetch(`${process.env.BASE_URL}/kirim-link-verifikasi`, {
+	const response = await fetch(`${process.env.BASE_URL}/kirim-link-verifikasi`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -12,13 +12,13 @@ const verifyEmailService = async(request: React.FormEvent<HTMLFormElement>) => {
 		}),
 	})
 	
-	let data = await response.json();
+	const data = await response.json();
 
 	return data;
 }
 
 const verifyRegisterTokenFromEmailService = async (tokenVerification: string) => {
-	let response = await fetch(`${process.env.BASE_URL}/verifikasi-token`, {
+	const response = await fetch(`${process.env.BASE_URL}/verifikasi-token`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -28,7 +28,7 @@ const verifyRegisterTokenFromEmailService = async (tokenVerification: string) =>
 		}),
 	})
 	
-	let data = await response.json();
+	const data = await response.json();
 	return data;
 }
 
