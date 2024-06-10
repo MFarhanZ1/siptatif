@@ -1,4 +1,5 @@
 -- pembuatan TABLE role
+DROP TABLE IF EXISTS role CASCADE;
 CREATE TABLE role (
 	id		SERIAL 	NOT NULL,
 	nama	VARCHAR(255) NOT NULL,
@@ -6,6 +7,7 @@ CREATE TABLE role (
 );
 
 -- pembuatan TABLE akun
+DROP TABLE IF EXISTS akun CASCADE;
 CREATE TABLE akun (
 	email 		VARCHAR(255) NOT NULL,
 	password	VARCHAR(255) NOT NULL,
@@ -17,6 +19,7 @@ CREATE TABLE akun (
 );
 
 -- pembuatan TABLE mahasiswa 
+DROP TABLE IF EXISTS mahasiswa CASCADE;
 CREATE TABLE mahasiswa (
 	nim	 				VARCHAR(12) NOT NULL,
 	nama 				VARCHAR(255) NOT NULL,
@@ -34,16 +37,18 @@ CREATE TABLE mahasiswa (
 -- pembuatan TABLE dosen
 CREATE TYPE TYPE_JENIS_KELAMIN AS ENUM ('L', 'P');
 
+DROP TABLE IF EXISTS dosen CASCADE;
 CREATE TABLE dosen (
 	nidn			VARCHAR(20) NOT NULL,
 	nama 			VARCHAR(255) NOT NULL,
 	jenis_kelamin	TYPE_JENIS_KELAMIN NOT NULL,
 	email 			VARCHAR(255) NOT NULL,
 	CONSTRAINT PK_Dosen PRIMARY KEY(nidn),
-	CONSTRAINT UQ_Dosen_Email UNIQUE (email)
+	CONSTRAINT FK_Dosen_Akun FOREIGN KEY(email) REFERENCES akun (email)
 );
 
 -- pembuatan TABLE dosen_pembimbing
+DROP TABLE IF EXISTS dosen_pembimbing CASCADE;
 CREATE TABLE dosen_pembimbing (
 	id		 SERIAL NOT NULL,
 	kuota	 INT DEFAULT NULL,
@@ -53,6 +58,7 @@ CREATE TABLE dosen_pembimbing (
 );
 
 --pembuatan TABLE dosen_penguji
+DROP TABLE IF EXISTS dosen_penguji CASCADE;
 CREATE TABLE dosen_penguji (
 	id		 SERIAL NOT NULL,
 	kuota	 INT DEFAULT NULL,
@@ -62,6 +68,7 @@ CREATE TABLE dosen_penguji (
 );
 
 --pembuatan TABLE keahlian
+DROP TABLE IF EXISTS keahlian CASCADE;
 CREATE TABLE keahlian (
 	id 		SERIAL,
 	nama 	VARCHAR(255) NOT NULL,
@@ -69,6 +76,7 @@ CREATE TABLE keahlian (
 );
 
 --pembuatan TABLE keahlian_dosen
+DROP TABLE IF EXISTS keahlian_dosen CASCADE;
 CREATE TABLE keahlian_dosen (
 	id		 		SERIAL,
 	nidn		 	VARCHAR(20) NOT NULL,
@@ -82,6 +90,8 @@ CREATE TABLE keahlian_dosen (
 CREATE TYPE TYPE_JENIS_PENDAFTARAN AS ENUM ('INDIVIDU', 'KELOMPOK'); 
 CREATE TYPE TYPE_KATEGORI_TA AS ENUM ('LAPORAN', 'PAPERBASED');
 CREATE TYPE TYPE_STATUS AS ENUM ('SETUJU', 'DITOLAK', 'MENUNGGU');
+
+DROP TABLE IF EXISTS tugas_akhir CASCADE;
 CREATE TABLE tugas_akhir (
 	no_reg_ta				VARCHAR(10) NOT NULL,
 	jenis_pendaftaran		TYPE_JENIS_PENDAFTARAN NOT NULL,
@@ -105,6 +115,8 @@ CREATE TABLE tugas_akhir (
 
 --pembuatan TABLE riwayat_pembimbing
 CREATE TYPE TYPE_STATUS_RIWAYAT AS ENUM ('SELESAI', 'BELUM');
+
+DROP TABLE IF EXISTS riwayat_pembimbing CASCADE;
 CREATE TABLE riwayat_pembimbing (
 	id			SERIAL NOT NULL,
 	no_reg_ta	VARCHAR(9) NOT NULL,
@@ -114,7 +126,8 @@ CREATE TABLE riwayat_pembimbing (
 	CONSTRAINT 	FK_Ripem_TA FOREIGN KEY (no_reg_ta) REFERENCES tugas_akhir(no_reg_ta),
 	CONSTRAINT 	FK_Ripem_Dosen FOREIGN KEY(nidn) REFERENCES dosen (nidn)
 );
---pembuatan 
+--pembuatan TABLE riwayat_penguji
+DROP TABLE IF EXISTS riwayat_penguji CASCADE;
 CREATE TABLE riwayat_penguji (
 	id			SERIAL NOT NULL,
 	no_reg_ta	VARCHAR(9) NOT NULL,
