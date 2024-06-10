@@ -5,8 +5,9 @@ import siptatifImage from "../../../assets/images/pngs/siptatif-logo.png";
 import "../../index.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-function Login() {
+function LoginPage() {
 
   const navigate = useNavigate();
 
@@ -85,7 +86,15 @@ function Login() {
               <p className="mt-5">
                 Belum punya akun?
                 <span className="font-bold underline cursor-pointer px-1" onClick={() => {
-                  navigate('/register');
+                  Swal.fire({
+                    title: "🚀 Menuju Halaman Registrasi...",
+                    text: "Sebentar ya anda akan diarahkan kehalaman registrasi!",
+                    icon: "info",
+                    showConfirmButton: false,
+                    timer: 3000
+                  }).then(() => {                  
+                    navigate('/register');
+                  })
                 }}>
                   Daftar Disini!
                 </span>
@@ -100,4 +109,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;

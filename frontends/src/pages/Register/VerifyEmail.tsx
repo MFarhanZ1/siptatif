@@ -4,16 +4,14 @@ import Card from "../../components/Card";
 import Input from "../../components/Input";
 import Timer from "../../components/Timer";
 import Swal from "sweetalert2";
+import { verifyEmailService } from "../../services/RegisterServices";
 
 interface VerifyEmailProps {
 	onButtonClicked: (params: { boolIsLoading: boolean }) => void;
 }
 
-const VerifyEmail = ({onButtonClicked}: VerifyEmailProps) => {
-	
+const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
 	const [isClickedVerif, setisClickedVerif] = useState(false);
-
-	const [email, setEmail] = useState("");
 
 	return (
 		<Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
@@ -22,27 +20,27 @@ const VerifyEmail = ({onButtonClicked}: VerifyEmailProps) => {
 			</h1>
 			{/* form input */}
 			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					
-					onButtonClicked({boolIsLoading: true});
-					
-					fetch(`${process.env.BASE_URL}/kirim-link-verifikasi`, {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify({
-							email: email,
-						}),
-					})
-						.then((response) => response.json())
+				onSubmit={(request) => {
+
+					// menghindari refresh page setelah submit form
+					request.preventDefault();
+
+					// starting callback loading screen
+					onButtonClicked({ boolIsLoading: true });
+
+					verifyEmailService(request)
 						.then((data) => {
 
-							onButtonClicked({boolIsLoading: false});
-							
-							if (data.response) {
+							// ending callback loading screen
+							onButtonClicked({ boolIsLoading: false });
 
+							// jika request berhasil atau email berhasil dikirimkan
+							if (data.response) {
+								
+								// kalau sukses dikirim munculkan timer cooldown dan aktifkan disabled button
+								setisClickedVerif(!isClickedVerif);			
+								
+								// munculkan pesan notifikasi link verifikasi sukses dikirim
 								Swal.fire({
 									title: "Link verifikasi sukses dikirim!",
 									html: data.message,
@@ -50,10 +48,10 @@ const VerifyEmail = ({onButtonClicked}: VerifyEmailProps) => {
 									showConfirmButton: false,
 									timer: 4000,
 								})
-									.then(() => {
-										setisClickedVerif(!isClickedVerif);
-									});
+
 							} else {
+
+								// munculkan pesan notifikasi link verifikasi gagal dikirim
 								Swal.fire({
 									title: "Registrasi Gagal!",
 									html: data.message,
@@ -61,6 +59,7 @@ const VerifyEmail = ({onButtonClicked}: VerifyEmailProps) => {
 									showConfirmButton: false,
 									timer: 4000,
 								});
+
 							}
 						});
 				}}
@@ -68,9 +67,9 @@ const VerifyEmail = ({onButtonClicked}: VerifyEmailProps) => {
 				<Input
 					placeholder="contoh@students.uin-suska.ac.id"
 					type="email"
+					name="email"
 					label="Email:"
 					className="mb-3"
-					onchange={(e) => setEmail(e.target.value)}
 					required={true}
 				/>
 
@@ -89,10 +88,13 @@ const VerifyEmail = ({onButtonClicked}: VerifyEmailProps) => {
 				)}
 
 				<Button
-					className={`bg-[#8BD3DD] cursor-${!isClickedVerif ? "pointer" : "not-allowed"} border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#85c9eb] disabled:bg-[#7dabb8]`}
+					className={`bg-[#8BD3DD] cursor-${
+						!isClickedVerif ? "pointer" : "not-allowed"
+					} border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#62add3] disabled:bg-[#7dabb8]`}
 					text="Kirim Link Verifikasi"
 					disabled={isClickedVerif}
 				/>
+
 			</form>
 		</Card>
 	);

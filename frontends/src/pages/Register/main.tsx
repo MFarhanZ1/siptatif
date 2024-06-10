@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import topimage from "../../../assets/images/pngs/siptatif-logo.png";
-import FormRegister from "./FormRegister";
+import Register from "./Register";
 import VerifyEmail from "./VerifyEmail";
 import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { LoadingFullScreen } from "../../components/Loading";
+import { verifyRegisterTokenFromEmailService } from "../../services/RegisterServices";
 
-function Register() {
+const RegisterPage = () => {
+
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [isEmailValid, setIsEmailValid] = useState(false);
@@ -17,16 +19,7 @@ function Register() {
 
 	useEffect(() => {
 		if (tokenVerification) {
-			fetch(`${process.env.BASE_URL}/verifikasi-token`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					__token_verification: tokenVerification,
-				}),
-			})
-				.then((response) => response.json())
+			verifyRegisterTokenFromEmailService(tokenVerification)
 				.then((data) => {
 					if (data.response) {
 						Swal.fire({
@@ -36,8 +29,8 @@ function Register() {
 							showConfirmButton: false,
 							timer: 4000,
 						}).then(() => {
-							setIsEmailValid(true);
 							setEmail(data.results.email);
+							setIsEmailValid(true);
 						});
 					} else {
 						Swal.fire({
@@ -59,7 +52,7 @@ function Register() {
 			{isLoading && <LoadingFullScreen />}
 			
 			{/* marquee information */}
-			<div className="bg-[#FAAE2B] font-poppins overflow-hidden whitespace-nowrap ">
+			<div className="bg-[#FAAE2B] font-poppins overflow-hidden whitespace-nowrap">
 				<p className="inline-block animate-marquee">
 					Perhatian! Perubahan jadwal seminar proposal menjadi 2 Juni 2024 |
 					Kontak admin untuk masalah teknis di support@uin-suska.ac.id
@@ -79,7 +72,7 @@ function Register() {
 					
 					{/* different form depends on isEmailValid */}
 					{isEmailValid ? (
-						<FormRegister email={email} />
+						<Register email={email} />
 					) : (
 						<VerifyEmail
 							onButtonClicked={({boolIsLoading}) => {
@@ -96,4 +89,4 @@ function Register() {
 	);
 }
 
-export default Register;
+export default RegisterPage;
