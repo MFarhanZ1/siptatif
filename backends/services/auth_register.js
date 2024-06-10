@@ -1,27 +1,27 @@
 const crypto = require('crypto');
 const { transporter } = require('../config/mail');
 const db = require('../config/db');
-const { response } = require('express');
 
 require('dotenv').config();
 
 const verifikasi_token = async (req, res) => {
     const { __token_verification } = req.body;
-    const result = await db.query('SELECT * FROM unverified_emails WHERE verification_token = $1', [__token_verification]);
+    const results = await db.query('SELECT * FROM unverified_emails WHERE verification_token = $1', [__token_verification]);
     
-    if (result.rows.length === 0) {
+    if (results.rows.length === 0) {
         return res.status(400).json({ 
             response: false,
             message: 'Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link verifikasi kembali!' 
         });
     }
     
+    // deleting verified token when verification_link is entered
     // db.query('DELETE FROM unverified_emails WHERE verification_token = $1', [__token_verification]);
     
     res.json({
         response: true,
         message: 'Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman pengisian form!',
-        result: result.rows[0]
+        results: results.rows[0]
     });
 }
 
@@ -30,6 +30,32 @@ const kirim_link_verifikasi = async (req, res) => {
 
     // mengambil data email dari user
     const { email } = req.body;
+
+    // mengecek apakah email tersebut sudah pernah terdaftar
+    const resultInAkun = await db.query('SELECT * FROM akun WHERE email = $1', [email]);
+    if (resultInAkun.rows.length > 0) {
+        return res.status(400).json({ response: false, message: 'Maaf, Email tersebut telah terdaftar di sistem kami sebelumnya!' });
+    }
+
+    // mengecek apakah email tersebut belum terdaftar tetapi sudah pernah dikirimin token
+    const resultInUnverifiedEmails = await db.query('SELECT * FROM unverified_emails WHERE email = $1', [email]);
+    if (resultInUnverifiedEmails.rows.length > 0) {
+
+        // mengambil waktu expire token di database
+        const getExpiresAt = resultInUnverifiedEmails.rows[0].expires_at;
+
+        // mendapatkan waktu sekarang
+        const now = new Date();
+        
+        // Menghitung selisih antara kedua waktu
+        const diffTime = Math.abs(now - getExpiresAt);
+        
+        // konversi ke menit detik
+        const diffMinutes = Math.ceil(diffTime / (1000 * 60));
+        const diffSeconds = Math.ceil(diffTime / 1000);
+        
+        return res.status(400).json({ response: false, message: `Maaf, kami telah mengirimkan link verifikasi ke email tersebut sebelumnya coy, silahkan coba kembali sekitar ${diffMinutes}-menitan atau lebih tepatnya ${diffSeconds}-detik lagi ya coy!` });
+    }
     
     // pembuatan token dan verifikasi link yang akan dikirim ke email
     const token = crypto.randomBytes(32).toString('hex');
@@ -127,7 +153,7 @@ const kirim_link_verifikasi = async (req, res) => {
     });
 
     // generate token expires
-    const expiresAt = new Date(Date.now() + 60000); // 1 hour from now
+    const expiresAt = new Date(Date.now() + 180000); // 3 minutes from now will expire
 
     // insert into unverified_emails with token
     db.query('INSERT INTO unverified_emails (email, verification_token, expires_at) VALUES ($1, $2, $3)', [email, token, expiresAt]);

@@ -7,7 +7,6 @@ const validasi_email = require('./middlewares/validasi_email');
 
 // importing services
 const { verifikasi_token, kirim_link_verifikasi} = require('./services/auth_register');
-const db = require("./config/db");
 
 require('./utils/cleanup_expires_token');
 require('dotenv').config();
