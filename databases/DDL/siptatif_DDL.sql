@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS mahasiswa CASCADE;
 CREATE TABLE mahasiswa (
 	nim	 				VARCHAR(12) NOT NULL,
 	nama 				VARCHAR(255) NOT NULL,
+	tanggal_lahir 		DATE NOT NULL,
 	no_hp				VARCHAR(15),
 	id_telegram 		VARCHAR(255),
 	username_telegram 	VARCHAR(255),
