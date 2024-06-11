@@ -214,7 +214,7 @@ const register_akun_mahasiswa = async (req, res) => {
         // return success response
         return res.status(200).json({
             response: true,
-            message: `Registrasi Sukses!`,
+            message: `Yeay, registrasi sukses!, sebentar ya, kami akan mengarahkan kamu kehalaman login.`,
         });
     } catch (err) {
         const errCode = err?.code;
@@ -223,7 +223,7 @@ const register_akun_mahasiswa = async (req, res) => {
                 response: false,
                 message: `Registrasi Gagal! ${err.detail.replace("Kunci", "Data anda, yakni").replace("sudah ada.", "sudah pernah didaftarkan.")}`,
             });
-        } else if (errCode === "22001") { // value too long for type character varying (varchar)
+        } else {
             return res.status(500).json({
                 response: false,
                 message: `Registrasi Gagal! ${err.message}`,
