@@ -4,10 +4,10 @@ const db = require("../config/db");
 
 require("dotenv").config();
 
-const verifikasi_token_register = async (req, res) => {
+const verifikasi_token_lupa_password = async (req, res) => {
 	const { __token_verification } = req.body;
 	const results = await db.query(
-		"SELECT * FROM unverified_email_register WHERE verification_token = $1",
+		"SELECT * FROM unverified_email_lupa_password WHERE verification_token = $1",
 		[__token_verification]
 	);
 
@@ -15,7 +15,7 @@ const verifikasi_token_register = async (req, res) => {
 		return res.status(400).json({
 			response: false,
 			message:
-				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link verifikasi kembali!",
+				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link reset password kembali!",
 		});
 	}
 
@@ -25,32 +25,32 @@ const verifikasi_token_register = async (req, res) => {
 	res.json({
 		response: true,
 		message:
-			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman pengisian form!",
+			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman reset password!",
 		results: results.rows[0],
 	});
 };
 
-const kirim_link_verifikasi = async (req, res) => {
+const kirim_link_lupa_password = async (req, res) => {
 	// mengambil data email dari user
 	const { email } = req.body;
 
-	// mengecek apakah email tersebut sudah pernah terdaftar
+	// mengecek apakah email tersebut sudah pernah terdaftar dalam sistem atau belum
 	const resultInAkun = await db.query("SELECT * FROM akun WHERE email = $1", [
 		email,
 	]);
-	if (resultInAkun.rows.length > 0) {
+	if (resultInAkun.rows.length == 0) {
 		return res
 			.status(400)
 			.json({
 				response: false,
 				message:
-					"Maaf, Email tersebut telah terdaftar di sistem kami sebelumnya!",
+					`Maaf, Email ${email} tidak ditemukan di sistem kami!`,
 			});
 	}
 
-	// mengecek apakah email tersebut belum terdaftar tetapi sudah pernah dikirimin token
+	// mengecek apakah email tersebut udah pernah terdaftar tetapi sudah pernah dikirimin token
 	const resultInUnverifiedEmails = await db.query(
-		"SELECT * FROM unverified_email_register WHERE email = $1",
+		"SELECT * FROM unverified_email_lupa_password WHERE email = $1",
 		[email]
 	);
 	if (resultInUnverifiedEmails.rows.length > 0) {
@@ -71,19 +71,19 @@ const kirim_link_verifikasi = async (req, res) => {
 			.status(400)
 			.json({
 				response: false,
-				message: `Maaf, kami telah mengirimkan link verifikasi ke email tersebut sebelumnya coy, silahkan coba kembali sekitar ${diffMinutes}-menitan atau lebih tepatnya ${diffSeconds}-detik lagi ya coy!`,
+				message: `Maaf, kami telah mengirimkan link reset password ke email tersebut sebelumnya coy, silahkan coba kembali sekitar ${diffMinutes}-menitan atau lebih tepatnya ${diffSeconds}-detik lagi ya coy!`,
 			});
 	}
 
 	// pembuatan token dan verifikasi link yang akan dikirim ke email
 	const token = crypto.randomBytes(32).toString("hex");
-	const verificationLink = process.env.VERIFICATION_LINK + token;
+	const verificationLink = process.env.RESET_PASSWORD_LINK + token;
 
 	const mailOptions = {
 		from: process.env.EMAIL_USER,
 		to: email,
 		subject:
-			"[SIPTATIF VERIFICATION] - Verifikasi Email untuk Registrasi Akun SIPTATIF",
+			"[SIPTATIF RESET PASSWORD] - Verifikasi Email untuk Reset Password Akun SIPTATIF",
 		html: `
         <html>
             <head>
@@ -141,14 +141,14 @@ const kirim_link_verifikasi = async (req, res) => {
                 <div class="email-container">
                     <div class="email-card">
                         <div class="email-header">
-                            📧 Verifikasi Email Akun SIPTATIF 📧
+                            📧 Reset Password Akun SIPTATIF 📧
                         </div>
 
                         <div class="email-body">
                             <h4><i>Halo Sobat SIPTATIF UIN Suska Riau,</i><span> 😁😉</span></h4>
-                            <p>Terima kasih telah mendaftar akun di SIPTATIF. Silakan klik tombol di bawah ini untuk memverifikasi alamat email Anda: 👇</p>
+                            <p>Terima kasih sebelumnya telah menggunakan layanan SIPTATIF. Silakan klik tombol di bawah ini ya untuk mereset password akun anda: 👇</p>
                             <p style="text-align: center;">
-                                <a style="color: #ffffff; text-decoration: none" href="${verificationLink}" class="email-button">Verifikasi Email Sekarang</a>
+                                <a style="color: #ffffff; text-decoration: none" href="${verificationLink}" class="email-button">Reset Password Sekarang</a>
                             </p>
                             <p>Jika Anda tidak meminta email ini, abaikan saja. 😊</p>
                         </div>
@@ -176,22 +176,36 @@ const kirim_link_verifikasi = async (req, res) => {
 
 	// insert into unverified_emails with token
 	db.query(
-		"INSERT INTO unverified_email_register (email, verification_token, expires_at) VALUES ($1, $2, $3)",
+		"INSERT INTO unverified_email_lupa_password (email, verification_token, expires_at) VALUES ($1, $2, $3)",
 		[email, token, expiresAt]
 	);
 
 	return res.status(200).json({
 		response: true,
-		message: `Sukses mengirim link verifikasi ke email ${email}! silahkan cek, lalu tekan tombol 'Verifikasi Email Sekarang' untuk memverifikasinya!`,
+		message: `Sukses mengirim link reset password ke email ${email}! silahkan cek, lalu tekan tombol 'Reset Password Sekarang' untuk memverifikasinya!`,
 	});
 };
 
 // importing hash algorithm
 const argon2 = require("argon2");
 
-const register_akun_mahasiswa = async (req, res) => {
+const reset_password = async (req, res) => {
 	// mengambil data email dari user
-	const { email, password, nim, nama, tanggal_lahir, no_hp } = req.body;
+	const { email, password } = req.body;
+
+    // mengecek apakah email tersebut sudah pernah terdaftar dalam sistem atau belum
+	const resultInAkun = await db.query("SELECT * FROM akun WHERE email = $1", [
+		email,
+	]);
+	if (resultInAkun.rows.length == 0) {
+		return res
+			.status(400)
+			.json({
+				response: false,
+				message:
+					`Maaf, Email ${email} tersebut tidak ditemukan di sistem kami!`,
+			});
+	}
 
     // hashing password with argon2 algorithm and catch error
     let hashPassword;
@@ -204,36 +218,29 @@ const register_akun_mahasiswa = async (req, res) => {
         });	
     }
 
-    // call procedure register_akun_mahasiswa to regist user account
+    // call procedure reset_password to reset user account password
     try{
         // query execution
         await db.query(
-            "CALL register_akun_mahasiswa( $1, $2, $3, $4, $5, $6 )",
-            [email, hashPassword, nim, nama, tanggal_lahir, no_hp]
+            "CALL reset_password( $1, $2 )",
+            [email, hashPassword]
         );
+
         // return success response
         return res.status(200).json({
             response: true,
-            message: `Yeay, registrasi sukses!, sebentar ya, kami akan mengarahkan kamu kehalaman login.`,
+            message: `Yeay, reset password untuk email ${email} sukses cuy!, sebentar ya, kami akan mengarahkan kamu kehalaman login.`,
         });
     } catch (err) {
-        const errCode = err?.code;
-        if (errCode === "23505") { // unique_violation
-            return res.status(500).json({
-                response: false,
-                message: `Registrasi Gagal! ${err.detail.replace("Kunci", "Data anda, yakni").replace("sudah ada.", "sudah pernah didaftarkan.")}`,
-            });
-        } else {
-            return res.status(500).json({
-                response: false,
-                message: `Registrasi Gagal! ${err.message}`,
-            });
-        }
+        return res.status(500).json({
+            response: false,
+            message: `Yah, reset password akun anda gagal! ${err.message}`,
+        });
     }
 };
 
 module.exports = {
-	verifikasi_token_register,
-	kirim_link_verifikasi,
-	register_akun_mahasiswa,
+    kirim_link_lupa_password,
+    verifikasi_token_lupa_password,
+    reset_password
 };
