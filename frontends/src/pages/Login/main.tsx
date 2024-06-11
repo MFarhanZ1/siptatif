@@ -73,7 +73,7 @@ function LoginPage() {
                 <div className="flex flex-col gap-5 mb-5">
                   <Input
                     placeholder="contoh@students.uin-suska.ac.id"
-                    type="text"
+                    type="email"
                     id="email"
                     label="Email:"
                     name="email"
@@ -95,7 +95,18 @@ function LoginPage() {
                   />
                 </div>
                 <div className="flex justify-end">
-                  <p className="p-1 cursor-pointer font-bold underline">
+                  <p className="p-1 cursor-pointer font-bold underline" 
+                  onClick={() => {
+                    Swal.fire({
+                      title: "⚡ Menuju Halaman Lupa Password...",
+                      text: "Sebentar ya anda akan diarahkan kehalaman Lupa Password!",
+                      icon: "info",
+                      showConfirmButton: false,
+                      timer: 3000,
+                    })
+                    navigate("/reset-password");
+                  }}
+                  >
                     Lupa Password?
                   </p>
                 </div>
