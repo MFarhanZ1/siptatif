@@ -81,6 +81,7 @@ function LoginPage() {
                 <Button
                   className="bg-[#8BD3DD] border border-black rounded-md font-bold w-full mt-5 text-xl hover:bg-[#85c9eb]"
                   text="LOGIN"
+                  type="submit"
                 />
               </form>
               <p className="mt-5">

@@ -69,7 +69,6 @@ const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
 					type="email"
 					name="email"
 					label="Email:"
-					className="mb-3"
 					required={true}
 				/>
 
@@ -93,6 +92,7 @@ const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
 					} border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#62add3] disabled:bg-[#7dabb8]`}
 					text="Kirim Link Verifikasi"
 					disabled={isClickedVerif}
+					type="submit"
 				/>
 
 			</form>
