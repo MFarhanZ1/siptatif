@@ -4,7 +4,7 @@ import Card from "../../components/Card";
 import Input from "../../components/Input";
 import Timer from "../../components/Timer";
 import Swal from "sweetalert2";
-import { verifyEmailService } from "../../services/RegisterServices";
+import { kirimLinkVerifikasiEmailService } from "../../services/RegisterServices";
 
 interface VerifyEmailProps {
   onButtonClicked: (params: { boolIsLoading: boolean }) => void;
@@ -27,7 +27,7 @@ const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
           // starting callback loading screen
           onButtonClicked({ boolIsLoading: true });
 
-          verifyEmailService(request).then((data) => {
+          kirimLinkVerifikasiEmailService(request).then((data) => {
             // ending callback loading screen
             onButtonClicked({ boolIsLoading: false });
 

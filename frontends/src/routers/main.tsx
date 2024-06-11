@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "../pages/Login/main.tsx";
 import RegisterPage from "../pages/Register/main.tsx";
 import DashboardPage from "../pages/Dashboard/main.tsx";
+import LupaPasswordPage from "../pages/Lupa Password/main.tsx";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <RegisterPage />,
+    },
+    {
+        path: "/reset-password",
+        element: <LupaPasswordPage />,
     },
 ]);
 

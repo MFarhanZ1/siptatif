@@ -1,4 +1,4 @@
-const verifyEmailService = async(request: React.FormEvent<HTMLFormElement>) => {
+const kirimLinkVerifikasiEmailService = async(request: React.FormEvent<HTMLFormElement>) => {
 
 	const form = new FormData(request.target as HTMLFormElement);
 
@@ -60,7 +60,7 @@ const registerService = async (params: {email: string, password: string, nama: s
 };
 
 export {
-	verifyEmailService,
+	kirimLinkVerifikasiEmailService,
 	verifyRegisterTokenFromEmailService,
     registerService
 }
