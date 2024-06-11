@@ -5,21 +5,28 @@ import Input from "../../components/Input";
 
 import { registerService } from "../../services/RegisterServices";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 interface RegisterProps {
   email: string;
 }
+interface FormDataProps {
+  nama: string;
+  tgl_lahir: string;
+  no_hp: string;
+}
 const Register = ({ email }: RegisterProps) => {
+  const root = useNavigate();
   const [invalidMatchPassword, setinvalidMatchPassword] = useState(false);
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [nextForm, setnextForm] = useState(true);
-  const [nama, setNama] = useState(" ");
-  const [tanggalLahir, setTanggalLahir] = useState(" ");
-  const [noHp, setNoHp] = useState("");
+  const [nama, setNama] = useState<string>("");
+  const [tanggalLahir, setTanggalLahir] = useState<string>("");
+  const [noHp, setNoHp] = useState<string>("");
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataProps>({
     nama: " ",
     tgl_lahir: " ",
     no_hp: " ",
@@ -47,7 +54,32 @@ const Register = ({ email }: RegisterProps) => {
             });
           }
 
-          registerService(request, { email: email, ...formData });
+          registerService({
+            email: email,
+            password: password,
+            ...formData,
+          }).then((data) => {
+            if (data.response) {
+              Swal.fire({
+                title: "Selamat anda registrasi berhasil!",
+                html: data.message,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 4000,
+              }) .then(() => {
+                root("/login");
+              })
+            } else {
+              Swal.fire({
+                title: "Registrasi ditolak!",
+                html: data.message,
+                text: "Maaf, lengkapi data Diri anda",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 3000,
+              });
+            }
+          });
         }}
       >
         {nextForm ? (
@@ -57,13 +89,17 @@ const Register = ({ email }: RegisterProps) => {
               type="text"
               name="nama"
               label="Nama:"
+              value={nama}
               required={true}
-              onchange={(e) => setNama(e.target.value)}
+              onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setNama(e.target.value)
+              }
             />
             <Input
               placeholder="hari/bulan/tahun"
               type="date"
               name="tgl-lahir"
+              value={tanggalLahir}
               label="Tanggal Lahir:"
               required={true}
               onchange={(e) => setTanggalLahir(e.target.value)}
@@ -76,6 +112,7 @@ const Register = ({ email }: RegisterProps) => {
               required={false}
               autocomplete="off"
               maxLength={15}
+              minLength={11}
               value={noHp}
               oninput={(e) => {
                 const pattern = /^[a-zA-Z]+$/;
@@ -89,13 +126,24 @@ const Register = ({ email }: RegisterProps) => {
               text="Berikutnya"
               type="button"
               onClick={() => {
+                if (nama == "" || tanggalLahir == "") {
+                  setnextForm(true);
+                  return Swal.fire({
+                    title: "Registrasi belum dapat diproses!",
+                    text: "Maaf, silahkan lengkapi data diri anda terlebih dahulu.",
+                    icon: "warning",
+                    showConfirmButton: false,
+                    timer: 3000,
+                  });
+                } else {
+                  setnextForm(false);
+                }
                 setFormData({
                   ...formData,
-                  nama: nama,
-                  tgl_lahir: tanggalLahir,
-                  no_hp: noHp,
+                  nama: `${nama}`,
+                  tgl_lahir: `${tanggalLahir}`,
+                  no_hp: `${noHp}`,
                 });
-                setnextForm(false);
               }}
             />
           </div>
@@ -105,6 +153,7 @@ const Register = ({ email }: RegisterProps) => {
               placeholder="*********"
               type="password"
               name="password"
+              value={password}
               label="Password:"
               minLength={8}
               onchange={(e) => {
@@ -130,6 +179,7 @@ const Register = ({ email }: RegisterProps) => {
               placeholder="*********"
               type="password"
               name="confirm-password"
+              value={confirmPassword}
               label="Confirm Password:"
               minLength={8}
               className={`${
@@ -157,11 +207,19 @@ const Register = ({ email }: RegisterProps) => {
             {invalidMatchPassword && (
               <p className="-mt-2 text-red-600">Password tidak sesuai.</p>
             )}
-            <Button
-              className={`bg-[#8BD3DD] cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#85c9eb] disabled:bg-[#7dabb8]`}
-              text="Register"
-              type="submit"
-            />
+            <div className="flex justify-end gap-2">
+              <Button
+                className={`bg-[#fff765] w-44 cursor-pointer border border-black rounded-md font-bold mt-4 text-xl hover:bg-[#cdc751]`}
+                text="Kembali"
+                type="button"
+                onClick={() => setnextForm(true)}
+              />
+              <Button
+                className={`bg-[#8BD3DD] cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#77b3d2]`}
+                text="Register"
+                type="submit"
+              />
+            </div>
           </>
         )}
       </form>
