@@ -18,7 +18,7 @@ const verifyEmailService = async(request: React.FormEvent<HTMLFormElement>) => {
 }
 
 const verifyRegisterTokenFromEmailService = async (tokenVerification: string) => {
-	const response = await fetch(`${process.env.BASE_URL}/verifikasi-token`, {
+	const response = await fetch(`${process.env.BASE_URL}/verifikasi-token-register`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
