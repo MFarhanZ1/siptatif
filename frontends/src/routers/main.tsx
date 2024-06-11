@@ -7,6 +7,10 @@ import DashboardPage from "../pages/Dashboard/main.tsx";
 const router = createBrowserRouter([
     {
         path: "/",
+        element: <LoginPage />
+    },
+    {
+        path: "/dashboard",
         element: <DashboardPage />,
     },
     {

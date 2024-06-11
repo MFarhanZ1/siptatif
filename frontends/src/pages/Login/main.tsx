@@ -1,4 +1,4 @@
-import Button from "../../components/Button"
+import Button from "../../components/Button";
 import Card from "../../components/Card";
 import Input from "../../components/Input";
 import siptatifImage from "../../../assets/images/pngs/siptatif-logo.png";
@@ -6,13 +6,13 @@ import "../../index.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { validateloginService } from "../../services/LoginService";
 
 function LoginPage() {
-
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState<string>("");
 
   return (
     <>
@@ -40,12 +40,36 @@ function LoginPage() {
                 Login Page
               </h1>
               {/* form input */}
-              <form onSubmit={(e) => {
-                e.preventDefault()
-
-                console.log(email)
-                console.log(password)
-              }}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  validateloginService({ email, password }).then((data) => {
+                    if (data.response) {
+                      Swal.fire({
+                        title: "Berhasil Login!",
+                        html: data.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 4000,
+                      })
+                        .then(() => {
+                          navigate("/dashboard");
+                        })
+                      
+                    }else{
+                      Swal.fire({
+                        title: "Login Gagal!",
+                        html: data.message,
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 4000,
+                      })
+                    }
+                  });
+                  // console.log(email);
+                  // console.log(password);
+                }}
+              >
                 <div className="flex flex-col gap-5 mb-5">
                   <Input
                     placeholder="contoh@students.uin-suska.ac.id"
@@ -54,23 +78,20 @@ function LoginPage() {
                     label="Email:"
                     name="email"
                     required={true}
-                    onchange={
-                      (e) => {
-                        setEmail(e.target.value)
-                      }
-                    }
+                    onchange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                   />
                   <Input
                     placeholder="**********"
                     type="password"
                     id="password"
                     label="Password:"
+                    minLength={8}
                     required={true}
-                    onchange={
-                      (e) => {
-                        setPassword(e.target.value)
-                      }
-                    }
+                    onchange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                   />
                 </div>
                 <div className="flex justify-end">
@@ -86,17 +107,20 @@ function LoginPage() {
               </form>
               <p className="mt-5">
                 Belum punya akun?
-                <span className="font-bold underline cursor-pointer px-1" onClick={() => {
-                  Swal.fire({
-                    title: "🚀 Menuju Halaman Registrasi...",
-                    text: "Sebentar ya anda akan diarahkan kehalaman registrasi!",
-                    icon: "info",
-                    showConfirmButton: false,
-                    timer: 3000
-                  }).then(() => {                  
-                    navigate('/register');
-                  })
-                }}>
+                <span
+                  className="font-bold underline cursor-pointer px-1"
+                  onClick={() => {
+                    Swal.fire({
+                      title: "🚀 Menuju Halaman Registrasi...",
+                      text: "Sebentar ya anda akan diarahkan kehalaman registrasi!",
+                      icon: "info",
+                      showConfirmButton: false,
+                      timer: 3000,
+                    }).then(() => {
+                      navigate("/register");
+                    });
+                  }}
+                >
                   Daftar Disini!
                 </span>
               </p>
