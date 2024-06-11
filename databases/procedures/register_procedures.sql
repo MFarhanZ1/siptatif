@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS unverified_emails (
+CREATE TABLE IF NOT EXISTS unverified_email_register(
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     verification_token VARCHAR(255) NOT NULL,
