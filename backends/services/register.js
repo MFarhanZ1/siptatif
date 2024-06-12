@@ -4,49 +4,9 @@ const db = require("../config/db");
 
 require("dotenv").config();
 
-const verifikasi_token_register = async (req, res) => {
-	const { __token_verification } = req.body;
-	const results = await db.query(
-		"SELECT * FROM unverified_email_register WHERE verification_token = $1",
-		[__token_verification]
-	);
-
-	if (results.rows.length === 0) {
-		return res.status(400).json({
-			response: false,
-			message:
-				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link verifikasi kembali!",
-		});
-	}
-
-	// deleting verified token when verification_link is entered
-	// db.query('DELETE FROM unverified_emails WHERE verification_token = $1', [__token_verification]);
-
-	res.json({
-		response: true,
-		message:
-			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman pengisian form!",
-		results: results.rows[0],
-	});
-};
-
 const kirim_link_verifikasi = async (req, res) => {
 	// mengambil data email dari user
 	const { email } = req.body;
-
-	// mengecek apakah email tersebut sudah pernah terdaftar
-	const resultInAkun = await db.query("SELECT * FROM akun WHERE email = $1", [
-		email,
-	]);
-	if (resultInAkun.rows.length > 0) {
-		return res
-			.status(400)
-			.json({
-				response: false,
-				message:
-					"Maaf, Email tersebut telah terdaftar di sistem kami sebelumnya!",
-			});
-	}
 
 	// mengecek apakah email tersebut belum terdaftar tetapi sudah pernah dikirimin token
 	const resultInUnverifiedEmails = await db.query(
@@ -75,7 +35,7 @@ const kirim_link_verifikasi = async (req, res) => {
 			});
 	}
 
-	// pembuatan token dan verifikasi link yang akan dikirim ke email
+	// pembuatan token dan verifikasi link sekaligus isi email yang akan dikirim ke email user
 	const token = crypto.randomBytes(32).toString("hex");
 	const verificationLink = process.env.VERIFICATION_LINK + token;
 
@@ -172,7 +132,7 @@ const kirim_link_verifikasi = async (req, res) => {
 	});
 
 	// generate token expires
-	const expiresAt = new Date(Date.now() + 180000); // 3 minutes from now will expire
+	const expiresAt = new Date(Date.now() + 600000); // 10 minutes from now will expire
 
 	// insert into unverified_emails with token
 	db.query(
@@ -183,6 +143,32 @@ const kirim_link_verifikasi = async (req, res) => {
 	return res.status(200).json({
 		response: true,
 		message: `Sukses mengirim link verifikasi ke email ${email}! silahkan cek, lalu tekan tombol 'Verifikasi Email Sekarang' untuk memverifikasinya!`,
+	});
+};
+
+const verifikasi_token_register = async (req, res) => {
+	const { __token_verification } = req.body;
+	const results = await db.query(
+		"SELECT * FROM unverified_email_register WHERE verification_token = $1",
+		[__token_verification]
+	);
+
+	if (results.rows.length === 0) {
+		return res.status(400).json({
+			response: false,
+			message:
+				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link verifikasi kembali!",
+		});
+	}
+
+	// updating verified email status
+    await db.query('UPDATE unverified_email_register SET is_verified = true WHERE verification_token = $1', [__token_verification]);
+
+	res.json({
+		response: true,
+		message:
+			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman pengisian form!",
+		results: results.rows[0],
 	});
 };
 

@@ -4,78 +4,11 @@ const db = require("../config/db");
 
 require("dotenv").config();
 
-const verifikasi_token_lupa_password = async (req, res) => {
-	const { __token_verification } = req.body;
-	const results = await db.query(
-		"SELECT * FROM unverified_email_lupa_password WHERE verification_token = $1",
-		[__token_verification]
-	);
-
-	if (results.rows.length === 0) {
-		return res.status(400).json({
-			response: false,
-			message:
-				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link reset password kembali!",
-		});
-	}
-
-	// deleting verified token when verification_link is entered
-	// db.query('DELETE FROM unverified_emails WHERE verification_token = $1', [__token_verification]);
-
-	res.json({
-		response: true,
-		message:
-			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman reset password!",
-		results: results.rows[0],
-	});
-};
-
 const kirim_link_lupa_password = async (req, res) => {
 	// mengambil data email dari user
 	const { email } = req.body;
 
-	// mengecek apakah email tersebut sudah pernah terdaftar dalam sistem atau belum
-	const resultInAkun = await db.query("SELECT * FROM akun WHERE email = $1", [
-		email,
-	]);
-	if (resultInAkun.rows.length == 0) {
-		return res
-			.status(400)
-			.json({
-				response: false,
-				message:
-					`Maaf, Email ${email} tidak ditemukan di sistem kami!`,
-			});
-	}
-
-	// mengecek apakah email tersebut udah pernah terdaftar tetapi sudah pernah dikirimin token
-	const resultInUnverifiedEmails = await db.query(
-		"SELECT * FROM unverified_email_lupa_password WHERE email = $1",
-		[email]
-	);
-	if (resultInUnverifiedEmails.rows.length > 0) {
-		// mengambil waktu expire token di database
-		const getExpiresAt = resultInUnverifiedEmails.rows[0].expires_at;
-
-		// mendapatkan waktu sekarang
-		const now = new Date();
-
-		// Menghitung selisih antara kedua waktu
-		const diffTime = Math.abs(now - getExpiresAt);
-
-		// konversi ke menit detik
-		const diffMinutes = Math.ceil(diffTime / (1000 * 60));
-		const diffSeconds = Math.ceil(diffTime / 1000);
-
-		return res
-			.status(400)
-			.json({
-				response: false,
-				message: `Maaf, kami telah mengirimkan link reset password ke email tersebut sebelumnya coy, silahkan coba kembali sekitar ${diffMinutes}-menitan atau lebih tepatnya ${diffSeconds}-detik lagi ya coy!`,
-			});
-	}
-
-	// pembuatan token dan verifikasi link yang akan dikirim ke email
+	// pembuatan token dan verifikasi link sekaligus isi email yang akan dikirim ke email user
 	const token = crypto.randomBytes(32).toString("hex");
 	const verificationLink = process.env.RESET_PASSWORD_LINK + token;
 
@@ -172,7 +105,7 @@ const kirim_link_lupa_password = async (req, res) => {
 	});
 
 	// generate token expires
-	const expiresAt = new Date(Date.now() + 180000); // 3 minutes from now will expire
+	const expiresAt = new Date(Date.now() + 600000); // 10 minutes from now will expire
 
 	// insert into unverified_emails with token
 	db.query(
@@ -186,26 +119,38 @@ const kirim_link_lupa_password = async (req, res) => {
 	});
 };
 
+const verifikasi_token_lupa_password = async (req, res) => {
+	const { __token_verification } = req.body;
+	const results = await db.query(
+		"SELECT * FROM unverified_email_lupa_password WHERE verification_token = $1",
+		[__token_verification]
+	);
+
+	if (results.rows.length === 0) {
+		return res.status(400).json({
+			response: false,
+			message:
+				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link reset password kembali!",
+		});
+	}
+
+	// updating verified email status
+    await db.query('UPDATE unverified_email_lupa_password SET is_verified = true WHERE verification_token = $1', [__token_verification]);
+
+	res.json({
+		response: true,
+		message:
+			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman reset password!",
+		results: results.rows[0],
+	});
+};
+
 // importing hash algorithm
 const argon2 = require("argon2");
 
 const reset_password = async (req, res) => {
 	// mengambil data email dari user
 	const { email, password } = req.body;
-
-    // mengecek apakah email tersebut sudah pernah terdaftar dalam sistem atau belum
-	const resultInAkun = await db.query("SELECT * FROM akun WHERE email = $1", [
-		email,
-	]);
-	if (resultInAkun.rows.length == 0) {
-		return res
-			.status(400)
-			.json({
-				response: false,
-				message:
-					`Maaf, Email ${email} tersebut tidak ditemukan di sistem kami!`,
-			});
-	}
 
     // hashing password with argon2 algorithm and catch error
     let hashPassword;
