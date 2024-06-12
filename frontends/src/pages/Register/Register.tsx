@@ -61,7 +61,7 @@ const Register = ({ email }: RegisterProps) => {
           }).then((data) => {
             if (data.response) {
               Swal.fire({
-                title: "Selamat anda registrasi berhasil!",
+                title: "Yeay! registrasi anda berhasil!",
                 html: data.message,
                 icon: "success",
                 showConfirmButton: false,
@@ -73,10 +73,9 @@ const Register = ({ email }: RegisterProps) => {
               Swal.fire({
                 title: "Registrasi ditolak!",
                 html: data.message,
-                text: "Maaf, lengkapi data Diri anda",
                 icon: "error",
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 4000,
               });
             }
           });
@@ -115,7 +114,7 @@ const Register = ({ email }: RegisterProps) => {
               minLength={11}
               value={noHp}
               oninput={(e) => {
-                const pattern = /^[a-zA-Z]+$/;
+                const pattern = /[a-zA-Z]+/;
                 if (!pattern.test(e.target.value) || e.target.value === "") {
                   setNoHp(e.target.value);
                 }

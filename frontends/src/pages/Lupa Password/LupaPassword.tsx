@@ -23,14 +23,25 @@ function LupaPassword() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setClickSend(!isClickSend);
           // method untuk mengirim link verifik email
           kirimLinkLupaPasswordService({ email }).then((data) => {
             if (data.response) {
               Swal.fire({
-                title: "Link Reset Password Berhasil dikirim!",
+                title: "Email berhasil dikirim!",
                 html: data.message,
                 icon: "info",
+                showConfirmButton: false,
+                timer: 4000,
+              })
+                .then(() => {
+                  setClickSend(!isClickSend)
+                })
+
+            } else {
+              Swal.fire({
+                title: "Email gagal dikirim!",
+                html: data.message,
+                icon: "error",
                 showConfirmButton: false,
                 timer: 4000,
               });
@@ -56,7 +67,7 @@ function LupaPassword() {
             <p className="p-1 text-sm">
               Belum menerima link? kirim ulang setelah:{" "}
               <Timer
-                timerMinutes={3}
+                timerMinutes={10}
                 onComplete={() => {
                   setClickSend(!isClickSend);
                 }}
@@ -65,12 +76,12 @@ function LupaPassword() {
           </div>
         )}
         <Button
-          className={`bg-[#8BD3DD] border border-black cursor-${isClickSend ? 'not-allowed' : 'pointer'} rounded-md font-bold w-full mt-3 text-xl hover:bg-[#85c9eb]`}
+          className={`bg-[#8BD3DD] border border-black cursor-${isClickSend ? 'not-allowed' : 'pointer'} rounded-md font-bold w-full mt-3 text-xl hover:bg-[#70aac7] disabled:bg-[#72afb7]`}
           text="Send Reset Link to Email"
           type="submit"
           disabled={isClickSend}
         />
-        <p className="mt-5 text-center font-semibold underline text-md cursor-pointer"
+        <p className="mt-5 text-center font-semibold underline text-md cursor-pointer hover:text-[#6c2682]"
         onClick={() => {
           navigate("/login");
         }}

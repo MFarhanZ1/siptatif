@@ -5,12 +5,15 @@ import Input from "../../components/Input";
 import Timer from "../../components/Timer";
 import Swal from "sweetalert2";
 import { kirimLinkVerifikasiEmailService } from "../../services/RegisterServices";
+import { useNavigate } from "react-router-dom";
 
 interface VerifyEmailProps {
   onButtonClicked: (params: { boolIsLoading: boolean }) => void;
 }
 
 const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
+
+  const navigate = useNavigate();
   const [isClickedVerif, setisClickedVerif] = useState(false);
 
   return (
@@ -70,7 +73,7 @@ const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
             <p className="p-1 text-sm">
               Belum menerima link? kirim ulang setelah:{" "}
               <Timer
-                timerMinutes={3}
+                timerMinutes={10}
                 onComplete={() => {
                   setisClickedVerif(!isClickedVerif);
                 }}
@@ -87,6 +90,13 @@ const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
           disabled={isClickedVerif}
           type="submit"
         />
+        <p className="mt-5 text-center font-semibold underline text-md cursor-pointer hover:text-[#6c2682]"
+        onClick={() => {
+          navigate("/login");
+        }}
+        >
+          Back To Login
+        </p>
       </form>
     </Card>
   );

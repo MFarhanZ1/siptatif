@@ -95,23 +95,25 @@ function LoginPage() {
                   />
                 </div>
                 <div className="flex justify-end">
-                  <p className="p-1 cursor-pointer font-bold underline" 
+                  <p className="p-1 cursor-pointer font-bold underline hover:text-[#6c2682]" 
                   onClick={() => {
                     Swal.fire({
-                      title: "⚡ Menuju Halaman Lupa Password...",
+                      title: "⚡ Otw Page Lupa Password...",
                       text: "Sebentar ya anda akan diarahkan kehalaman Lupa Password!",
                       icon: "info",
                       showConfirmButton: false,
                       timer: 3000,
                     })
-                    navigate("/reset-password");
+                      .then(() => {                        
+                        navigate("/reset-password");
+                      })
                   }}
                   >
                     Lupa Password?
                   </p>
                 </div>
                 <Button
-                  className="bg-[#8BD3DD] border border-black rounded-md font-bold w-full mt-5 text-xl hover:bg-[#85c9eb]"
+                  className="bg-[#8BD3DD] border border-black rounded-md font-bold w-full mt-5 text-xl hover:bg-[#73adca]"
                   text="LOGIN"
                   type="submit"
                 />
@@ -119,7 +121,7 @@ function LoginPage() {
               <p className="mt-5">
                 Belum punya akun?
                 <span
-                  className="font-bold underline cursor-pointer px-1"
+                  className="font-bold underline cursor-pointer px-1 hover:text-[#6c2682]"
                   onClick={() => {
                     Swal.fire({
                       title: "🚀 Menuju Halaman Registrasi...",
