@@ -3,7 +3,11 @@ const app = require("express");
 const router = app.Router(); // importing express router
 
 // importing middleware
-const validasi_email = require('../middlewares/validasi_email');
+const {
+    only_email_students_usr,
+    email_belum_terdaftar,
+    link_verifikasi_email_sudah_di_tekan_dan_sesi_belum_habis
+} = require("../middlewares/register_middleware");
 
 // importing services
 const { 
@@ -13,9 +17,22 @@ const {
 } = require('../services/register');
 
 // list available routes in register features
-router.post("/kirim-link-verifikasi", validasi_email, kirim_link_verifikasi);
-router.post("/verifikasi-token-register", verifikasi_token_register);
-router.post("/register", register_akun_mahasiswa);
+router.post(
+    "/kirim-link-verifikasi", 
+    only_email_students_usr, 
+    email_belum_terdaftar, 
+    kirim_link_verifikasi
+);
+router.post(
+    "/verifikasi-token-register", 
+    verifikasi_token_register
+);
+router.post(
+    "/register", 
+    email_belum_terdaftar, 
+    link_verifikasi_email_sudah_di_tekan_dan_sesi_belum_habis,
+    register_akun_mahasiswa
+);
 
 // export all defined router
 module.exports = router;
