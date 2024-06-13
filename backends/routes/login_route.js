@@ -8,7 +8,10 @@ const {
 } = require("../services/login");
 
 // list available routes in login features
-router.post("/login", verifikasi_login);
+router.post(
+    "/login", 
+    verifikasi_login
+);
 
 // export all defined router
 module.exports = router;
