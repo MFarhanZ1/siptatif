@@ -85,7 +85,6 @@ function LoginPage() {
                     type="password"
                     id="password"
                     label="Password:"
-                    minLength={8}
                     required={true}
                     onchange={(e) => {
                       setPassword(e.target.value);
