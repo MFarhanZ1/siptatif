@@ -72,7 +72,11 @@ const RegisterPage = () => {
 					
 					{/* different form depends on isEmailValid */}
 					{isEmailValid ? (
-						<Register email={email} />
+						<Register email={email} 
+							onRegister={({boolIsLoading}) => {
+								setIsLoading(boolIsLoading);
+							}}
+						/>
 					) : (
 						<VerifyEmail
 							onButtonClicked={({boolIsLoading}) => {

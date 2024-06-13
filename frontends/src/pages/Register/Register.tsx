@@ -9,13 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 interface RegisterProps {
   email: string;
+  onRegister: ({boolIsLoading}: {boolIsLoading: boolean}) => void;
 }
 interface FormDataProps {
   nama: string;
   tgl_lahir: string;
   no_hp: string;
 }
-const Register = ({ email }: RegisterProps) => {
+const Register = ({ email, onRegister }: RegisterProps) => {
   const root = useNavigate();
   const [invalidMatchPassword, setinvalidMatchPassword] = useState(false);
 
@@ -54,11 +55,15 @@ const Register = ({ email }: RegisterProps) => {
             });
           }
 
+          onRegister({ boolIsLoading: true });
+
           registerService({
             email: email,
             password: password,
             ...formData,
           }).then((data) => {
+
+            onRegister({ boolIsLoading: false });
             if (data.response) {
               Swal.fire({
                 title: "Yeay! registrasi anda berhasil!",
