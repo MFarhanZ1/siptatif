@@ -66,11 +66,9 @@ function LoginPage() {
                       })
                     }
                   });
-                  // console.log(email);
-                  // console.log(password);
                 }}
               >
-                <div className="flex flex-col gap-5 mb-5">
+                <div className="flex flex-col gap-5 mb-1">
                   <Input
                     placeholder="contoh@students.uin-suska.ac.id"
                     type="email"
@@ -113,7 +111,7 @@ function LoginPage() {
                   </p>
                 </div>
                 <Button
-                  className="bg-[#8BD3DD] border border-black rounded-md font-bold w-full mt-5 text-xl hover:bg-[#73adca]"
+                  className="bg-[#8BD3DD] border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#73adca]"
                   text="LOGIN"
                   type="submit"
                 />
