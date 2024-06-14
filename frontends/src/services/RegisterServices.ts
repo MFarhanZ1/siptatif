@@ -54,7 +54,6 @@ const registerService = async (params: {email: string, password: string, nama: s
 			no_hp: no_hp,
 		}),
 	});
-	console.log(email, password, nim, nama, tgl_lahir, no_hp);
 	const data = await response.json();
 	return data;
 };

@@ -45,7 +45,6 @@ const resetPasswordService = async (params: {email: string, password: string}) =
       password: password,
     }),
   });
-  console.log(email, password);
   const data = await response.json();
   return data;
 }
