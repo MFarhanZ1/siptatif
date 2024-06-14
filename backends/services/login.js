@@ -8,7 +8,7 @@ const verifikasi_login = async (req, res) => {
 	// fetch email and password from request body
 	const { email, password } = req.body;
 	const results = await db.query(
-		`SELECT akun.email "email", akun.password "password", role.nama "role", mahasiswa.nim "nim", mahasiswa.nama "nama" FROM akun, role, mahasiswa WHERE akun.email = $1 AND role.id = akun.id_role AND akun.email = mahasiswa.email`,
+		`SELECT * FROM view_detail_akun WHERE email = $1`,
 		[email]
 	);
 	if (results.rows.length === 0) {

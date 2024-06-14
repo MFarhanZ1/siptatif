@@ -17,7 +17,7 @@ const refresh_access_token = (req, res) => {
         });
 
         const results = await db.query(
-            `SELECT akun.email "email", akun.password "password", role.nama "role", mahasiswa.nim "nim", mahasiswa.nama "nama" FROM akun, role, mahasiswa WHERE akun.email = $1 AND role.id = akun.id_role AND akun.email = mahasiswa.email`,
+            `SELECT * FROM view_detail_akun WHERE email = $1`,
             [user.email]
         );
 
