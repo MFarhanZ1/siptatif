@@ -42,10 +42,12 @@ DROP TABLE IF EXISTS dosen CASCADE;
 CREATE TABLE dosen (
 	nidn			VARCHAR(20) NOT NULL,
 	nama 			VARCHAR(255) NOT NULL,
-	jenis_kelamin	TYPE_JENIS_KELAMIN NOT NULL,
+	no_hp 			VARCHAR(15),
+	jenis_kelamin	TYPE_JENIS_KELAMIN,
 	email 			VARCHAR(255) NOT NULL,
 	CONSTRAINT PK_Dosen PRIMARY KEY(nidn),
-	CONSTRAINT FK_Dosen_Akun FOREIGN KEY(email) REFERENCES akun (email)
+	CONSTRAINT UQ_Dosen_NO_HP UNIQUE (no_hp),
+	CONSTRAINT UQ_Dosen_EMAIL UNIQUE (email)
 );
 
 -- pembuatan TABLE dosen_pembimbing
