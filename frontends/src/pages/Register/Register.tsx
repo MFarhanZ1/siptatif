@@ -126,7 +126,7 @@ const Register = ({ email, onRegister }: RegisterProps) => {
               }}
             />
             <Button
-              className={`bg-[#8BD3DD] cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#85c9eb] disabled:bg-[#7dabb8]`}
+              className={`bg-[#8BD3DD] cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#72abc8] disabled:bg-[#7dabb8]`}
               text="Berikutnya"
               type="button"
               onClick={() => {
@@ -213,7 +213,7 @@ const Register = ({ email, onRegister }: RegisterProps) => {
             )}
             <div className="flex justify-end gap-2">
               <Button
-                className={`bg-[#fff765] w-44 cursor-pointer border border-black rounded-md font-bold mt-4 text-xl hover:bg-[#cdc751]`}
+                className={`bg-[#ffe565] w-44 cursor-pointer border border-black rounded-md font-bold mt-4 text-xl hover:bg-[#cdc751]`}
                 text="Kembali"
                 type="button"
                 onClick={() => setnextForm(true)}
