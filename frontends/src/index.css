@@ -10,3 +10,7 @@
   font-family: 'poppins-semibold';
   src: url('../assets/fonts/Poppins-SemiBold.ttf');
 }
+@font-face{
+  font-family: 'ibm-plex-mono-medium';
+  src: url('../assets/fonts/IBMPlexMono-Medium.ttf');
+}

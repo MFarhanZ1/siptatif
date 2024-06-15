@@ -12,9 +12,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif'],
-        'poppins-semibold': ['Poppins-semibold', 'sans-serif']
-        
+        'poppins': ['poppins', 'sans-serif'],
+        'poppins-semibold': ['poppins-semibold', 'sans-serif'],
+        'ibm-plex-mono-medium': ['ibm-plex-mono-medium', 'sans-serif']        
       },
         spacing: {
           '786px': '786px',
