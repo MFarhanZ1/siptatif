@@ -20,7 +20,10 @@ const app = express();
 const port = process.env.PORT;
 
 // allowing cors and body parser json request
-app.use(cors());
+app.use(cors({
+	origin : "http://localhost:5173", // biar ga kenak cors preflight
+	credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 
