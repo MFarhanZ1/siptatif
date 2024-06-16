@@ -1,5 +1,5 @@
 interface MarqueeProps {
-    list_announcement: String
+    list_announcement: string
 }
 
 const Marquee = ({list_announcement}: MarqueeProps) => {
