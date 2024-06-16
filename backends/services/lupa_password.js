@@ -8,16 +8,17 @@ const kirim_link_lupa_password = async (req, res) => {
 	// mengambil data email dari user
 	const { email } = req.body;
 
-	// pembuatan token dan verifikasi link sekaligus isi email yang akan dikirim ke email user
-	const token = crypto.randomBytes(32).toString("hex");
-	const verificationLink = process.env.RESET_PASSWORD_LINK + token;
+	try {
+		// pembuatan token dan verifikasi link sekaligus isi email yang akan dikirim ke email user
+		const token = crypto.randomBytes(32).toString("hex");
+		const verificationLink = process.env.RESET_PASSWORD_LINK + token;
 
-	const mailOptions = {
-		from: process.env.EMAIL_USER,
-		to: email,
-		subject:
-			"[SIPTATIF RESET PASSWORD] - Verifikasi Email untuk Reset Password Akun SIPTATIF",
-		html: `
+		const mailOptions = {
+			from: process.env.EMAIL_USER,
+			to: email,
+			subject:
+				"[SIPTATIF RESET PASSWORD] - Verifikasi Email untuk Reset Password Akun SIPTATIF",
+			html: `
         <html>
             <head>
                 <style>
@@ -93,56 +94,73 @@ const kirim_link_lupa_password = async (req, res) => {
             </body>
         </html>
         `,
-	};
+		};
 
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			return res.status(500).json({
-				response: false,
-				message: "Maaf, sepertinya email anda tidak tepat!",
-			});
-		}
-	});
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				return res.status(500).json({
+					response: false,
+					message: "Maaf, sepertinya email anda tidak tepat!",
+				});
+			}
+		});
 
-	// generate token expires
-	const expiresAt = new Date(Date.now() + 600000); // 10 minutes from now will expire
+		// generate token expires
+		const expiresAt = new Date(Date.now() + 600000); // 10 minutes from now will expire
 
-	// insert into unverified_emails with token
-	db.query(
-		"INSERT INTO unverified_email_lupa_password (email, verification_token, expires_at) VALUES ($1, $2, $3)",
-		[email, token, expiresAt]
-	);
+		// insert into unverified_emails with token
+		await db.query(
+			"INSERT INTO unverified_email_lupa_password (email, verification_token, expires_at) VALUES ($1, $2, $3)",
+			[email, token, expiresAt]
+		);
 
-	return res.status(200).json({
-		response: true,
-		message: `Sukses mengirim link reset password ke email ${email}! silahkan cek, lalu tekan tombol 'Reset Password Sekarang' untuk memverifikasinya!`,
-	});
+		return res.status(200).json({
+			response: true,
+			message: `Sukses mengirim link reset password ke email ${email}! silahkan cek, lalu tekan tombol 'Reset Password Sekarang' untuk memverifikasinya!`,
+		});
+	} catch (error) {
+		return res.status(500).json({
+			response: false,
+			message: "Waduh, sepertinya ada kendala di server kami!",
+		});
+	}
 };
 
 const verifikasi_token_lupa_password = async (req, res) => {
 	const { __token_verification } = req.body;
-	const results = await db.query(
-		"SELECT * FROM unverified_email_lupa_password WHERE verification_token = $1",
-		[__token_verification]
-	);
 
-	if (results.rows.length === 0) {
-		return res.status(400).json({
-			response: false,
+	try {
+		const results = await db.query(
+			"SELECT * FROM unverified_email_lupa_password WHERE verification_token = $1",
+			[__token_verification]
+		);
+
+		if (results.rows.length === 0) {
+			return res.status(400).json({
+				response: false,
+				message:
+					"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link reset password kembali!",
+			});
+		}
+
+		// updating verified email status
+		await db.query(
+			"UPDATE unverified_email_lupa_password SET is_verified = true WHERE verification_token = $1",
+			[__token_verification]
+		);
+
+		res.json({
+			response: true,
 			message:
-				"Maaf, token anda tidak valid, sepertinya token anda telah expired, silahkan tekan tombol kirim link reset password kembali!",
+				"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman reset password!",
+			results: results.rows[0],
+		});
+	} catch (error) {
+		return res.status(500).json({
+			response: false,
+			message: "Waduh, sepertinya ada kendala di server kami!",
 		});
 	}
-
-	// updating verified email status
-    await db.query('UPDATE unverified_email_lupa_password SET is_verified = true WHERE verification_token = $1', [__token_verification]);
-
-	res.json({
-		response: true,
-		message:
-			"Selamat, token anda telah berhasil di verifikasi, kini anda diarahkan ke halaman reset password!",
-		results: results.rows[0],
-	});
 };
 
 // importing hash algorithm
@@ -152,40 +170,37 @@ const reset_password = async (req, res) => {
 	// mengambil data email dari user
 	const { email, password } = req.body;
 
-    // hashing password with argon2 algorithm and catch error
-    let hashPassword;
+	// hashing password with argon2 algorithm and catch error
+	let hashPassword;
 	try {
-        hashPassword = await argon2.hash(password);
+		hashPassword = await argon2.hash(password);
 	} catch (err) {
-        return res.status(500).json({
-            response: false,
-            message: err.message,
-        });	
-    }
+		return res.status(500).json({
+			response: false,
+			message: err.message,
+		});
+	}
 
-    // call procedure reset_password to reset user account password
-    try{
-        // query execution
-        await db.query(
-            "CALL reset_password( $1, $2 )",
-            [email, hashPassword]
-        );
+	// call procedure reset_password to reset user account password
+	try {
+		// query execution
+		await db.query("CALL reset_password( $1, $2 )", [email, hashPassword]);
 
-        // return success response
-        return res.status(200).json({
-            response: true,
-            message: `Yeay, reset password untuk email ${email} sukses cuy!, sebentar ya, kami akan mengarahkan kamu kehalaman login.`,
-        });
-    } catch (err) {
-        return res.status(500).json({
-            response: false,
-            message: `Yah, reset password akun anda gagal! ${err.message}`,
-        });
-    }
+		// return success response
+		return res.status(200).json({
+			response: true,
+			message: `Yeay, reset password untuk email ${email} sukses cuy!, sebentar ya, kami akan mengarahkan kamu kehalaman login.`,
+		});
+	} catch (err) {
+		return res.status(500).json({
+			response: false,
+			message: `Yah, reset password akun anda gagal! ${err.message}`,
+		});
+	}
 };
 
 module.exports = {
-    kirim_link_lupa_password,
-    verifikasi_token_lupa_password,
-    reset_password
+	kirim_link_lupa_password,
+	verifikasi_token_lupa_password,
+	reset_password,
 };
