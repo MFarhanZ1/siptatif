@@ -9,15 +9,19 @@ import Swal from "sweetalert2";
 import { validateloginService } from "../../services/LoginService";
 import Marquee from "../../components/Marquee";
 import Footer from "../../components/Footer";
+import { LoadingFullScreen } from "../../components/Loading";
 
 function LoginPage() {
 	const navigate = useNavigate();
+
+	const [isLoading, setIsLoading] = useState(false);
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState<string>("");
 
 	return (
 		<>
+			{isLoading && <LoadingFullScreen />}
 			<div className="flex flex-col bg-[#F2F7F5] h-screen font-poppins">
 				{/* marquee pengumuman information */}
 				<Marquee
@@ -44,8 +48,12 @@ function LoginPage() {
 							<form
 								onSubmit={(e) => {
 									e.preventDefault();
+									setIsLoading(true);
 									validateloginService({ email, password }).then((data) => {
+										setIsLoading(false);
 										if (data.response) {
+											// store access token in local storage
+											localStorage.setItem("access-token", data.access_token);
 											Swal.fire({
 												title: "Berhasil Login!",
 												html: data.message,
