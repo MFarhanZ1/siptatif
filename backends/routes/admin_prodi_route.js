@@ -2,14 +2,30 @@
 const app = require("express");
 const router = app.Router(); // importing express router
 
-// importing services
+// ===============================================
+
+// importing controller crud kelola dosen
 const { 
-    getAllDosen,
-    getDosenByNIDN,
+    getDosen,
     createDosen,
     updateDosen,
     deleteDosen
 } = require("../controllers/dosen_controller");
+
+// importting controller crud kelola keahlian
+const { 
+    getKeahlian,
+    getKeahlianDosen,
+    createKeahlianDosen,
+    deleteKeahlianDosen
+} = require("../controllers/keahlian_controller");
+
+// importing register service for manage jabatan
+const {
+    register_akun_koordinator_ta
+} = require("../services/register")
+
+// ===============================================
 
 // importing middleware
 const {
@@ -19,18 +35,22 @@ const {
     admin_prodi_only
 } = require("../middlewares/authorization_middleware");
 
-// list available routes in admin_prodi features
+// ===============================================
+
+// list available routes in admin_prodi features for creating koordinator ta akun by dosen data
+router.post(
+    "/register-koordinator-ta",
+    verifikasi_access_token,
+    admin_prodi_only,
+    register_akun_koordinator_ta
+)
+
+// list available routes in admin_prodi features to dosen
 router.get(
     "/dosen", 
     verifikasi_access_token,
     admin_prodi_only, 
-    getAllDosen
-)
-router.get(
-    "/dosen/:nidn", 
-    verifikasi_access_token, 
-    admin_prodi_only,
-    getDosenByNIDN
+    getDosen
 )
 router.post(
     "/dosen", 
@@ -50,6 +70,34 @@ router.delete(
     admin_prodi_only,
     deleteDosen
 )
+
+// list available routes in admin_prodi features to keahlian
+router.get(
+    "/keahlian", 
+    verifikasi_access_token,
+    admin_prodi_only, 
+    getKeahlian
+)
+router.get(
+    "/keahlian-dosen", 
+    verifikasi_access_token, 
+    admin_prodi_only,
+    getKeahlianDosen
+)
+router.post(
+    "/keahlian-dosen", 
+    verifikasi_access_token, 
+    admin_prodi_only,
+    createKeahlianDosen
+)
+router.delete(
+    "/keahlian-dosen", 
+    verifikasi_access_token, 
+    admin_prodi_only,
+    deleteKeahlianDosen
+)
+
+// ===============================================
 
 // export all defined router
 module.exports = router;

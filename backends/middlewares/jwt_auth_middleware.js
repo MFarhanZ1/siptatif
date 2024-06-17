@@ -14,8 +14,10 @@ const verifikasi_access_token = (req, res, next) => {
             response: false,
             message: err.name === 'TokenExpiredError' ? 'Sesi anda sudah habis, silahkan generate akses token baru dengan refresh token anda kembali!' : 'Hayo deck, mau ngapain kmuh aowkaowk! heker yh banh? 😜😜'
         });
-        next();
+        req.user = user;
+        return next();
     });
+    
 };
 
 module.exports = {

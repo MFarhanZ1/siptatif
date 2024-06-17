@@ -81,10 +81,9 @@ CREATE TABLE keahlian (
 --pembuatan TABLE keahlian_dosen
 DROP TABLE IF EXISTS keahlian_dosen CASCADE;
 CREATE TABLE keahlian_dosen (
-	id		 		SERIAL,
 	nidn		 	VARCHAR(20) NOT NULL,
 	id_keahlian		INT NOT NULL,
-	CONSTRAINT PK_Keahlian_Dosen PRIMARY KEY (id),
+	CONSTRAINT PK_Keahlian_Dosen PRIMARY KEY (nidn, id_keahlian),
 	CONSTRAINT FK_KDOS_Dosen FOREIGN KEY(nidn) REFERENCES dosen (nidn),
 	CONSTRAINT FK_KDOS_Keahlian FOREIGN KEY (id_keahlian) REFERENCES keahlian (id)
 );

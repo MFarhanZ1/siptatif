@@ -37,7 +37,7 @@ const registerService = async (params: {email: string, password: string, nama: s
 	const nim = email.split("@")[0];
 	const nama = params.nama;
 	const tgl_lahir = params.tgl_lahir;
-	const no_hp = params.no_hp;
+	const no_hp = params.no_hp || null;
 	const password = params.password;
 	
 	const response = await fetch(`${process.env.BASE_URL}/register`, {
