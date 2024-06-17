@@ -23,7 +23,7 @@ INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('198111252007102000', 'Novi Yanti, 
 INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('197711282007101000', 'Novriyanto, ST, M.Sc', 'novriyanto@uin-suska.ac.id');
 INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('197710282003122000', 'Prof. Dr. Okfalisa, ST, M.Sc', 'okfalisa@uin-suska.ac.id');
 INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('130517107', 'Pizaini, ST, M.Kom', 'pizaini@uin-suska.ac.id');
-INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('130517106', 'Rahmad Abdillah, ST, MT', 'rahmad_abdillah@uin-suska.ac.id');
+INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('130517106', 'Dr. Rahmad Abdillah, ST, MT', 'rahmad_abdillah@uin-suska.ac.id');
 INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('198605052015031000', 'Reski Mai Candra, ST, M.Sc', 'reski_mai_candra@uin-suska.ac.id');
 INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('198610092022032000', 'Siska Kurnia Gusti, ST, M.Sc', 'siska_kurnia_gusti@uin-suska.ac.id');
 INSERT INTO DOSEN(NIDN, NAMA, EMAIL) VALUES ('130517045', 'Siti Ramadhani, S.Pd, M.Kom', 'siti_ramadhani@uin-suska.ac.id');
