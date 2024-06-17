@@ -305,8 +305,15 @@ const register_akun_koordinator_ta = async (req, res) => {
             message: err.message,
         });
     }
-    // call procedure register_akun_mahasiswa to regist user account
+    // regist koordinator ta account if dosen is registered and this endpoint triggered
     try {
+        const checkDosenIsRegistered = await db.query("SELECT * FROM dosen WHERE email = $1", [email]);
+        if (!checkDosenIsRegistered.rows[0]) {
+            return res.status(400).json({
+                response: false,
+                message: `Registrasi Koordinator TA gagal! dosen belum terdaftar sebelumnya.`,
+            });
+        }
         // query execution
         await db.query("INSERT INTO AKUN(email, password, id_role) VALUES( $1, $2, $3 )", [
             email,
