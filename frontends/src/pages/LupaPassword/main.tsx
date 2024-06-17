@@ -7,11 +7,16 @@ import { verifyLupaPasswordTokenFromEmailService } from "../../services/LupaPass
 import Swal from "sweetalert2";
 import Marquee from "../../components/Marquee";
 import Footer from "../../components/Footer";
+import { LoadingFullScreen } from "../../components/Loading";
 function LupaPasswordPage() {
+
+	const [isLoading, setIsLoading] = useState(false);
 	const [reset, setReset] = useState(false);
-	const [searchParams] = useSearchParams("");
 	const [email, setEmail] = useState("");
+	
+	const [searchParams] = useSearchParams("");
 	const tokenVerification = searchParams.get("__token_verification");
+	
 	useEffect(() => {
 		if (tokenVerification) {
 			// method untuk memvalidasi token yang dikirim dan yang di terima dari email
@@ -42,31 +47,34 @@ function LupaPasswordPage() {
 		}
 	}, [tokenVerification]);
 	return (
-		<div className="flex flex-col bg-[#F2F7F5] h-screen font-poppins">
-			{/* marquee pengumuman information */}
-			<Marquee
-				list_announcement={
-					"Perhatian! Perubahan jadwal seminar proposal menjadi 2 Juni 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id"
-				}
-			/>
-			{/* main content */}
-			<div
-				id="main-content"
-				className="flex items-center justify-center flex-1 gap-14"
-			>
-				{/* Logo siptatif usr */}
-				<div>
-					<img src={topimage} className="w-[530px]" alt="Top Image" />
-				</div>
-				{/* form login */}
-				<div className="w-4/12">
-					{reset ? <ResetPassword email={email} /> : <LupaPassword />}
+		<>
+			{isLoading && <LoadingFullScreen />}
+			<div className="flex flex-col bg-[#F2F7F5] h-screen font-poppins">
+				{/* marquee pengumuman information */}
+				<Marquee
+					list_announcement={
+						"Perhatian! Perubahan jadwal seminar proposal menjadi 2 Juni 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id"
+					}
+				/>
+				{/* main content */}
+				<div
+					id="main-content"
+					className="flex items-center justify-center flex-1 gap-14"
+				>
+					{/* Logo siptatif usr */}
+					<div>
+						<img src={topimage} className="w-[530px]" alt="Top Image" />
+					</div>
+					{/* form login */}
+					<div className="w-4/12">
+						{reset ? <ResetPassword email={email} onButtonClicked={({isBoolLoading}) => setIsLoading(isBoolLoading)}/> : <LupaPassword onButtonClicked={({isBoolLoading}) => setIsLoading(isBoolLoading)}/>}
+					</div>{" "}
+					{/* end of form login */}
 				</div>{" "}
-				{/* end of form login */}
-			</div>{" "}
-      <Footer />
-			{/* end of main content */}
-		</div>
+				<Footer />
+				{/* end of main content */}
+			</div>
+		</>
 	);
 }
 

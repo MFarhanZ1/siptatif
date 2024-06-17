@@ -8,9 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 interface ResetPasswordProps {
   email: string;
+  onButtonClicked: ({isBoolLoading}: {isBoolLoading: boolean}) => void;
 }
 
-function ResetPassword({email}: ResetPasswordProps) {
+function ResetPassword({email, onButtonClicked}: ResetPasswordProps) {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -35,10 +36,14 @@ function ResetPassword({email}: ResetPasswordProps) {
             });
           }
           // method reset password yang telah baru di input kan
+          onButtonClicked({ isBoolLoading: true });
+
           resetPasswordService({
             email: email,
             password: password,
           }).then((data) => {
+            
+            onButtonClicked({ isBoolLoading: false });
             if (data.response) {
               Swal.fire({
                 title: "Berhasil Reset Password!",

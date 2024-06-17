@@ -7,13 +7,16 @@ import { useNavigate } from "react-router-dom";
 import { kirimLinkLupaPasswordService } from "../../services/LupaPassword";
 import Swal from "sweetalert2";
 
-// interface LupaPasswordProps {
-//   onButtonClicked?: () => void;
-// }
-function LupaPassword() {
+interface LupaPasswordProps {
+  onButtonClicked: ({isBoolLoading}: {isBoolLoading: boolean}) => void;
+}
+
+const LupaPassword = ({onButtonClicked}: LupaPasswordProps) => {
+
   const navigate = useNavigate();
   const [isClickSend, setClickSend] = useState(false);
   const [email, setEmail] = useState<string>("");
+  
   return (
     <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
       <h1 className="text-[35px] text-center ml-1 underline mb-6 font-poppins-semibold">
@@ -22,9 +25,15 @@ function LupaPassword() {
       {/* form input */}
       <form
         onSubmit={(e) => {
+          
           e.preventDefault();
           // method untuk mengirim link verifik email
+          onButtonClicked({ isBoolLoading: true })
+
           kirimLinkLupaPasswordService({ email }).then((data) => {
+          
+            onButtonClicked({ isBoolLoading: false })
+
             if (data.response) {
               Swal.fire({
                 title: "Email berhasil dikirim!",
