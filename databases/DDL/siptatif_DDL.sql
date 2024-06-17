@@ -84,7 +84,7 @@ CREATE TABLE keahlian_dosen (
 	nidn		 	VARCHAR(20) NOT NULL,
 	id_keahlian		INT NOT NULL,
 	CONSTRAINT PK_Keahlian_Dosen PRIMARY KEY (nidn, id_keahlian),
-	CONSTRAINT FK_KDOS_Dosen FOREIGN KEY(nidn) REFERENCES dosen (nidn),
+	CONSTRAINT FK_KDOS_Dosen FOREIGN KEY(nidn) REFERENCES dosen (nidn) ON DELETE CASCADE,
 	CONSTRAINT FK_KDOS_Keahlian FOREIGN KEY (id_keahlian) REFERENCES keahlian (id)
 );
 
