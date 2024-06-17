@@ -64,7 +64,7 @@ function LupaPassword() {
         </div>
         {isClickSend && (
           <div className="flex justify-start">
-            <p className="p-1 text-sm">
+            <p className="py-1 text-sm">
               Belum menerima link? kirim ulang setelah:{" "}
               <Timer
                 timerMinutes={10}

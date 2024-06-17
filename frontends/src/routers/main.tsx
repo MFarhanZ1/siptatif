@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "../pages/Login/main.tsx";
 import RegisterPage from "../pages/Register/main.tsx";
 import DashboardPage from "../pages/Dashboard/main.tsx";
-import LupaPasswordPage from "../pages/Lupa Password/main.tsx";
+import LupaPasswordPage from "../pages/LupaPassword/main.tsx";
 
 const router = createBrowserRouter([
     {
