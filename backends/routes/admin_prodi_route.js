@@ -20,10 +20,13 @@ const {
     deleteKeahlianDosen
 } = require("../controllers/keahlian_controller");
 
-// importing register service for manage jabatan
+// importing service for kelola jabatan dosen
 const {
     register_akun_koordinator_ta
 } = require("../services/register")
+const { 
+    hapus_akun_koordinator_ta 
+} = require("../services/hapus_akun");
 
 // ===============================================
 
@@ -37,12 +40,18 @@ const {
 
 // ===============================================
 
-// list available routes in admin_prodi features for creating koordinator ta akun by dosen data
+// list available routes in admin_prodi features for managing koordinator ta akun based on dosen data
 router.post(
     "/register-koordinator-ta",
     verifikasi_access_token,
     admin_prodi_only,
     register_akun_koordinator_ta
+)
+router.delete(
+    "/register-koordinator-ta/:email",
+    verifikasi_access_token,
+    admin_prodi_only,
+    hapus_akun_koordinator_ta
 )
 
 // list available routes in admin_prodi features to dosen
