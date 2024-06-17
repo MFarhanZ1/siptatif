@@ -2,11 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 
 import LoginPage from "../pages/Login/main.tsx";
 import RegisterPage from "../pages/Register/main.tsx";
-import LupaPasswordPage from "../pages/Lupa Password/main.tsx";
+import LupaPasswordPage from "../pages/LupaPassword/main.tsx";
 import Dashboard from "../pages/Dashboard/Dashboard.tsx";
 import SideBarAdminProdi from "../pages/Dashboard/AdminProdi/SideBarAdminProdi.tsx";
-import SideMahasiswa from "../pages/Dashboard/Mahasiswa/main.tsx";
-
+import SideBarMahasiswa from "../pages/Dashboard/Mahasiswa/main.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +34,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/mahasiswa",
-    element: <SideMahasiswa />,
+    element: <SideBarMahasiswa />,
   },
 ]);
 
