@@ -64,20 +64,18 @@ CREATE TABLE dosen (
 -- pembuatan TABLE dosen_pembimbing
 DROP TABLE IF EXISTS dosen_pembimbing CASCADE;
 CREATE TABLE dosen_pembimbing (
-	id		 SERIAL NOT NULL,
-	kuota	 INT DEFAULT NULL,
+	kuota	 INT DEFAULT 0 NOT NULL,
 	nidn	 VARCHAR(20) NOT NULL,
-	CONSTRAINT PK_Dosen_Pembimbing PRIMARY KEY(id),
+	CONSTRAINT PK_Dosen_Pembimbing PRIMARY KEY(nidn),
 	CONSTRAINT FK_DOSPEM_Dosen FOREIGN KEY (nidn) REFERENCES dosen (nidn)
 );
 
 --pembuatan TABLE dosen_penguji
 DROP TABLE IF EXISTS dosen_penguji CASCADE;
 CREATE TABLE dosen_penguji (
-	id		 SERIAL NOT NULL,
-	kuota	 INT DEFAULT NULL,
+	kuota	 INT DEFAULT 0 NOT NULL,
 	nidn	 VARCHAR(20) NOT NULL,
-	CONSTRAINT PK_Dosen_Penguji PRIMARY KEY(id),
+	CONSTRAINT PK_Dosen_Penguji PRIMARY KEY(nidn),
 	CONSTRAINT FK_DOSUJI_Dosen FOREIGN KEY (nidn) REFERENCES dosen (nidn)
 );
 
