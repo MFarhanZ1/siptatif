@@ -9,6 +9,7 @@ const register_route = require("./routes/register_route");
 const lupa_password_route = require("./routes/lupa_password_route");
 const jwt_auth_route = require("./routes/jwt_auth_route");
 const logout_route = require("./routes/logout_route");
+const pengumuman_route = require("./routes/pengumuman_route");
 
 // importing all services based on actor role actions
 const admin_prodi_route = require("./routes/admin_prodi_route");
@@ -48,6 +49,7 @@ app.use(register_route);
 app.use(lupa_password_route);
 app.use(jwt_auth_route);
 app.use(logout_route);
+app.use(pengumuman_route);
 
 // importing all available routes based on each actor role actions
 app.use(admin_prodi_route);
