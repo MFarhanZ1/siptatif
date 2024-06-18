@@ -13,6 +13,7 @@ const pengumuman_route = require("./routes/pengumuman_route");
 
 // importing all services based on actor role actions
 const admin_prodi_route = require("./routes/admin_prodi_route");
+const koordinator_ta_route = require("./routes/koordinator_ta_route");
 
 require('./utils/cleanup_expires_token');
 require('dotenv').config();
@@ -53,6 +54,7 @@ app.use(pengumuman_route);
 
 // importing all available routes based on each actor role actions
 app.use(admin_prodi_route);
+app.use(koordinator_ta_route);
 
 // starting express api server to internal public ip and localhost
 app.listen(port, '0.0.0.0', () => {
