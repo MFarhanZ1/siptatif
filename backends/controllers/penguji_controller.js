@@ -3,6 +3,12 @@ const db = require("../config/db");
 const getPenguji = async (req, res) => {
     try {
         const results = await db.query("select vd.nidn, vd.nama, vd.keahlian, dp.kuota from view_detail_dosen vd, dosen_penguji dp where dp.nidn = vd.nidn");
+        if (results.rows.length === 0) {
+            return res.status(400).json({
+                response: false,
+                message: "Maaf, data penguji tidak ditemukan!",
+            });
+        }
         return res.status(200).json({
             response: true,
             message: "Berhasil memuat data penguji!",
