@@ -6,7 +6,7 @@ const getPenguji = async (req, res) => {
         return res.status(200).json({
             response: true,
             message: "Berhasil memuat data penguji!",
-            data: results.rows,
+            results: results.rows,
         });
     } catch (error) {
         return res.status(500).json({
