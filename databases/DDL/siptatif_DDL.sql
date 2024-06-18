@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS pengumuman CASCADE;
 CREATE TABLE pengumuman (
 	id				SERIAL 	NOT NULL,
 	isi				TEXT NOT NULL,
+	berlaku_mulai 	DATE DEFAULT NOW() NOT NULL,
 	berlaku_hingga 	DATE,
 	created_by 		VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
