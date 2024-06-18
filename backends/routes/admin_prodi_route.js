@@ -4,6 +4,10 @@ const router = app.Router(); // importing express router
 
 // ===============================================
 
+/**
+ * DOSEN SUB MENU CONTROLLER
+ */
+
 // importing controller crud kelola dosen
 const { 
     getDosen,
@@ -40,19 +44,9 @@ const {
 
 // ===============================================
 
-// list available routes in admin_prodi features for managing koordinator ta akun based on dosen data
-router.post(
-    "/register-koordinator-ta",
-    verifikasi_access_token,
-    admin_prodi_only,
-    register_akun_koordinator_ta
-)
-router.delete(
-    "/register-koordinator-ta/:email",
-    verifikasi_access_token,
-    admin_prodi_only,
-    hapus_akun_koordinator_ta
-)
+/**
+ * DOSEN SUB MENU ROUTE
+ */
 
 // list available routes in admin_prodi features to dosen
 router.get(
@@ -104,6 +98,20 @@ router.delete(
     verifikasi_access_token, 
     admin_prodi_only,
     deleteKeahlianDosen
+)
+
+// list available routes in admin_prodi features for managing koordinator ta akun based on dosen data
+router.post(
+    "/register-koordinator-ta",
+    verifikasi_access_token,
+    admin_prodi_only,
+    register_akun_koordinator_ta
+)
+router.delete(
+    "/register-koordinator-ta/:email",
+    verifikasi_access_token,
+    admin_prodi_only,
+    hapus_akun_koordinator_ta
 )
 
 // ===============================================
