@@ -10,7 +10,14 @@ FROM
     keahlian
 WHERE
     kd.id_keahlian = keahlian.id AND
-    kd.nidn = dosen.nidn;
+    kd.nidn = dosen.nidn
+ORDER BY
+    CASE
+        WHEN dosen.nama LIKE 'Prof. Dr.%' THEN 1
+        WHEN dosen.nama LIKE 'Dr.%' THEN 2
+        ELSE 3
+    END,
+    dosen.nama;
 
 
 -- data detail dosen view untuk format "Cyber Security, Machine Learning (ML), Mobile" (nanti digunakan untuk detail penguji dan pembimbing)
@@ -31,4 +38,11 @@ WHERE
     kd.nidn = dosen.nidn
 GROUP BY 
     dosen.nidn, 
+    dosen.nama
+ORDER BY
+    CASE
+        WHEN dosen.nama LIKE 'Prof. Dr.%' THEN 1
+        WHEN dosen.nama LIKE 'Dr.%' THEN 2
+        ELSE 3
+    END,
     dosen.nama;
