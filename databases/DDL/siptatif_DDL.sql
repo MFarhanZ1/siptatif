@@ -1,3 +1,13 @@
+-- pembuatan TABLE pengumuman
+DROP TABLE IF EXISTS pengumuman CASCADE;
+CREATE TABLE pengumuman (
+	id				SERIAL 	NOT NULL,
+	isi				TEXT NOT NULL,
+	berlaku_hingga 	DATE,
+	created_by 		VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+);
+
 -- pembuatan TABLE role
 DROP TABLE IF EXISTS role CASCADE;
 CREATE TABLE role (
@@ -100,6 +110,7 @@ CREATE TABLE tugas_akhir (
 	judul_ta				VARCHAR(255) NOT NULL,
 	kategori_ta				TYPE_KATEGORI_TA NOT NULL,
 	berkas					BYTEA NOT NULL,
+	catatan					TEXT,
 	status 					TYPE_STATUS DEFAULT 'MENUNGGU',
 	timestamp 				TIMESTAMP DEFAULT NOW(),					
 	nim 					VARCHAR(12) NOT NULL,
