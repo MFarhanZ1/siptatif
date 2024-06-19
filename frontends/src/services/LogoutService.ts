@@ -7,6 +7,7 @@ const logoutService = async () => {
     },
   });
   const data = await response.json();
+  localStorage.removeItem("access-token");
   return data;
 };
 

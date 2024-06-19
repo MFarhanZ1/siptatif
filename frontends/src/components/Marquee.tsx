@@ -1,15 +1,17 @@
-interface MarqueeProps {
+import Marquee from "react-fast-marquee";
+
+interface MarqueesProps {
     list_announcement: string
 }
 
-const Marquee = ({list_announcement}: MarqueeProps) => {
+const CustomMarquee = ({list_announcement}: MarqueesProps) => {
 	return (
-		<div className="flex items-center bg-[#FAAE2B] font-ibm-plex-mono-medium overflow-hidden border-b-2 border-t-2 border-black h-8 text-nowrap">
-			<p className="animate-marquee">
+		<div className="flex items-center bg-[#FAAE2B] font-ibm-plex-mono-medium overflow-hidden border-b-2 border-t-2 border-black h-8">
+			<Marquee>
 				{list_announcement}
-			</p>
+			</Marquee>
 		</div>
 	);
 };
 
-export default Marquee;
+export default CustomMarquee;

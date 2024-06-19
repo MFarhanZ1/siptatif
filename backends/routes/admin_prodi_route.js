@@ -51,8 +51,7 @@ const {
 // list available routes in admin_prodi features to dosen
 router.get(
     "/dosen", 
-    verifikasi_access_token,
-    admin_prodi_only, 
+    verifikasi_access_token, 
     getDosen
 )
 router.post(

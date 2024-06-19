@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { LoadingFullScreen } from "../../components/Loading";
 import { verifyRegisterTokenFromEmailService } from "../../services/RegisterServices";
-import Marquee from "../../components/Marquee";
+import CustomMarquee from "../../components/Marquee";
 import Footer from "../../components/Footer";
 
 const RegisterPage = () => {
@@ -50,7 +50,7 @@ const RegisterPage = () => {
 			{/* Loading screen at full size */}
 			{isLoading && <LoadingFullScreen />}
 			{/* marquee pengumuman information */}
-			<Marquee
+			<CustomMarquee
 				list_announcement={
 					"Perhatian! Perubahan jadwal seminar proposal menjadi 2 Juni 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id"
 				}

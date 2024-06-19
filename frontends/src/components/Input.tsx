@@ -6,6 +6,7 @@ import { useState } from "react";
 interface InputProps {
   placeholder?: string;
   className?: string;
+  classNameInput?: string;
   type: string;
   label: string;
   value?: string;
@@ -16,6 +17,8 @@ interface InputProps {
   maxLength?: number;
   pattern?: string;
   max?: string;
+  defaultValue?: string;
+  min?: string;
   minLength?: number;
   onchange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   oninvalid?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -28,6 +31,8 @@ function Input({
   type,
   label,
   value,
+  defaultValue,
+  min,
   name,
   onchange,
   id,
@@ -40,6 +45,7 @@ function Input({
   maxLength,
   pattern,
   disabled,
+  classNameInput,
   autocomplete,
 }: InputProps) {
   const [icon, setIcon] = useState(notseeicon);
@@ -62,7 +68,7 @@ function Input({
 
       <div className="mt-4 flex">
         <input
-          className="appearance-none bg-transparent border-none text-black leading-tight focus:outline-none w-full"
+          className={`${classNameInput} appearance-none bg-transparent border-none text-black leading-tight focus:outline-none w-full`}
           type={inputType}
           id={id}
           placeholder={placeholder}
@@ -78,6 +84,8 @@ function Input({
           minLength={minLength}
           autoComplete={autocomplete}
           disabled={disabled}
+          defaultValue={defaultValue}
+          min={min}
         />
 
         {type === "password" && (
