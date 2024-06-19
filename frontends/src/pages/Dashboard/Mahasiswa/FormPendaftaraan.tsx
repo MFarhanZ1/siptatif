@@ -20,7 +20,7 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
   const [filterPembimbing2, setFilterPembimbing2] = useState([]);
 
   useEffect(() => {
-    const updateFilterPembimbing2 = bodyPembimbing2.filter(
+    const updateFilterPembimbing2 = bodyPembimbing2?.filter(
       (data:{nidn: string}) => data.nidn !== pembimbing1
     )
     setFilterPembimbing2(updateFilterPembimbing2);
@@ -123,7 +123,7 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
                 className="w-full border border-black rounded-md p-2 mb-4"
               >
                 <option value="" disabled>-- Pilih Pembimbing --</option>
-                {bodyPembimbing1.map((data: {nidn: string, nama: string}) => {
+                {bodyPembimbing1?.map((data: {nidn: string, nama: string}) => {
                   return <option key={data.nidn} value={data.nidn}>{data.nama}</option>;
                 })}
               </select>
@@ -141,7 +141,7 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
                 className="w-full border border-black rounded-md p-2 mb-4 disabled:cursor-not-allowed"
               >
                 <option value="">-- Pilih Pembimbing --</option>
-                {filterPembimbing2.map((data:{nidn: string, nama: string}) => {
+                {filterPembimbing2?.map((data:{nidn: string, nama: string}) => {
                    return <option key={data.nidn} value={data.nidn}>{data.nama}</option>;
                 })}
                
