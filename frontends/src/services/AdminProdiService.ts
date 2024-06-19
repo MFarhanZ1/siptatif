@@ -131,7 +131,7 @@ const createDataKeahlianDosen = async (params:{nidn: string,id_keahlian: number}
     return data;
 }
 const getKeahlianSearch = async (search: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/keahlian?search=${search}`, {
+    const response = await fetch(`${process.env.BASE_URL}/keahlian-dosen?search=${search}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
