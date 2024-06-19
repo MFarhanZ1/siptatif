@@ -45,3 +45,79 @@ ORDER BY
         ELSE 3
     END,
     dosen.nama;
+
+-- mencoba auto mengurangkan kuota yang tersedia dengan kuota yang dipake di riwayat penguji
+CREATE OR REPLACE VIEW view_detail_dosen_penguji AS
+SELECT 
+    vd.nidn "nidn", 
+    vd.nama "nama", 
+    vd.keahlian "keahlian", 
+    dp.kuota "kuota_awal",
+    CAST((
+        SELECT 
+            COUNT(rp.nidn) 
+        FROM 
+            riwayat_penguji rp 
+        WHERE 
+            rp.nidn = vd.nidn AND 
+            rp.status = 'BELUM'
+    ) AS INTEGER) "kuota_terpakai",
+    dp.kuota - CAST((
+        SELECT 
+            COUNT(rp.nidn) 
+        FROM 
+            riwayat_penguji rp 
+        WHERE 
+            rp.nidn = vd.nidn AND 
+            rp.status = 'BELUM'
+    ) AS INTEGER) "kuota_tersisa"
+FROM 
+    view_detail_dosen vd, 
+    dosen_penguji dp 
+WHERE 
+    dp.nidn = vd.nidn
+ORDER BY
+    CASE
+        WHEN vd.nama LIKE 'Prof. Dr.%' THEN 1
+        WHEN vd.nama LIKE 'Dr.%' THEN 2
+        ELSE 3
+    END,
+    vd.nama;
+
+-- mencoba auto mengurangkan kuota yang tersedia dengan kuota yang dipake di riwayat pembimbing
+CREATE OR REPLACE VIEW view_detail_dosen_pembimbing AS
+SELECT 
+    vd.nidn "nidn", 
+    vd.nama "nama", 
+    vd.keahlian "keahlian", 
+    dp.kuota "kuota_awal",
+    CAST((
+        SELECT 
+            COUNT(rp.nidn) 
+        FROM 
+            riwayat_pembimbing rp 
+        WHERE 
+            rp.nidn = vd.nidn AND 
+            rp.status = 'BELUM'
+    ) AS INTEGER) "kuota_terpakai",
+    dp.kuota - CAST((
+        SELECT 
+            COUNT(rp.nidn) 
+        FROM 
+            riwayat_pembimbing rp 
+        WHERE 
+            rp.nidn = vd.nidn AND 
+            rp.status = 'BELUM'
+    ) AS INTEGER) "kuota_tersisa"
+FROM 
+    view_detail_dosen vd, 
+    dosen_pembimbing dp 
+WHERE 
+    dp.nidn = vd.nidn
+ORDER BY
+    CASE
+        WHEN vd.nama LIKE 'Prof. Dr.%' THEN 1
+        WHEN vd.nama LIKE 'Dr.%' THEN 2
+        ELSE 3
+    END,
+    vd.nama;
