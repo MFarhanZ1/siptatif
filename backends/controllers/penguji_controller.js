@@ -23,14 +23,14 @@ const getPenguji = async (req, res) => {
 
         // bakal query execute mode searching
 		if (search) {
-			regexSearch = `%${search.toLowerCase()}%`;
+			regexSearch = `%${search.toLowerCase()}%`; 
             
 			results = await db.query(
-				"SELECT vd.nidn, vd.nama, vd.keahlian, dp.kuota FROM view_detail_dosen vd, dosen_penguji dp WHERE (LOWER(vd.nama) LIKE $1 OR LOWER(vd.nidn) LIKE $1 OR LOWER(vd.keahlian) LIKE $1) AND dp.nidn = vd.nidn LIMIT $2 OFFSET $3",
+				"SELECT * FROM view_detail_dosen_penguji WHERE (LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1 OR LOWER(keahlian) LIKE $1) LIMIT $2 OFFSET $3",
 				[regexSearch, limit, offset]
 			);
 			countData = await db.query(
-				"SELECT COUNT(*) FROM view_detail_dosen vd, dosen_penguji dp WHERE (LOWER(vd.nama) LIKE $1 OR LOWER(vd.nidn) LIKE $1 OR LOWER(vd.keahlian) LIKE $1) AND dp.nidn = vd.nidn",
+				"SELECT COUNT(*) FROM view_detail_dosen_penguji WHERE (LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1 OR LOWER(keahlian) LIKE $1)",
 				[regexSearch]
 			);
 		}
@@ -38,15 +38,15 @@ const getPenguji = async (req, res) => {
 		// bakal query execute mode paging
 		else if (page) {
 			results = await db.query(
-				"SELECT vd.nidn, vd.nama, vd.keahlian, dp.kuota FROM view_detail_dosen vd, dosen_penguji dp WHERE dp.nidn = vd.nidn LIMIT $1 OFFSET $2",
+				"SELECT * FROM view_detail_dosen_penguji LIMIT $1 OFFSET $2",
 				[limit, offset]
 			);
-			countData = await db.query("SELECT COUNT(*) FROM view_detail_dosen vd, dosen_penguji dp WHERE dp.nidn = vd.nidn");
+			countData = await db.query("SELECT COUNT(*) FROM view_detail_dosen_penguji");
 		}
 
 		// bakal query execute mode normal, langsung terobos semua data jika tak ada query search/page
 		else {
-            results = await db.query("SELECT vd.nidn, vd.nama, vd.keahlian, dp.kuota from view_detail_dosen vd, dosen_penguji dp where dp.nidn = vd.nidn and dp.kuota > 0");
+            results = await db.query("SELECT * FROM view_detail_dosen_penguji WHERE kuota_tersisa > 0");
             if (results.rows.length === 0) {
                 return res.status(400).json({
                     response: false,
