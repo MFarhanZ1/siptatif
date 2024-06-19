@@ -10,7 +10,6 @@ const router = app.Router(); // importing express router
 
 // importing controller crud kelola dosen
 const { 
-    getDosen,
     createDosen,
     updateDosen,
     deleteDosen
@@ -49,12 +48,6 @@ const {
  */
 
 // list available routes in admin_prodi features to dosen
-router.get(
-    "/dosen", 
-    verifikasi_access_token,
-    admin_prodi_only, 
-    getDosen
-)
 router.post(
     "/dosen", 
     verifikasi_access_token, 
