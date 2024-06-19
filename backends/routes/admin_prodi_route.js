@@ -87,7 +87,7 @@ router.post(
     createKeahlianDosen
 )
 router.delete(
-    "/keahlian-dosen", 
+    "/keahlian-dosen/:nidn", 
     verifikasi_access_token, 
     admin_prodi_only,
     deleteKeahlianDosen
