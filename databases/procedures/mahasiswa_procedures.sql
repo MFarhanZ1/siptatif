@@ -8,8 +8,8 @@ CREATE SEQUENCE IF NOT EXISTS no_reg_ta_seq;
 
 -- pembuatan FUNCTION untuk melakukan generate_no_reg_ta
 CREATE OR REPLACE FUNCTION generate_no_reg_ta(
-	jenis_pendaftaran VARCHAR,
-	kategori_ta VARCHAR
+	jenis_pendaftaran TYPE_JENIS_PENDAFTARAN,
+	kategori_ta TYPE_KATEGORI_TA
 )
 RETURNS VARCHAR
 LANGUAGE plpgsql
@@ -90,9 +90,9 @@ $$;
 
 CREATE OR REPLACE PROCEDURE mahasiswa_mendaftar_ta(
 	judul_ta VARCHAR,
-	jenis_pendaftaran VARCHAR,
-	kategori_ta VARCHAR,
-	berkas BYTEA,
+	jenis_pendaftaran TYPE_JENIS_PENDAFTARAN,
+	kategori_ta TYPE_KATEGORI_TA,
+	berkas VARCHAR,
 	nim VARCHAR,
 	nidn_pembimbing1 VARCHAR,
 	nidn_pembimbing2 VARCHAR
@@ -102,6 +102,18 @@ AS $$
 DECLARE
 	v_no_reg_ta VARCHAR := generate_no_reg_ta(jenis_pendaftaran, kategori_ta);
 BEGIN
-	RAISE NOTICE '% - GENERATE KODE REGISTER TA', v_no_reg_ta;
+	-- insert data saat mahasiswa mendaftarkan tugas akhir
+	INSERT INTO 
+		tugas_akhir(no_reg_ta, judul_ta, jenis_pendaftaran, kategori_ta, berkas, nim, nidn_pembimbing1, nidn_pembimbing2)
+	VALUES
+		(v_no_reg_ta, judul_ta, jenis_pendaftaran, kategori_ta, berkas, nim, nidn_pembimbing1, nidn_pembimbing2);
+
+	-- insert data riwayat pembimbing yang di pilih manusia
+	INSERT INTO riwayat_pembimbing(no_reg_ta, nidn) VALUES (v_no_reg_ta, nidn_pembimbing1);
+    -- Check if nidn_pembimbing2 is not null before inserting the second record
+    IF nidn_pembimbing2 IS NOT NULL THEN
+        INSERT INTO riwayat_pembimbing(no_reg_ta, nidn) 
+        VALUES (v_no_reg_ta, nidn_pembimbing2);
+    END IF;
 END;
 $$;

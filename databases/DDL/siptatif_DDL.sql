@@ -64,20 +64,18 @@ CREATE TABLE dosen (
 -- pembuatan TABLE dosen_pembimbing
 DROP TABLE IF EXISTS dosen_pembimbing CASCADE;
 CREATE TABLE dosen_pembimbing (
-	id		 SERIAL NOT NULL,
-	kuota	 INT DEFAULT NULL,
+	kuota	 INT DEFAULT 0 NOT NULL,
 	nidn	 VARCHAR(20) NOT NULL,
-	CONSTRAINT PK_Dosen_Pembimbing PRIMARY KEY(id),
+	CONSTRAINT PK_Dosen_Pembimbing PRIMARY KEY(nidn),
 	CONSTRAINT FK_DOSPEM_Dosen FOREIGN KEY (nidn) REFERENCES dosen (nidn)
 );
 
 --pembuatan TABLE dosen_penguji
 DROP TABLE IF EXISTS dosen_penguji CASCADE;
 CREATE TABLE dosen_penguji (
-	id		 SERIAL NOT NULL,
-	kuota	 INT DEFAULT NULL,
+	kuota	 INT DEFAULT 0 NOT NULL,
 	nidn	 VARCHAR(20) NOT NULL,
-	CONSTRAINT PK_Dosen_Penguji PRIMARY KEY(id),
+	CONSTRAINT PK_Dosen_Penguji PRIMARY KEY(nidn),
 	CONSTRAINT FK_DOSUJI_Dosen FOREIGN KEY (nidn) REFERENCES dosen (nidn)
 );
 
@@ -110,7 +108,7 @@ CREATE TABLE tugas_akhir (
 	jenis_pendaftaran		TYPE_JENIS_PENDAFTARAN NOT NULL,
 	judul_ta				VARCHAR(255) NOT NULL,
 	kategori_ta				TYPE_KATEGORI_TA NOT NULL,
-	berkas					BYTEA NOT NULL,
+	berkas					VARCHAR(255) NOT NULL,
 	catatan					TEXT,
 	status 					TYPE_STATUS DEFAULT 'MENUNGGU',
 	timestamp 				TIMESTAMP DEFAULT NOW(),					
@@ -132,22 +130,20 @@ CREATE TYPE TYPE_STATUS_RIWAYAT AS ENUM ('SELESAI', 'BELUM');
 
 DROP TABLE IF EXISTS riwayat_pembimbing CASCADE;
 CREATE TABLE riwayat_pembimbing (
-	id			SERIAL NOT NULL,
-	no_reg_ta	VARCHAR(9) NOT NULL,
+	no_reg_ta	VARCHAR(10) NOT NULL,
 	nidn		VARCHAR(20) NOT NULL,
 	status		TYPE_STATUS_RIWAYAT DEFAULT 'BELUM',
-	CONSTRAINT 	PK_Riwayat_Pembimbing PRIMARY KEY (id),
+	CONSTRAINT 	PK_Riwayat_Pembimbing PRIMARY KEY (no_reg_ta, nidn),
 	CONSTRAINT 	FK_Ripem_TA FOREIGN KEY (no_reg_ta) REFERENCES tugas_akhir(no_reg_ta),
 	CONSTRAINT 	FK_Ripem_Dosen FOREIGN KEY(nidn) REFERENCES dosen (nidn)
 );
 --pembuatan TABLE riwayat_penguji
 DROP TABLE IF EXISTS riwayat_penguji CASCADE;
 CREATE TABLE riwayat_penguji (
-	id			SERIAL NOT NULL,
-	no_reg_ta	VARCHAR(9) NOT NULL,
+	no_reg_ta	VARCHAR(10) NOT NULL,
 	nidn		VARCHAR(20) NOT NULL,
 	status		TYPE_STATUS_RIWAYAT DEFAULT 'BELUM',
-	CONSTRAINT 	PK_Riwayat_Penguji PRIMARY KEY (id),
+	CONSTRAINT 	PK_Riwayat_Penguji PRIMARY KEY (no_reg_ta, nidn),
 	CONSTRAINT 	FK_Riuji_TA FOREIGN KEY (no_reg_ta) REFERENCES tugas_akhir (no_reg_ta),
 	CONSTRAINT 	FK_Riuji_Dosen FOREIGN KEY (nidn) REFERENCES dosen (nidn)
 );

@@ -34,20 +34,28 @@ const getDosen = async (req, res) => {
 				"SELECT COUNT(*) FROM dosen WHERE LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1",
 				[regexSearch]
 			);
-		} 
-		
+		}
+
 		// bakal query execute mode paging
 		else if (page) {
-			results = await db.query("SELECT * FROM dosen ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama LIMIT $1 OFFSET $2", [
-				limit,
-				offset,
-			]);
+			results = await db.query(
+				"SELECT * FROM dosen ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama LIMIT $1 OFFSET $2",
+				[limit, offset]
+			);
 			countData = await db.query("SELECT COUNT(*) FROM dosen");
-		} 
-		
+		}
+
 		// bakal query execute mode normal, langsung terobos semua data jika tak ada query search/page
 		else {
-			results = await db.query("SELECT * FROM dosen ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama");
+			results = await db.query(
+				"SELECT * FROM dosen ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama"
+			);
+			if (results.rows.length === 0) {
+                return res.status(400).json({
+                    response: false,
+                    message: "Maaf, data dosen tidak ditemukan!",
+                });
+            }
 			return res.status(200).json({
 				response: true,
 				message: "Berikut data dosen yang telah didaftarkan sebelumnya!",
@@ -153,9 +161,14 @@ const deleteDosen = async (req, res) => {
 
 	try {
 		// delete juga akun koordinator ta di table akun jika ada
-		const getEmail = await db.query("SELECT email FROM dosen WHERE nidn = $1", [nidn]);
-		if (getEmail.rows[0]) await db.query("DELETE FROM akun WHERE email = $1", [getEmail.rows[0].email]);
-		
+		const getEmail = await db.query("SELECT email FROM dosen WHERE nidn = $1", [
+			nidn,
+		]);
+		if (getEmail.rows[0])
+			await db.query("DELETE FROM akun WHERE email = $1", [
+				getEmail.rows[0].email,
+			]);
+
 		// baru delete data dosen di tabel dosennya
 		const results = await db.query("DELETE FROM dosen WHERE nidn = $1", [nidn]);
 
