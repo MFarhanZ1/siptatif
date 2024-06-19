@@ -31,6 +31,10 @@ const {
     koordinator_ta_only,
     forbiden_for_mahasiswa_only
 } = require("../middlewares/authorization_middleware");
+const { 
+    getAllTugasAkhir,
+    updateTugasAkhir 
+} = require("../controllers/tugas_akhir_controller");
 
 // ===============================================
 
@@ -82,7 +86,19 @@ router.delete(
     koordinator_ta_only,
     deletePembimbing
 )
-
+// list of available routes in mahasiswa features
+router.get(
+    "/tugas-akhir",
+    verifikasi_access_token,
+    forbiden_for_mahasiswa_only,
+    getAllTugasAkhir
+)
+router.put(
+    "/tugas-akhir/:no_reg_ta",
+    verifikasi_access_token,
+    koordinator_ta_only,
+    updateTugasAkhir
+)
 // ===============================================
 
 // export all defined router
