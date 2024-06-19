@@ -140,7 +140,8 @@ const createKeahlianDosen = async (req, res) => {
 }
 
 const deleteKeahlianDosen = async (req, res) => {
-    const { nidn, id_keahlian } = req.body;
+	const { nidn } = req.params;
+    const { id_keahlian } = req.body;
     try {
         const results = await db.query(
             "DELETE FROM keahlian_dosen WHERE nidn = $1 AND id_keahlian = $2",
