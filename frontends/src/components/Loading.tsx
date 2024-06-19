@@ -1,6 +1,6 @@
 const LoadingFullScreen = () => {
 	return (
-		<div className="w-full h-screen bg-black bg-opacity-75 absolute flex justify-center">
+		<div className="w-full h-screen bg-black bg-opacity-75 absolute z-10 flex justify-center">
 			<div
 				aria-label="Loading..."
 				role="status"

@@ -5,7 +5,7 @@ import ResetPassword from "./ResetPassword";
 import { useSearchParams } from "react-router-dom";
 import { verifyLupaPasswordTokenFromEmailService } from "../../services/LupaPassword";
 import Swal from "sweetalert2";
-import Marquee from "../../components/Marquee";
+import CustomMarquee from "../../components/Marquee";
 import Footer from "../../components/Footer";
 import { LoadingFullScreen } from "../../components/Loading";
 function LupaPasswordPage() {
@@ -51,7 +51,7 @@ function LupaPasswordPage() {
 			{isLoading && <LoadingFullScreen />}
 			<div className="flex flex-col bg-[#F2F7F5] h-screen font-poppins">
 				{/* marquee pengumuman information */}
-				<Marquee
+				<CustomMarquee
 					list_announcement={
 						"Perhatian! Perubahan jadwal seminar proposal menjadi 2 Juni 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id"
 					}

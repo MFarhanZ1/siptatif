@@ -3,31 +3,49 @@ import Card from "../../components/Card";
 import Input from "../../components/Input";
 import siptatifImage from "../../../assets/images/pngs/siptatif-logo.png";
 import "../../index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { validateloginService } from "../../services/LoginService";
-import Marquee from "../../components/Marquee";
+import { validateLoginService } from "../../services/LoginService";
+import CustomMarquee from "../../components/Marquee";
 import Footer from "../../components/Footer";
 import { LoadingFullScreen } from "../../components/Loading";
 
 function LoginPage() {
-	const navigate = useNavigate();
-
+  const navigate = useNavigate();
+  
 	const [isLoading, setIsLoading] = useState(false);
-
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState<string>("");
+
+
+	const [listAnnouncement, setListAnnouncement] = useState<string>("");
+	let pengumuman = "";
+	useEffect(() => {
+		fetch(`${process.env.BASE_URL}/list-pengumuman`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			}
+		}).then((response) => {
+			return response.json();
+		}).then((data) => {
+			console.log(data)
+			for (let i = 0; i < data.results.length; i++) {
+				pengumuman = `${pengumuman} ${data.results[i].isi} ${i === data.results.length - 1 ? "" : "|"}`;
+			}
+			setListAnnouncement(pengumuman);
+			
+		})
+	}, []);
 
 	return (
 		<>
 			{isLoading && <LoadingFullScreen />}
 			<div className="flex flex-col bg-[#F2F7F5] h-screen font-poppins">
 				{/* marquee pengumuman information */}
-				<Marquee
-					list_announcement={
-						"Perhatian! Perubahan jadwal seminar proposal menjadi 2 Juni 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id"
-					}
+				<CustomMarquee
+					list_announcement={listAnnouncement}
 				/>
 				{/* main content */}
 				<div
@@ -49,7 +67,7 @@ function LoginPage() {
 								onSubmit={(e) => {
 									e.preventDefault();
 									setIsLoading(true);
-									validateloginService({ email, password }).then((data) => {
+									validateLoginService({ email, password }).then((data) => {
 										setIsLoading(false);
 										if (data.response) {
 											// store access token in local storage

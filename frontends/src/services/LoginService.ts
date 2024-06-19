@@ -1,5 +1,5 @@
 
-const validateloginService = async (params:{email: string, password: string}) => {
+const validateLoginService = async (params:{email: string, password: string}) => {
     const response = await fetch(`${process.env.BASE_URL}/login`, {
         method: "POST",
         credentials: "include",
@@ -16,5 +16,5 @@ const validateloginService = async (params:{email: string, password: string}) =>
 }
 
 export {
-    validateloginService
+    validateLoginService
 }
