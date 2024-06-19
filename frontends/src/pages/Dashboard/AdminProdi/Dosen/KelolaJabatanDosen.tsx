@@ -80,7 +80,7 @@ function KelolaJabatanDosen() {
         </div>
         <div className="ml-2 m-3 flex flex-col gap-4 h-full flex-grow">
           <div className="flex flex-col gap-2 overflow-auto max-h-[428px]">
-            <SeachField />
+            {/* <SeachField /> */}
             {/* <TableDosenAdmin header={header} body={body} action={true} /> */}
           </div>
           <div>

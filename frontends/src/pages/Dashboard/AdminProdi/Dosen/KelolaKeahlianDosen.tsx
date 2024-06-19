@@ -28,6 +28,8 @@ function KelolaKeahlianDosen() {
   // const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
 
+  const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     getAllDataDosen().then((data) => {
       SetBodyDosen(data.results);
@@ -37,6 +39,7 @@ function KelolaKeahlianDosen() {
       SetBodyKeahlian(data.results);
     });
   }, []);
+
 
   useEffect(() => {
     getKeahlianDosenPage(page).then((data) => {
@@ -56,6 +59,7 @@ function KelolaKeahlianDosen() {
       setRefresh(!refresh);
     }
     getKeahlianSearch(searchData).then((data) => {
+      console.log(data.results);
       setBodyPageDosen(data.results);
       // setTotalItems(data.info.total_all_data);
       // setPageInterval(data.info.data_per_page);
@@ -131,6 +135,7 @@ function KelolaKeahlianDosen() {
                   required={true}
                   type="text"
                   disabled={true}
+                  classNameInput="cursor-not-allowed"
                   value={nidn}
                 ></Input>
                 <div>
