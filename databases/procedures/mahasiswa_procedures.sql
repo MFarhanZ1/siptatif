@@ -8,8 +8,8 @@ CREATE SEQUENCE IF NOT EXISTS no_reg_ta_seq;
 
 -- pembuatan FUNCTION untuk melakukan generate_no_reg_ta
 CREATE OR REPLACE FUNCTION generate_no_reg_ta(
-	jenis_pendaftaran VARCHAR,
-	kategori_ta VARCHAR
+	jenis_pendaftaran TYPE_JENIS_PENDAFTARAN,
+	kategori_ta TYPE_KATEGORI_TA
 )
 RETURNS VARCHAR
 LANGUAGE plpgsql
@@ -90,8 +90,8 @@ $$;
 
 CREATE OR REPLACE PROCEDURE mahasiswa_mendaftar_ta(
 	judul_ta VARCHAR,
-	jenis_pendaftaran VARCHAR,
-	kategori_ta VARCHAR,
+	jenis_pendaftaran TYPE_JENIS_PENDAFTARAN,
+	kategori_ta TYPE_KATEGORI_TA,
 	berkas VARCHAR,
 	nim VARCHAR,
 	nidn_pembimbing1 VARCHAR,
@@ -110,10 +110,10 @@ BEGIN
 
 	-- insert data riwayat pembimbing yang di pilih manusia
 	INSERT INTO riwayat_pembimbing(no_reg_ta, nidn) VALUES (v_no_reg_ta, nidn_pembimbing1);
-	INSERT INTO riwayat_pembimbing(no_reg_ta, nidn) VALUES (v_no_reg_ta, nidn_pembimbing2);
-
-	-- mengurangi kuota pembimbing yang telah dipilih oleh mahasiswa
-	UPDATE dosen_pembimbing SET kuota = kuota - 1 WHERE nidn = nidn_pembimbing1;
-	UPDATE dosen_pembimbing SET kuota = kuota - 1 WHERE nidn = nidn_pembimbing2;
+    -- Check if nidn_pembimbing2 is not null before inserting the second record
+    IF nidn_pembimbing2 IS NOT NULL THEN
+        INSERT INTO riwayat_pembimbing(no_reg_ta, nidn) 
+        VALUES (v_no_reg_ta, nidn_pembimbing2);
+    END IF;
 END;
 $$;
