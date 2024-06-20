@@ -22,7 +22,7 @@ const TableDosenAdmin = ({
   onEdit,
 }: TableProps) => {
   return (
-    <div className="overflow-x-auto border border-black font-poppins flex-1">
+    <div className="overflow-x-auto border border-black font-poppins h-full flex-grow">
       <table className="w-full text-xs text-left table-auto">
         <thead className="bg-gray-700 uppercase text-white sticky top-0 w-full">
           <tr className="text-center text-sm">

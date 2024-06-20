@@ -52,7 +52,7 @@ const Dashboard = () => {
         <CustomMarquee list_announcement="Perhatian! Perubahan jadwal seminar proposal menjadi 2 June 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id" />
       </div>
 
-      <div className="h-full flex-1 overflow-hidden">{content}</div>
+      <div className="flex-1 overflow-hidden">{content}</div>
 
       {/* <footer className="w-full h-10 bg-black">teet</footer> */}
 
