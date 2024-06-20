@@ -344,10 +344,35 @@ const register_akun_koordinator_ta = async (req, res) => {
     }
 }
 
+const list_akun_berdasar_jabatan = async (req, res) => {
+    const { search } = req.query;
+    const regexpSearch = `%${search || ""}%`;
+    
+    try {
+        const results = await db.query("SELECT dosen.nidn AS nidn, dosen.nama AS nama, dosen.email AS email, role.nama AS jabatan FROM dosen, akun, role WHERE dosen.email = akun.email AND role.id = akun.id_role AND (LOWER(dosen.nama) LIKE $1 OR LOWER(role.nama) LIKE $1)", [regexpSearch.toLowerCase()]);
+        if (results.rows.length === 0) {
+            return res.status(400).json({
+                response: false,
+                message: "Maaf, data tidak ditemukan!"
+            })
+        }
+        return res.status(200).json({
+            response: true,
+            results: results.rows
+        });
+    } catch (err) {
+        return res.status(500).json({
+            response: false,
+            message: err.message
+        })
+    }
+}
+
 module.exports = {
 	verifikasi_token_register,
 	kirim_link_verifikasi,
 	register_akun_mahasiswa,
     register_akun_admin_prodi,
-	register_akun_koordinator_ta
+	register_akun_koordinator_ta,
+    list_akun_berdasar_jabatan
 };

@@ -25,7 +25,8 @@ const {
 
 // importing service for kelola jabatan dosen
 const {
-    register_akun_koordinator_ta
+    register_akun_koordinator_ta,
+    list_akun_berdasar_jabatan
 } = require("../services/register")
 const { 
     hapus_akun_koordinator_ta 
@@ -94,6 +95,12 @@ router.delete(
 )
 
 // list available routes in admin_prodi features for managing koordinator ta akun based on dosen data
+router.get(
+    "/list-akun-berdasar-jabatan",
+    verifikasi_access_token,
+    admin_prodi_only,
+    list_akun_berdasar_jabatan
+)
 router.post(
     "/register-koordinator-ta",
     verifikasi_access_token,
