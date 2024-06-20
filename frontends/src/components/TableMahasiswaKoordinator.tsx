@@ -245,6 +245,7 @@ export default function TableMahasiswaKoordinator() {
     <>
       <div className="flex flex-col gap-3 overflow-x-auto font-poppins p-4 h-full">
         <SeachField
+        placeholder="Cari berdasarkan NIM, Nama Mahasiswa, atau Judul TA..."
           onChange={(e) => {
             setSearch(e as SetStateAction<string>);
           }}
