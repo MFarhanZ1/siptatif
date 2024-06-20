@@ -1,8 +1,10 @@
+import fetchWithInterceptor from "./FetchInterceptor";
+
 const createDataPembimbing = async (params: {
   nidn: string;
   kuota: string;
 }) => {
-  const response = await fetch(`${process.env.BASE_URL}/pembimbing`, {
+  const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pembimbing`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +20,7 @@ const createDataPembimbing = async (params: {
 };
 
 const getDataDosenPembimbing = async(page:number) => {
-  const response = await fetch(`${process.env.BASE_URL}/pembimbing?page=${page}`, {
+  const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pembimbing?page=${page}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +32,7 @@ const getDataDosenPembimbing = async(page:number) => {
 };
 
 const getSearchDataDosenPembimbing = async(search: string) => {
-  const response = await fetch(`${process.env.BASE_URL}/pembimbing?search=${search}`, {
+  const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pembimbing?search=${search}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +44,7 @@ const getSearchDataDosenPembimbing = async(search: string) => {
 };
 
 const deleteDataDosenPembimbingKoordinator = async(nidn: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/pembimbing/${nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pembimbing/${nidn}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -53,7 +55,7 @@ const deleteDataDosenPembimbingKoordinator = async(nidn: string) => {
     return data;
 }
 const editDataDosenPembimbingKoordinator = async(nidn: string, kuota: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/pembimbing/${nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pembimbing/${nidn}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -69,7 +71,7 @@ const editDataDosenPembimbingKoordinator = async(nidn: string, kuota: string) =>
 }
 
 const createPengujiKoordinator = async(nidn: string, kuota: string) =>{
-    const response = await fetch(`${process.env.BASE_URL}/penguji`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/penguji`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -85,7 +87,7 @@ const createPengujiKoordinator = async(nidn: string, kuota: string) =>{
 }
 
 const getDataDosenPengujiPage = async(pagePenguji: number) =>{
-    const response = await fetch(`${process.env.BASE_URL}/penguji?page=${pagePenguji}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/penguji?page=${pagePenguji}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -97,7 +99,7 @@ const getDataDosenPengujiPage = async(pagePenguji: number) =>{
 }
 
 const getSearchDataDosenPenguji = async(search: string) => {
- const response = await fetch(`${process.env.BASE_URL}/penguji?search=${search}`, {
+ const response = await fetchWithInterceptor(`${process.env.BASE_URL}/penguji?search=${search}`, {
      method: "GET",
      headers: {
          "Content-Type": "application/json",
@@ -109,7 +111,7 @@ const getSearchDataDosenPenguji = async(search: string) => {
 }
 
 const editDataDosenPengujiKoordinator = async(nidn: string, kuota: string)=>{
-    const response = await fetch(`${process.env.BASE_URL}/penguji/${nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/penguji/${nidn}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -125,7 +127,7 @@ const editDataDosenPengujiKoordinator = async(nidn: string, kuota: string)=>{
 }
 
 const deleteDataDosenPengujiKoordinator = async(nidn : string) => {
-    const response = await fetch(`${process.env.BASE_URL}/penguji/${nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/penguji/${nidn}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -137,7 +139,7 @@ const deleteDataDosenPengujiKoordinator = async(nidn : string) => {
 }
 
 const getDataMahasiswaKoordinator = async(page : number) => {
-    const response = await fetch(`${process.env.BASE_URL}/tugas-akhir?page=${page}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/tugas-akhir?page=${page}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -149,7 +151,7 @@ const getDataMahasiswaKoordinator = async(page : number) => {
     return data;
 }
 const getDataMahasiswaKoordinatorSearch = async(search : string) => {
-    const response = await fetch(`${process.env.BASE_URL}/tugas-akhir?search=${search}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/tugas-akhir?search=${search}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -163,7 +165,7 @@ const getDataMahasiswaKoordinatorSearch = async(search : string) => {
 
 const updateTAMahasiswa = async(registration_number : string, status: string, catatan: string, nidn_penguji1: string,nidn_penguji2: string) =>{
     console.log(nidn_penguji1 == "", nidn_penguji2 == "")
-    const response = await fetch(`${process.env.BASE_URL}/tugas-akhir/${registration_number}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/tugas-akhir/${registration_number}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -180,7 +182,7 @@ const updateTAMahasiswa = async(registration_number : string, status: string, ca
 }
 
 const getPengujiKoordinator = async() => {
-    const response = await fetch(`${process.env.BASE_URL}/penguji`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/penguji`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
