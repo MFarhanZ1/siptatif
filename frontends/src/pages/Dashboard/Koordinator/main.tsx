@@ -3,6 +3,7 @@ import Footer from "../../../components/Footer";
 import SideBarKoordinatorTA from "./SideBarKoordinatorTA";
 import Pembimbing from "./Pembimbing";
 import Penguji from "./Penguji";
+import TableMahasiswaKoordinator from "../../../components/TableMahasiswaKoordinator";
 
 function MainKoordinatorTA() {
   const [onMenuClick, setOnMenuClick] = useState("mahasiswa");
@@ -10,7 +11,7 @@ function MainKoordinatorTA() {
   const renderContent = () => {
     switch (onMenuClick) {
       case "mahasiswa":
-        return <div>tabel mahasiswa</div>;
+        return <TableMahasiswaKoordinator />;
       case "penguji":
         return <Penguji />;
       case "pembimbing":
