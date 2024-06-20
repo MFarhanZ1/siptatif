@@ -3,14 +3,8 @@ import Footer from '../../../components/Footer'
 import SideBarMahasiswa from './SideBarMahasiswa'
 import FormPendaftaraan from './FormPendaftaraan';
 import TablePembimbingMahasiswa from '../../../components/TablePembimbingMahasiswa';
+import DashboardMahasiswa from './DashboardMahasiswa';
 
-
-const Dashboard = () => <div className='m-3 font-poppins'>
-  <h1 className='text-2xl italic underline'>Status Pendaftaraan : </h1>
-  <div className='p-20 bg-red-200 text-center rounded-md'>
-    <h1 className='text-4xl font-poppins-semibold'>Anda Belum Mendaftar</h1>
-  </div>
-</div>;
 
 function MainMahasiswa() {
   const [onMenuClick, setOnMenuClick] =useState<string>("dashboard");
@@ -18,7 +12,7 @@ function MainMahasiswa() {
   const renderContent = () => {
     switch (onMenuClick) {
       case "dashboard":
-        return <Dashboard />;
+        return <DashboardMahasiswa />;
       case "pendaftaraan":
         return <FormPendaftaraan onMenuClick={setOnMenuClick}/>;
       case "pembimbing":
@@ -44,7 +38,7 @@ function MainMahasiswa() {
         <div className="w-[100%] flex flex-col h-full">
 
           {/* content side bar */}
-          <div className="overflow-y-auto flex-grow">
+          <div className="overflow-y-auto h-full">
             {/* <FormPendaftaraan /> */}
             {renderContent()}
             {/* <Pembimbing /> */}
