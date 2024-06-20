@@ -1,5 +1,7 @@
+import fetchWithInterceptor from "./FetchInterceptor";
+
 const getDataDosenPage = async (page: number) => {
-    const response = await fetch(`${process.env.BASE_URL}/dosen?page=${page}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/dosen?page=${page}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -10,7 +12,7 @@ const getDataDosenPage = async (page: number) => {
     return data;
 };
 const getDataDosenSearch = async (search: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/dosen?search=${search}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/dosen?search=${search}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -21,7 +23,7 @@ const getDataDosenSearch = async (search: string) => {
     return data;
 };
 const getAllDataDosen = async () => {
-    const response = await fetch(`${process.env.BASE_URL}/dosen`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/dosen`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -32,7 +34,7 @@ const getAllDataDosen = async () => {
     return data;
 };
 const getAllDataKeahlian = async () => {
-    const response = await fetch(`${process.env.BASE_URL}/keahlian`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/keahlian`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -44,7 +46,7 @@ const getAllDataKeahlian = async () => {
 };
 
 const createDataDosen = async (params:{nidn: string,nama: string,no_hp: string,jenis_kelamin: string, email: string}) => {
-    const response = await fetch(`${process.env.BASE_URL}/dosen`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/dosen`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -63,7 +65,7 @@ const createDataDosen = async (params:{nidn: string,nama: string,no_hp: string,j
 };
 
 const deleteDataDosen = async (nidn: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/dosen/${nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/dosen/${nidn}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -74,7 +76,7 @@ const deleteDataDosen = async (nidn: string) => {
     return data;
 }
 const editDataDosen = async (params:{nidn: string,nama: string,no_hp: string,jenis_kelamin: string, email: string}) => {
-    const response = await fetch(`${process.env.BASE_URL}/dosen/${params.nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/dosen/${params.nidn}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -90,7 +92,7 @@ const editDataDosen = async (params:{nidn: string,nama: string,no_hp: string,jen
     return data;
 }
 const getKeahlianDosenPage = async (page: number) => {
-    const response = await fetch(`${process.env.BASE_URL}/keahlian-dosen?page=${page}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/keahlian-dosen?page=${page}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -103,7 +105,7 @@ const getKeahlianDosenPage = async (page: number) => {
 
 const deleteKeahlianDosen = async (nidn: string,id_keahlian: string) => {
     console.log(nidn, id_keahlian);
-    const response = await fetch(`${process.env.BASE_URL}/keahlian-dosen/${nidn}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/keahlian-dosen/${nidn}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -117,7 +119,7 @@ const deleteKeahlianDosen = async (nidn: string,id_keahlian: string) => {
 }
 
 const createDataKeahlianDosen = async (params:{nidn: string,id_keahlian: number}) => {
-    const response = await fetch(`${process.env.BASE_URL}/keahlian-dosen`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/keahlian-dosen`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -131,7 +133,7 @@ const createDataKeahlianDosen = async (params:{nidn: string,id_keahlian: number}
     return data;
 }
 const getKeahlianSearch = async (search: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/keahlian-dosen?search=${search}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/keahlian-dosen?search=${search}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -144,7 +146,7 @@ const getKeahlianSearch = async (search: string) => {
 };
 
 const getListAkunByJabatan = async (search: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/list-akun-berdasar-jabatan?search=${search}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/list-akun-berdasar-jabatan?search=${search}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -155,7 +157,7 @@ const getListAkunByJabatan = async (search: string) => {
     return data;
 };
 const createAkunByJabatan = async (email: string, password: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/register-koordinator-ta`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/register-koordinator-ta`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -170,7 +172,7 @@ const createAkunByJabatan = async (email: string, password: string) => {
     return data;
 }
 const deleteAkunByJabatan = async (email: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/register-koordinator-ta/${email}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/register-koordinator-ta/${email}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -183,7 +185,7 @@ const deleteAkunByJabatan = async (email: string) => {
 
 
 const createPengumuman = async (params:{isi : string,berlaku_mulai: string,berlaku_hingga?: string}) => {
-    const response = await fetch(`${process.env.BASE_URL}/pengumuman`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pengumuman`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -198,20 +200,19 @@ const createPengumuman = async (params:{isi : string,berlaku_mulai: string,berla
     return data;
 }
 const getAllPengumuman = async () => {
-    const response = await fetch(`${process.env.BASE_URL}/pengumuman`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pengumuman`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         }
     })
-    // console.log(response)
     const data = await response.json();
     return data;
 }
 
 const deleteIsiPengumuman = async (id: number) => {
-    const response = await fetch(`${process.env.BASE_URL}/pengumuman/${id}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pengumuman/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -222,7 +223,7 @@ const deleteIsiPengumuman = async (id: number) => {
     return data;
 }
 const updateIsiPEngumuman = async (params:{id: number, isi : string,berlaku_mulai: string,berlaku_hingga?: string}) => {
-    const response = await fetch(`${process.env.BASE_URL}/pengumuman/${params.id}`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/pengumuman/${params.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

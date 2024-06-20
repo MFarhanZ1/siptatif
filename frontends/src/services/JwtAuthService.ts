@@ -1,6 +1,8 @@
+import fetchWithInterceptor from "./FetchInterceptor";
+
 const verifyAccess = async () => {
 
-    const response = await fetch(`${process.env.BASE_URL}/verify-access-token`, {
+    const response = await fetchWithInterceptor(`${process.env.BASE_URL}/verify-access-token`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
