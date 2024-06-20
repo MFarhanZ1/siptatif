@@ -41,7 +41,7 @@ function TablePembimbingMahasiswa() {
             </tr>
           </thead>
           <tbody className="text-sm">
-            {body.map(
+            {body?.map(
               (item: {
                 nidn: string;
                 nama: string;

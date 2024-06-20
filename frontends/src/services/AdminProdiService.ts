@@ -181,6 +181,62 @@ const deleteAkunByJabatan = async (email: string) => {
     return data;
 };
 
+
+const createPengumuman = async (params:{isi : string,berlaku_mulai: string,berlaku_hingga?: string}) => {
+    const response = await fetch(`${process.env.BASE_URL}/pengumuman`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        },body: JSON.stringify({
+            isi: params.isi,
+            berlaku_mulai: params.berlaku_mulai,
+            berlaku_hingga: params.berlaku_hingga || null
+        })
+    })
+    const data = await response.json();
+    return data;
+}
+const getAllPengumuman = async () => {
+    const response = await fetch(`${process.env.BASE_URL}/pengumuman`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        }
+    })
+    // console.log(response)
+    const data = await response.json();
+    return data;
+}
+
+const deleteIsiPengumuman = async (id: number) => {
+    const response = await fetch(`${process.env.BASE_URL}/pengumuman/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        },
+    })
+    const data = await response.json();
+    return data;
+}
+const updateIsiPEngumuman = async (params:{id: number, isi : string,berlaku_mulai: string,berlaku_hingga?: string}) => {
+    const response = await fetch(`${process.env.BASE_URL}/pengumuman/${params.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        },body: JSON.stringify({
+            isi: params.isi,
+            berlaku_mulai: params.berlaku_mulai,
+            berlaku_hingga: params.berlaku_hingga || null
+        })
+    })
+    const data = await response.json();
+    return data;
+}
+
 export { 
     getDataDosenSearch,
     getDataDosenPage,
@@ -195,5 +251,9 @@ export {
     getKeahlianSearch,
     getListAkunByJabatan,
     createAkunByJabatan,
-    deleteAkunByJabatan
+    deleteAkunByJabatan,
+    createPengumuman,
+    getAllPengumuman,
+    deleteIsiPengumuman,
+    updateIsiPEngumuman
 }

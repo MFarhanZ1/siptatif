@@ -33,6 +33,8 @@ const getPengumumanRoleBased = async (req, res) => {
                 message: "Maaf, data tidak ditemukan!",
             });
         }
+        console.log(results.rows);
+
         res.status(200).json({
             response: true,
             message: `Berhasil mengambil data pengumuman yang di-input oleh ${role}!`,
