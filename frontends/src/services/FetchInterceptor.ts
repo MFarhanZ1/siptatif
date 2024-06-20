@@ -22,14 +22,16 @@ async function fetchWithInterceptor(url: string, options: RequestInit = {}): Pro
             setToken(data.access_token);
             return data.access_token;
         } else {
+            localStorage.removeItem('access-token');
             Swal.fire({
                 icon: 'error',
                 title: 'Sesi Anda Sudah Habis!',
                 text: 'Maaf, sesi anda sudah habis, silahkan login kembali untuk melanjutkan akses!',   
                 confirmButtonText: 'Yahh :( baiklah saya akan login lagi...', 
-            }).then(() => {
-                localStorage.removeItem('access-token');
-                window.location.href = '/login';
+            }).then((click) => {
+                if (click.isConfirmed) {
+                    window.location.href = '/login';
+                }
             })
             return null
         }
