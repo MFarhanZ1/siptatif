@@ -4,7 +4,7 @@ import Card from "../../../components/Card";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import SeachField from "../../../components/SeachField";
-import { createPengujiKoordinator, getDataDosenPengujiPage } from "../../../services/KoordinatorTAService";
+import { createPengujiKoordinator, getDataDosenPengujiPage, getSearchDataDosenPenguji } from "../../../services/KoordinatorTAService";
 import Swal from "sweetalert2";
 import TableKeahlianDosenAdmin from "../../../components/TableKeahlianDosenAdmin";
 import TablePengujiKoordinator from "../../../components/TablePengujiKoordinator";
@@ -14,6 +14,9 @@ interface Data {
   nama: string;
 }
 function Penguji() {
+  const [nidn, setNidn] = useState("");
+  const [kuota, setKuota] = useState("");
+  
   const [body, Setbody] = useState([]);
 
   const [bodypage, setBodyPage] = useState([]);
@@ -42,9 +45,19 @@ function Penguji() {
   }, [page, refresh]);
 
   const [searchData, setSearchData] = useState("");
+  useEffect(() => {
+    if (!searchData) {
+      setRefresh(!refresh);
+    }
+    getSearchDataDosenPenguji(searchData).then((data) => {
+      setBodyPage(data.results);
 
-  const [nidn, setNidn] = useState("");
-  const [kuota, setKuota] = useState("");
+      setTotalItems(data.info.total_all_data);
+      setPageInterval(data.info.data_per_page);
+      // setCurrentPage(data.info.current_page);
+      setTotalPage(data.info.total_page);
+    });
+  }, [searchData]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (
     <div className="h-full">
@@ -129,7 +142,7 @@ function Penguji() {
 
         <div className="flex flex-col h-full w-[63%]">
           <div className="flex flex-col mr-2 gap-4 overflow-auto h-full">
-            {/* <SeachField /> */}
+            <SeachField onChange={(e) => setSearchData(e)} />
             <TablePengujiKoordinator body={bodypage} onDelete={() => console.log("delete")} onEdit={() => console.log("edit")}/>
             {/* <Pagination
               totalItems={totalItems}

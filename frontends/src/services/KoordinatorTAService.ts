@@ -96,7 +96,17 @@ const getDataDosenPengujiPage = async(pagePenguji: number) =>{
     return data;
 }
 
-const getSearchDataDosenPenguji = async() => {}
+const getSearchDataDosenPenguji = async(search: string) => {
+ const response = await fetch(`${process.env.BASE_URL}/penguji?search=${search}`, {
+     method: "GET",
+     headers: {
+         "Content-Type": "application/json",
+         "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+     }
+ })
+ const data = await response.json();
+ return data;
+}
 export {
      createDataPembimbing,
      getDataDosenPembimbing,
@@ -104,5 +114,6 @@ export {
      deleteDataDosenPembimbingKoordinator,
      editDataDosenPembimbingKoordinator,
      createPengujiKoordinator,
-     getDataDosenPengujiPage
+     getDataDosenPengujiPage,
+     getSearchDataDosenPenguji
     }
