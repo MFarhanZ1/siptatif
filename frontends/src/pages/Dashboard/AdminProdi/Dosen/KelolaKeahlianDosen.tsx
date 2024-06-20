@@ -2,7 +2,7 @@ import SeachField from "../../../../components/SeachField";
 import Card from "../../../../components/Card";
 import Button from "../../../../components/Button";
 import Input from "../../../../components/Input";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import {
   createDataKeahlianDosen,
   deleteKeahlianDosen,
@@ -27,6 +27,7 @@ function KelolaKeahlianDosen() {
   const [totalItems, setTotalItems] = useState(0);
   // const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+
   useEffect(() => {
     getAllDataDosen().then((data) => {
       SetBodyDosen(data.results);
@@ -66,10 +67,10 @@ function KelolaKeahlianDosen() {
   }, [searchData, refresh]);
 
   return (
-    <div>
-      <div className="flex h-full">
-        <div className="flex flex-col w-[37%] m-3">
-          <Card className="px-6 py-5 border border-black p-2 font-poppins">
+		<div className="h-full">
+			<div className="flex gap-5 w-full h-full p-5">
+				<div className="w-[37%] ml-2 h-full flex justify-center rounded-xl bg-gray-200 border-t border-b border-black items-center">
+					<Card className="border border-black font-poppins p-4 w-full overflow-auto">
             <h1 className="text-2xl text-center ml-1 underline mb-6 font-poppins-semibold">
               Kelola Keahlian Dosen
             </h1>
@@ -117,11 +118,12 @@ function KelolaKeahlianDosen() {
                       SetNidn(e.target.value);
                     }}
                     className="w-full border border-black rounded-md p-2"
+                    required
                   >
                     <option value="" disabled selected={nidn == ""}>
                       -- Pilih Dosen --
                     </option>
-                    {bodyDosen.map((data: { nidn: string; nama: string }) => {
+                    {bodyDosen?.map((data: { nidn: string; nama: string }) => {
                       return <option value={data.nidn}>{data.nama}</option>;
                     })}
                   </select>
@@ -132,7 +134,7 @@ function KelolaKeahlianDosen() {
                   required={true}
                   type="text"
                   disabled={true}
-                  classNameInput="cursor-not-allowed"
+                  classNameInput="disabled:bg-gray-100 disabled:cursor-not-allowed"
                   value={nidn}
                 ></Input>
                 <div>
@@ -141,14 +143,15 @@ function KelolaKeahlianDosen() {
                   </p>
                   <select
                     onChange={(e) => {
-                      SetIdKeahlian(e.target.value)
+                      SetIdKeahlian(Number(e.target.value));
                     }}
                     className="w-full border border-black rounded-md p-2"
+                    required
                   >
                     <option value="" disabled selected={id_keahlian == 0}>
                       -- Pilih Keahlian --
                     </option>
-                    {bodyKeahlian.map((data: { id: number; nama: string }) => {
+                    {bodyKeahlian?.map((data: { id: number; nama: string }) => {
                       return <option value={data.id}>{data.nama}</option>;
                     })}
                     {/* {body.map((data: Data) => {
@@ -165,11 +168,11 @@ function KelolaKeahlianDosen() {
             </form>
           </Card>
         </div>
-        <div className="ml-2 m-3 flex flex-col gap-4 h-full flex-grow">
-          <div className="flex flex-col gap-2 overflow-auto max-h-[428px]">
+				<div className="flex flex-col h-full w-[63%]">
+					<div className="flex flex-col mr-2 gap-4 overflow-auto h-full">
           <SeachField
               onChange={(e) => {
-                setSearchData(e);
+                setSearchData(e as SetStateAction<string>);
               }}
             />
             <TableKeahlianDosenAdmin
@@ -195,7 +198,6 @@ function KelolaKeahlianDosen() {
                 });
               }}
             />
-          </div>
           <div>
             <Pagination
               totalItems={totalItems}
@@ -206,6 +208,7 @@ function KelolaKeahlianDosen() {
                 setPage(page);
               }}
             />
+          </div>
           </div>
         </div>
       </div>

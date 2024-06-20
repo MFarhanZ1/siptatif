@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 const hapus_akun_koordinator_ta = async (req, res) => {
     const { email } = req.params;
-
+    
     try {
         const results = await db.query("DELETE FROM akun WHERE email = $1", [email]);
         if (results.rowCount === 0) {

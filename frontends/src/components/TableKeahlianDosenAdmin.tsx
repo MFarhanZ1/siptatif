@@ -15,7 +15,7 @@ interface Data {
 }
 function TableKeahlianDosenAdmin({ body,action,onDelete}: Data) {
   return (
-    <div className="overflow-x-auto border border-black font-poppins flex-1">
+    <div className="overflow-x-auto border border-black font-poppins h-full flex-grow">
       <table className="w-full text-xs text-left table-auto">
         <thead className="bg-gray-700 uppercase text-white sticky top-0 w-full">
           <tr className="text-center text-sm">
@@ -36,7 +36,7 @@ function TableKeahlianDosenAdmin({ body,action,onDelete}: Data) {
         <tbody className="text-sm">
           {body?.map((item) => (
             <tr
-              key={item.nidn}
+              key={`${item.nidn}-${item.id_keahlian}`}
               className="bg-white border-b border-gray-700 text-center odd:bg-gray-200 even:bg-gray-300"
             >
               <td className="px-6 py-2 truncate max-w-32">{item.nidn}</td>
@@ -46,7 +46,7 @@ function TableKeahlianDosenAdmin({ body,action,onDelete}: Data) {
               {action && (
                 <td className="flex py-2 items-center justify-center">
                   <div className="flex items-center justify-center gap-1">
-                   
+
                     <button
                       type="button"
                       onClick={() => {

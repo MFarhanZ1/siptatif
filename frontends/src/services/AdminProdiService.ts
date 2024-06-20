@@ -143,6 +143,45 @@ const getKeahlianSearch = async (search: string) => {
     return data;
 };
 
+const getListAkunByJabatan = async (search: string) => {
+    const response = await fetch(`${process.env.BASE_URL}/list-akun-berdasar-jabatan?search=${search}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        },
+    })
+    const data = await response.json();
+    return data;
+};
+const createAkunByJabatan = async (email: string, password: string) => {
+    const response = await fetch(`${process.env.BASE_URL}/register-koordinator-ta`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    })
+    const data = await response.json();
+    return data;
+}
+const deleteAkunByJabatan = async (email: string) => {
+    const response = await fetch(`${process.env.BASE_URL}/register-koordinator-ta/${email}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        },
+    })
+    const data = await response.json();
+    return data;
+};
+
+
 const createPengumuman = async (params:{isi : string,berlaku_mulai: string,berlaku_hingga?: string}) => {
     const response = await fetch(`${process.env.BASE_URL}/pengumuman`, {
         method: "POST",
@@ -210,6 +249,9 @@ export {
     deleteKeahlianDosen,
     createDataKeahlianDosen, 
     getKeahlianSearch,
+    getListAkunByJabatan,
+    createAkunByJabatan,
+    deleteAkunByJabatan,
     createPengumuman,
     getAllPengumuman,
     deleteIsiPengumuman,
