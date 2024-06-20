@@ -17,11 +17,11 @@ const refresh_access_token = (req, res) => {
 		async (err, user) => {
 			// jika refresh token tidak valid, akan di bully yang ngehit endpoint ini
 			if (err)
-				return res.status(403).json({
+				return res.status(401).json({
 					response: false,
 					message:
 						err.name === "TokenExpiredError"
-							? "Sesi anda sudah habis, silahkan generate akses token baru dengan refresh token anda kembali!"
+							? "Sesi anda sudah habis, silahkan login kembali!"
 							: "Hayo deck, mau ngapain kmuh aowkaowk! heker yh banh? 😜😜",
 				});
 

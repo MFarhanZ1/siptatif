@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import topimage from "../../../assets/images/pngs/siptatif-logo.png";
 import Register from "./Register";
 import VerifyEmail from "./VerifyEmail";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { LoadingFullScreen } from "../../components/Loading";
 import { verifyRegisterTokenFromEmailService } from "../../services/RegisterServices";
@@ -18,7 +18,14 @@ const RegisterPage = () => {
 	const [searchParams] = useSearchParams("");
 	const tokenVerification = searchParams.get("__token_verification");
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
+
+		if (localStorage.getItem("access-token") !== null) {
+			navigate("/dashboard");
+		}
+
 		if (tokenVerification) {
 			verifyRegisterTokenFromEmailService(tokenVerification).then((data) => {
 				if (data.response) {

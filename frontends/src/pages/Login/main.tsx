@@ -12,8 +12,8 @@ import Footer from "../../components/Footer";
 import { LoadingFullScreen } from "../../components/Loading";
 
 function LoginPage() {
-  const navigate = useNavigate();
-  
+	const navigate = useNavigate();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState<string>("");
@@ -22,6 +22,11 @@ function LoginPage() {
 	const [listAnnouncement, setListAnnouncement] = useState<string>("");
 	let pengumuman = "";
 	useEffect(() => {
+
+		if (localStorage.getItem("access-token") !== null) {
+			navigate("/dashboard");
+		}
+
 		fetch(`${process.env.BASE_URL}/list-pengumuman`, {
 			method: "GET",
 			headers: {

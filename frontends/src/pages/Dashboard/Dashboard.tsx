@@ -1,37 +1,28 @@
 import CustomMarquee from "../../components/Marquee";
 import Navbar from "../../components/Navbar";
-// import SideBarKoordinator from "./Koordinator/SideBarKoordinator";
-// import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { refreshToken, verifyAccess } from "../../services/JwtAuthService";
+import { verifyAccess } from "../../services/JwtAuthService";
 import { useEffect, useState } from "react";
 import MainAdminProdi from "./AdminProdi/main";
 import MainKoordinatorTA from "./Koordinator/main";
 import MainMahasiswa from "./Mahasiswa/main";
 import { getListPengumuman } from "../../services/PengumumanService";
-
-// import { InvalidTokenError, JwtPayload, jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const [role, setRole] = useState<string>("");
   const [listAnnouncement, setListAnnouncement] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    verifyAccess().then((data) => {
-      setRole(data.role);
+    if (!localStorage.getItem("access-token")) {
+			navigate("/login");
+      return;
+		}
 
-      if (!data.response) {
-        refreshToken().then((data) => {
-          console.log(data);
-          if (data.response) {
-            localStorage.setItem("access-token", data.access_token);
-            navigate("/dashboard");
-          } else {
-            navigate("/login");
-          }
-        });
-      }
+    verifyAccess().then((data) => {
+        if (data.response) {
+          setRole(data.role);
+        }
     });
 
     let pengumuman = "";
@@ -66,8 +57,6 @@ const Dashboard = () => {
       </div>
 
       <div className="flex-1 overflow-hidden">{content}</div>
-
-      {/* <footer className="w-full h-10 bg-black">teet</footer> */}
     </div>
   );
 };
