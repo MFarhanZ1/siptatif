@@ -175,6 +175,7 @@ function Pengumuman() {
                     onClick={() => {
                       setIsiPengumuman("");
                       setEditMode(false);
+                      SetTanggalExpired("");
                     }}
                     type="button"
                     className="bg-red-400 cursor-pointer border border-black rounded-md font-bold w-[30%] mt-4 text-xl hover:bg-[#ae2d2d]"

@@ -64,7 +64,7 @@ function KelolaKeahlianDosen() {
       // // setCurrentPage(data.info.current_page);
       // setTotalPage(data.info.total_page);
     });
-  }, [searchData, refresh]);
+  }, [searchData]);
 
   return (
 		<div className="h-full">
