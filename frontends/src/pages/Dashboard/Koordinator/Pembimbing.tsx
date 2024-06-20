@@ -34,7 +34,7 @@ function Pembimbing() {
     });
   }, []);
 
-  const [bodypage, setBodyPage] = useState<Data[]>([]);
+  const [bodypage, setBodyPage] = useState([]);
 
   const [page, setPage] = useState(1);
   const [pageInterval, setPageInterval] = useState(20);
@@ -106,16 +106,24 @@ function Pembimbing() {
                         setNidn("");
 											});
 										} else {
+                      
 											Swal.fire({
 												icon: "error",
-											});
+                        title: "Perubahan data dosen gagal!",
+                        text: data.message,
+                        showConfirmButton: false,
+                        showCloseButton: false,
+                        timer: 2000,
+                      })
 										}
 									});
                 } else {
+
                   createDataPembimbing({
                     nidn: nidn,
                     kuota: kuota,
                   }).then((data) => {
+                    setLoadingButton(false);
                     if (data.response) {
                       Swal.fire({
                         icon: "success",
@@ -135,7 +143,9 @@ function Pembimbing() {
                         text: data.message,
                         showConfirmButton: false,
                         timer: 3000,
-                      });
+                      }).then(() => {
+                        setLoadingButton(false);
+                      })
                     }
                   });
                 }
@@ -153,7 +163,7 @@ function Pembimbing() {
                 <option value="" selected>
                   -- Pilih Dosen --
                 </option>
-                {body.map((data: { nidn: string; nama: string }) => {
+                {body?.map((data: { nidn: string; nama: string }) => {
                   return <option value={data.nidn}>{data.nama}</option>;
                 })}
               </select>

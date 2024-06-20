@@ -48,7 +48,7 @@ function TablePengujiKoordinator({ body ,onDelete, onEdit}: Data) {
                   )}
                 </td>
                 <td className="px-6 py-2 truncate max-w-16">
-                  {item.kuota_awal}
+                {item.kuota_awal}
                 </td>
                 <td className="flex py-2 items-center justify-center">
                   <div className="flex items-center justify-center gap-1">

@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { getAllDataDosen } from "../../../services/AdminProdiService";
 import Card from "../../../components/Card";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import SeachField from "../../../components/SeachField";
-import { createPengujiKoordinator, getDataDosenPengujiPage, getSearchDataDosenPenguji } from "../../../services/KoordinatorTAService";
+import { createPengujiKoordinator, deleteDataDosenPengujiKoordinator, editDataDosenPengujiKoordinator, getDataDosenPengujiPage, getSearchDataDosenPenguji } from "../../../services/KoordinatorTAService";
 import Swal from "sweetalert2";
-import TableKeahlianDosenAdmin from "../../../components/TableKeahlianDosenAdmin";
 import TablePengujiKoordinator from "../../../components/TablePengujiKoordinator";
+import Pagination from "../../../components/Pagination";
 
-interface Data {
-  nidn: string;
-  nama: string;
-}
+
 function Penguji() {
   const [nidn, setNidn] = useState("");
   const [kuota, setKuota] = useState("");
-  
+
   const [body, Setbody] = useState([]);
 
   const [bodypage, setBodyPage] = useState([]);
@@ -28,6 +25,9 @@ function Penguji() {
 
   const [refresh, setRefresh] = useState(false);
 
+  const [editMode, setEditMode] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
+
   useEffect(() => {
     getAllDataDosen().then((data) => {
       Setbody(data.results);
@@ -36,7 +36,6 @@ function Penguji() {
 
   useEffect(() => {
     getDataDosenPengujiPage(page).then((data) => {
-      console.log(data);
       setBodyPage(data.results);
       setTotalItems(data.info.total_all_data);
       setPageInterval(data.info.data_per_page);
@@ -71,28 +70,64 @@ function Penguji() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                createPengujiKoordinator(nidn, kuota).then((data) => {
-                  if (data.response) {
-                    Swal.fire({
-                      icon: "success",
-                      title: "Berhasil",
-                      text: data.message,
-                      showConfirmButton: false,
-                      timer: 3000,
-                    }).then(() => {
-                      setNidn("");
-                      setKuota("");
-                    })
-                  }else{
-                    Swal.fire({
-                      icon: "error",
-                      title: "Gagal",
-                      text: data.message,
-                      showConfirmButton: false,
-                      timer: 3000,
-                    });
-                  }
-                })
+                console.log(nidn, kuota);
+                setLoadingButton(true);
+                if (editMode) {
+                  editDataDosenPengujiKoordinator(
+                    nidn,
+                    kuota
+                  ).then((data) => {
+                    setLoadingButton(false);
+                    if (data.response) {
+                      Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                      }).then(() => {
+                        setNidn("");
+                        setKuota("");
+                        setRefresh(!refresh);
+                        setEditMode(false);
+                      })
+                    }else{
+                      Swal.fire({
+                        icon: "error",
+                        title: "Gagal",
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }else{
+                  createPengujiKoordinator(nidn, kuota).then((data) => {
+                    setLoadingButton(false);
+                    if (data.response) {
+                      Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                      }).then(() => {
+                        setNidn("");
+                        setKuota("");
+                        setLoadingButton(false);
+                        setRefresh(!refresh);
+                      })
+                    }else{
+                      Swal.fire({
+                        icon: "error",
+                        title: "Gagal",
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  })
+                }
               }}
             >
               <p className="text-xl mb-4 font-poppins">
@@ -104,7 +139,7 @@ function Penguji() {
                 value={nidn}
               >
                 <option value="">-- Pilih Dosen --</option>
-                {body.map((data: Data) => {
+                {body?.map((data:{nidn:string, nama:string}) => {
                   return <option value={data.nidn}>{data.nama}</option>;
                 })}
               </select>
@@ -131,20 +166,83 @@ function Penguji() {
                   setKuota(e.target.value);
                 }}
               ></Input>
-              <Button
-                className={`bg-[#8BD3DD] cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#72abc8] disabled:bg-[#7dabb8]`}
-                text="Tambahkan"
-                type="submit"
-              />
+              <div className="flex gap-3">
+                <Button
+                  text="Batal"
+                  onClick={() => {
+                    setEditMode(false);
+                    setNidn("");
+                    setKuota("");
+                  }}
+                  type="button"
+                  className="bg-red-400 cursor-pointer border border-black rounded-md font-bold w-[30%] mt-4 text-xl hover:bg-[#ae2d2d]"
+                />
+                <Button
+                  className={`${
+                    editMode
+                      ? "bg-yellow-300 hover:bg-yellow-400"
+                      : "bg-[#8BD3DD]"
+                  } cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#72abc8] disabled:bg-[#7dabb8]`}
+                  text={
+                    loadingButton
+                      ? "Sedang Memproses..."
+                      : editMode
+                      ? "Perbarui Data"
+                      : "Tambahkan"
+                  }
+                  type="submit"
+                />
+              </div>
             </form>
           </Card>
         </div>
 
         <div className="flex flex-col h-full w-[63%]">
           <div className="flex flex-col mr-2 gap-4 overflow-auto h-full">
-            <SeachField onChange={(e) => setSearchData(e)} />
-            <TablePengujiKoordinator body={bodypage} onDelete={() => console.log("delete")} onEdit={() => console.log("edit")}/>
-            {/* <Pagination
+            <SeachField onChange={(e) => setSearchData(e as SetStateAction<string>)} />
+            <TablePengujiKoordinator body={bodypage} onDelete={(nidn) =>{
+              Swal.fire({
+                title: "Apakah Anda yakin?",
+                text: "Data yang di hapus tidak dapat dikembalikan!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#e09719",
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  deleteDataDosenPengujiKoordinator(nidn).then((data) => {
+                    if (data.response) {
+                      Swal.fire({
+                        icon: "success",
+                        title: "Hapus data dosen berhasil!",
+                        text: data.message,
+                        showConfirmButton: false,
+                        showCloseButton: false,
+                        timer: 2000,
+                      }).then(() => {
+                        setRefresh(!refresh);
+                      });
+                    } else {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Hapus data dosen gagal!",
+                        text: data.message,
+                        showConfirmButton: false,
+                        showCloseButton: false,
+                        timer: 2000,
+                      });
+                    }
+                  });
+                }
+              });
+            }} onEdit={(nidn,kuota_awal) =>{
+              setEditMode(true)
+              setKuota(kuota_awal)
+              setNidn(nidn)
+              }}/>
+            <Pagination
               totalItems={totalItems}
               totalPages={totalPage}
               itemsPerPage={pageInterval}
@@ -152,7 +250,7 @@ function Penguji() {
               onPageChange={(page) => {
                 setPage(page);
               }}
-            /> */}
+            />
           </div>
         </div>
       </div>

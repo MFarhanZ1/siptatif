@@ -65,7 +65,7 @@ function KelolaJabatanDosen() {
                         text: data.message,
                         showConfirmButton: false,
                         timer: 3000,
-                      });
+                      })
                     }
                     setRefresh(!refresh);
                     SetNidnAndEmail("");
@@ -88,9 +88,7 @@ function KelolaJabatanDosen() {
 										{bodyDosen?.map((data: { nidn: string; nama: string; email: string; }) => {
 											return <option value={`${data.nidn}#${data.email}`}>{data.nama}</option>;
 										})}
-										{/* {body.map((data: Data) => {
-                  return <option value={data.nidn}>{data.nama}</option>;
-                })} */}
+										
 									</select>
 								</div>
 
