@@ -8,12 +8,14 @@ import { useEffect, useState } from "react";
 import MainAdminProdi from "./AdminProdi/main";
 import MainKoordinatorTA from "./Koordinator/main";
 import MainMahasiswa from "./Mahasiswa/main";
+import { getListPengumuman } from "../../services/PengumumanService";
 
 // import { InvalidTokenError, JwtPayload, jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState<string>("");
+  const [listAnnouncement, setListAnnouncement] = useState<string>("");
 
   useEffect(() => {
     verifyAccess().then((data) => {
@@ -31,6 +33,17 @@ const Dashboard = () => {
         });
       }
     });
+
+    let pengumuman = "";
+    getListPengumuman().then((data) => {
+      for (let i = 0; i < data.results.length; i++) {
+        pengumuman = `${pengumuman} ${data.results[i].isi} ${
+          i === data.results.length - 1 ? "" : "|"
+        }`;
+      }
+      setListAnnouncement(pengumuman);
+    });
+    
   }, []);
 
   // rbac
@@ -49,13 +62,12 @@ const Dashboard = () => {
         {/* navbar */}
         <Navbar />
         {/* marque list */}
-        <CustomMarquee list_announcement="Perhatian! Perubahan jadwal seminar proposal menjadi 2 June 2024 | Kontak admin untuk masalah teknis di support@uin-suska.ac.id" />
+        <CustomMarquee list_announcement={listAnnouncement} />
       </div>
 
-      <div className="h-full flex-1 overflow-hidden">{content}</div>
+      <div className="flex-1 overflow-hidden">{content}</div>
 
       {/* <footer className="w-full h-10 bg-black">teet</footer> */}
-
     </div>
   );
 };

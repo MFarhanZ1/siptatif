@@ -27,9 +27,6 @@ function KelolaKeahlianDosen() {
   const [totalItems, setTotalItems] = useState(0);
   // const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
-
-  const [disabled, setDisabled] = useState(false);
-
   useEffect(() => {
     getAllDataDosen().then((data) => {
       SetBodyDosen(data.results);
@@ -66,7 +63,7 @@ function KelolaKeahlianDosen() {
       // // setCurrentPage(data.info.current_page);
       // setTotalPage(data.info.total_page);
     });
-  }, [searchData]);
+  }, [searchData, refresh]);
 
   return (
     <div>
