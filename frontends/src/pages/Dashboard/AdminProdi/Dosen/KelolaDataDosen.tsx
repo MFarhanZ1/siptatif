@@ -247,6 +247,7 @@ function KelolaDataDosen() {
 				<div className="flex flex-col h-full w-[63%]">
 					<div className="flex flex-col mr-2 gap-4 overflow-auto h-full">
 						<SeachField
+            placeholder="Cari berdasarkan NIDN, ataupun Nama Dosen..."
 							onChange={(e) => {
 								setSearchData(e as SetStateAction<string>);
 							}}
