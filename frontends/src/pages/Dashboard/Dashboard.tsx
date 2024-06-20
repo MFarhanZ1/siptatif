@@ -28,8 +28,8 @@ const Dashboard = () => {
     let pengumuman = "";
     getListPengumuman().then((data) => {
       for (let i = 0; i < data.results.length; i++) {
-        pengumuman = `${pengumuman} ${data.results[i].isi} ${
-          i === data.results.length - 1 ? "" : "|"
+        pengumuman = ` ${pengumuman} ${data.results[i].isi} ${
+          i === data.results.length - 1 ? " - // -" : "|"
         }`;
       }
       setListAnnouncement(pengumuman);

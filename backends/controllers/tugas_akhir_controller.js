@@ -185,7 +185,7 @@ const updateTugasAkhir = async (req, res) => {
 
     try {
 
-        if (nidn_penguji1 === nidn_penguji2) {
+        if (nidn_penguji1 === nidn_penguji2 && nidn_penguji1 !== null && nidn_penguji2 !== null) {
             return res.status(400).json({
                 response: false,
                 message: "Maaf, penguji 1 dan 2 tidak boleh sama!",
@@ -205,7 +205,7 @@ const updateTugasAkhir = async (req, res) => {
             `SELECT * FROM view_detail_dosen_penguji WHERE nidn = $1 AND kuota_tersisa > 0`,
             [nidn_penguji1]
         );
-        if (checkPenguji1.rowCount === 0) {
+        if (checkPenguji1.rowCount === 0 && nidn_penguji1 !== null) {
             return res.status(400).json({
                 response: false,
                 message: "Maaf, penguji 1 tidak dapat digunakan, sepertinya kuota telah habis atau penguji belum terdaftar!",
@@ -217,7 +217,7 @@ const updateTugasAkhir = async (req, res) => {
                 `SELECT * FROM view_detail_dosen_penguji WHERE nidn = $1 AND kuota_tersisa > 0`,
                 [nidn_penguji2]
             );
-            if (checkPenguji2.rowCount === 0) {
+            if (checkPenguji2.rowCount === 0 && nidn_penguji2 !== null) {
                 return res.status(400).json({
                     response: false,
                     message: "Maaf, penguji 2 tidak dapat digunakan, sepertinya kuota telah habis atau penguji belum terdaftar!",

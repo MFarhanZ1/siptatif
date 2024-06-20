@@ -5,13 +5,14 @@ import KelolaDataDosen from "./Dosen/KelolaDataDosen";
 import KelolaJabatanDosen from "./Dosen/KelolaJabatanDosen";
 import KelolaKeahlianDosen from "./Dosen/KelolaKeahlianDosen";
 import Pengumuman from "./Pengumuman/Pengumuman";
+import DashboardAdminProdi from "./DashboardAdminProdi";
 
 function MainAdminProdi() {
   const [onMenuClick, setOnMenuClick] = useState("dashboard");
   const renderContent = () => {
     switch (onMenuClick) {
       case "dashboard":
-        return <div className="h-full">Dashboard</div>;
+        return <DashboardAdminProdi onMenuClick={setOnMenuClick} />;
       case "kelolaodosen":
         return <KelolaDataDosen />;
       case "kelolakeahlian":
