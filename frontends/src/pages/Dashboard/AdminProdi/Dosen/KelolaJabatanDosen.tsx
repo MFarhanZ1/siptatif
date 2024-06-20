@@ -85,7 +85,7 @@ function KelolaJabatanDosen() {
 										<option value="" disabled selected={nidnAndEmail === ""}>
 											-- Pilih Dosen --
 										</option>
-										{bodyDosen.map((data: { nidn: string; nama: string; email: string; }) => {
+										{bodyDosen?.map((data: { nidn: string; nama: string; email: string; }) => {
 											return <option value={`${data.nidn}#${data.email}`}>{data.nama}</option>;
 										})}
 										{/* {body.map((data: Data) => {
