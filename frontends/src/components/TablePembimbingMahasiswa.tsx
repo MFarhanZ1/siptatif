@@ -10,7 +10,6 @@ function TablePembimbingMahasiswa() {
 
   const [pageInterval, setPageInterval] = useState(20);
   const [totalItems, setTotalItems] = useState(0);
-  // const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
 
   useEffect(() => {
@@ -18,16 +17,13 @@ function TablePembimbingMahasiswa() {
       setBody(data.results);
       setTotalItems(data.info.total_all_data);
       setPageInterval(data.info.data_per_page);
-      // setCurrentPage(data.info.current_page);
       setTotalPage(data.info.total_page);
     });
   }, [page]);
   const redItem: number = 1;
   return (
     <div className="flex flex-col gap-4 overflow-x-auto font-poppins flex-1 m-3">
-      <div>
-        <SeachField />
-      </div>
+      <div>{/* <SeachField /> */}</div>
       <div className="overflow-y-auto border border-black">
         {/* table */}
         <table className="w-full text-xs text-left table-auto">
