@@ -7,12 +7,15 @@ import {
 	createDataDosen,
 	deleteDataDosen,
 	editDataDosen,
+	getAllDataDosen,
 	getDataDosenPage,
 	getDataDosenSearch,
 } from "../../../../services/AdminProdiService";
 import TableDosenAdmin from "../../../../components/TableDataDosenAdmin";
 import SeachField from "../../../../components/SeachField";
 import Swal from "sweetalert2";
+import PDFDataDosen from "../../../../components/DocumentPDFViews";
+import { PDFViewer } from "@react-pdf/renderer";
 interface Data {
 	body: {
 		nidn?: string;
@@ -31,6 +34,8 @@ function KelolaDataDosen() {
 	const [body, setBody] = useState<Data["body"]>([]);
 	const [page, setPage] = useState(1);
 
+	const [pdfBody, setPdfBody] = useState([]);
+
 	const [pageInterval, setPageInterval] = useState(20);
 	const [totalItems, setTotalItems] = useState(0);
 	// const [currentPage, setCurrentPage] = useState(0);
@@ -41,7 +46,13 @@ function KelolaDataDosen() {
 
 	const [refresh, setRefresh] = useState(false);
 
+	const [showPDF, setShowPDF] = useState(false);
+
 	useEffect(() => {
+		getAllDataDosen().then((data) => {
+			setPdfBody(data.results);
+		});
+
 		getDataDosenPage(page).then((data) => {
 			// console.log(data.results);
 			setBody(data.results);
@@ -70,6 +81,11 @@ function KelolaDataDosen() {
 
 	return (
 		<div className="h-full">
+			{showPDF && (
+				<PDFViewer style={{ width: "100%", height: "100%" }}>
+					<PDFDataDosen data={pdfBody} />
+				</PDFViewer>
+			)}
 			<div className="flex gap-5 w-full h-full p-5">
 				<div className="w-[37%] ml-2 h-full flex justify-center rounded-xl bg-gray-200 border-t border-b border-black items-center">
 					<Card className="border border-black font-poppins p-4 w-full overflow-auto">
@@ -246,12 +262,22 @@ function KelolaDataDosen() {
 				</div>
 				<div className="flex flex-col h-full w-[63%]">
 					<div className="flex flex-col mr-2 gap-4 overflow-auto h-full">
-						<SeachField
-            placeholder="Cari berdasarkan NIDN, ataupun Nama Dosen..."
-							onChange={(e) => {
-								setSearchData(e as SetStateAction<string>);
-							}}
-						/>
+						<div className="flex gap-3">
+							<SeachField
+								placeholder="Cari berdasarkan NIDN, ataupun Nama Dosen..."
+								onChange={(e) => {
+									setSearchData(e as SetStateAction<string>);
+								}}
+							/>
+							<div
+								onClick={() => {
+									setShowPDF(true);
+								}}
+								className="w-40 rounded-lg active:bg-yellow-600 hover:bg-yellow-500 hover:cursor-pointer h-full flex justify-center items-center border border-black bg-yellow-400 font-poppins"
+							>
+								<p>📝 Cetak PDF</p>
+							</div>
+						</div>
 						<TableDosenAdmin
 							onDelete={(nidn) => {
 								Swal.fire({

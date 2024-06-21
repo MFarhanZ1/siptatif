@@ -1,14 +1,10 @@
-import React, { useEffect } from "react";
 import {
 	Page,
 	Text,
 	View,
 	Document,
 	StyleSheet,
-	PDFDownloadLink,
-    PDFViewer,
 } from "@react-pdf/renderer";
-import { getAllDataDosen } from "../services/AdminProdiService";
 
 // Definisikan tipe untuk data tabel
 interface TableRow {
@@ -123,25 +119,5 @@ const PDFDataDosen = ({ data }: PDFDataDosenProps) => (
 		</Page>
 	</Document>
 );
-
-const Test = () => {
-    
-    const [body, setBody] = React.useState([]);
-
-    useEffect(() => {    
-        getAllDataDosen().then((data) => {
-            if (data.response) {
-                setBody(data.results);
-            }
-        })
-    }, []);
-
-	return (
-		// <PDFDownloadLink document={<MyDocument />}>Download PDF</PDFDownloadLink>
-        <PDFViewer width={window.innerWidth} height={window.innerHeight}>
-            <PDFDataDosen data={body} />
-        </PDFViewer>
-	);
-};
 
 export default PDFDataDosen;

@@ -9,7 +9,7 @@ interface SeachFieldProps {
 function SeachField({onChange, placeholder}: SeachFieldProps) {
   placeholder = placeholder ? placeholder : 'Cari berdasarkan NIDN, Nama Dosen, ataupun Keahlian...'
   return (
-    <div className='flex gap-2 font-poppins rounded-md border border-black p-1'>
+    <div className='flex w-full gap-2 font-poppins rounded-md border border-black p-1'>
         <img src={iconsearch} alt="" className='w-8'/>
         <input onChange={(e) => onChange(e.target.value)} className='w-full bg-transparent border-none focus:outline-none' type="text" name="" id=""  placeholder={placeholder}/>
     </div>
