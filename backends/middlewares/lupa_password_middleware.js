@@ -16,6 +16,8 @@ const email_sudah_terdaftar = async (req, res, next) => {
 			});
 		}
 
+		// used for handling role based send reset password in mobile apps
+		req.user = resultInAkun.rows[0];
 		return next();
 	} catch (error) {
 		return res.status(500).json({
