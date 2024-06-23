@@ -56,7 +56,7 @@ function Input({
       className={`border-b border-black py-2 font-poppins mb-3 ${className}`}
     >
       <label>
-        <p className="text-xl">
+        <p className="text-lg truncate sm:text-xl">
           {label}{" "}
           {required ? (
             <span className="text-red-500">*</span>
