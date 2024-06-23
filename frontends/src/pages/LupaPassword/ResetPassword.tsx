@@ -17,8 +17,8 @@ function ResetPassword({email, onButtonClicked}: ResetPasswordProps) {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [invalidMatchPassword, setinvalidMatchPassword] = useState(false);
   return (
-    <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
-      <h1 className="text-[35px] text-center ml-1 underline mb-6 font-poppins-semibold">
+    <Card className="py-7 px-5 sm:px-10 w-full border border-black rounded-lg shadow-lg bg-white">
+      <h1 className="text-[25px] sm:text-[35px] text-center ml-1 underline mb-6 font-poppins-semibold">
         Reset Password
       </h1>
       {/* form input */}
@@ -28,7 +28,7 @@ function ResetPassword({email, onButtonClicked}: ResetPasswordProps) {
           e.preventDefault();
           if (password !== confirmPassword) {
             return Swal.fire({
-              title: "Registrasi ditolak!",
+              title: "Reset Password ditolak!",
               text: "Maaf, kedua password yang anda inputkan tidak sesuai, harap lebih teliti kembali.",
               icon: "error",
               showConfirmButton: false,

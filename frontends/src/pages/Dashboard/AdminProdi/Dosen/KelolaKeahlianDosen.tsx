@@ -190,9 +190,28 @@ function KelolaKeahlianDosen() {
                   cancelButtonText: "Batal",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    deleteKeahlianDosen(nidn, id_keahlian).then(() => {
-                      console.log("deleted");
-                      setRefresh(!refresh);
+                    deleteKeahlianDosen(nidn, id_keahlian).then((data) => {
+                      if (data.response) {
+                        Swal.fire({
+                          icon: "success",
+                          title: "Hapus data keahlian dosen berhasil!",
+                          text: data.message,
+                          showConfirmButton: false,
+                          showCloseButton: false,
+                          timer: 2000,
+                        }).then(() => {
+                          setRefresh(!refresh);
+                        })
+                      }else{
+                        Swal.fire({
+                          icon: "error",
+                          title: "Hapus data keahlian dosen gagal!",
+                          text: data.message,
+                          showConfirmButton: false,
+                          showCloseButton: false,
+                          timer: 2000,
+                        });
+                      }
                     });
                   }
                 });

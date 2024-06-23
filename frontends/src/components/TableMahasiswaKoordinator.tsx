@@ -56,10 +56,6 @@ const Modal = ({ show, onClose, data }) => {
             <p>{data.nama_mahasiswa}</p>
           </div>
           <div className="flex flex-col">
-            <p className="font-bold">Nama Mahasiswa:</p>
-            <p>{data.nama_mahasiswa}</p>
-          </div>
-          <div className="flex flex-col">
             <p className="font-bold">NIM:</p>
             <p>{data.nim}</p>
           </div>

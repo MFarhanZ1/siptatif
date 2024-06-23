@@ -17,8 +17,8 @@ const VerifyEmail = ({ onButtonClicked }: VerifyEmailProps) => {
   const [isClickedVerif, setisClickedVerif] = useState(false);
 
   return (
-    <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
-      <h1 className="text-[42px] text-center ml-1 underline mb-6 font-poppins-semibold">
+    <Card className="py-7 px-5 sm:px-10 w-full border border-black rounded-lg shadow-lg bg-white">
+      <h1 className="text-[26px] sm:text-[42px]  text-center ml-1 underline mb-6 font-poppins-semibold">
         Register
       </h1>
       {/* form input */}

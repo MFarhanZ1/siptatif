@@ -18,8 +18,8 @@ const LupaPassword = ({onButtonClicked}: LupaPasswordProps) => {
   const [email, setEmail] = useState<string>("");
   
   return (
-    <Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
-      <h1 className="text-[35px] text-center ml-1 underline mb-6 font-poppins-semibold">
+    <Card className="py-7 px-5 sm:px-10 w-full border border-black rounded-lg shadow-lg bg-white">
+      <h1 className="text-[25px] sm:text-[35px] text-center ml-1 underline mb-6 font-poppins-semibold">
         Lupa Password
       </h1>
       {/* form input */}
