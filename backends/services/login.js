@@ -238,7 +238,7 @@ const verifikasi_login_mobile = async (req, res) => {
 				return res.status(200).json({
 					response: true,
 					access_token: accessToken,
-					refreshToken: refreshToken,
+					refresh_token: refreshToken,
 					role: results.rows[0].role,
 					message:
 						"Yeay, login sukses! sebentar ya, kami akan mengarahkan kamu kehalaman dashboard.",
