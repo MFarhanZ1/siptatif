@@ -15,12 +15,20 @@ const {
     verifikasi_token_lupa_password,
     reset_password
 } = require("../services/lupa_password");
+const { koordinator_ta_only } = require("../middlewares/authorization_middleware");
 
 // list available routes in login features
 router.post(
     "/kirim-link-lupa-password", 
     email_sudah_terdaftar, 
     link_reset_password_belum_pernah_terkirim,
+    kirim_link_lupa_password
+);
+router.post(
+    "/mobile/koor-ta/kirim-link-lupa-password", 
+    email_sudah_terdaftar, 
+    link_reset_password_belum_pernah_terkirim,
+    koordinator_ta_only,
     kirim_link_lupa_password
 );
 router.post(
