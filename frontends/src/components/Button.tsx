@@ -9,7 +9,7 @@ interface ButtonProps {
 const Button = ({ className, text, onClick, disabled, type}: ButtonProps) => {
 	return (
 		<button
-			className={`px-4 py-1 h-12 text-center ${className}`}
+			className={`text-lg truncate sm:text-xl px-4 py-1 h-12 text-center ${className}`}
 			disabled={disabled}
 			type={type}
 			onClick={onClick}
