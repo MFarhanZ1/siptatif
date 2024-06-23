@@ -22,7 +22,7 @@ const getPenguji = async (req, res) => {
 		let countData;
 
         // bakal query execute mode searching
-		if (search) {
+		if (search && !page) {
 			regexSearch = `%${search.toLowerCase()}%`; 
             
 			results = await db.query(
@@ -36,12 +36,26 @@ const getPenguji = async (req, res) => {
 		}
 
 		// bakal query execute mode paging
-		else if (page) {
+		else if (page && !search) {
 			results = await db.query(
 				"SELECT * FROM view_detail_dosen_penguji LIMIT $1 OFFSET $2",
 				[limit, offset]
 			);
 			countData = await db.query("SELECT COUNT(*) FROM view_detail_dosen_penguji");
+		}
+
+        // bakal query execute mode searching
+		else if (search && page) {
+			regexSearch = `%${search.toLowerCase()}%`; 
+            
+			results = await db.query(
+				"SELECT * FROM view_detail_dosen_penguji WHERE (LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1 OR LOWER(keahlian) LIKE $1) LIMIT $2 OFFSET $3",
+				[regexSearch, limit, offset]
+			);
+			countData = await db.query(
+				"SELECT COUNT(*) FROM view_detail_dosen_penguji WHERE (LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1 OR LOWER(keahlian) LIKE $1)",
+				[regexSearch]
+			);
 		}
 
 		// bakal query execute mode normal, langsung terobos semua data jika tak ada query search/page

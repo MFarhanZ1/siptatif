@@ -24,7 +24,7 @@ const getDosen = async (req, res) => {
 		let countData;
 
 		// bakal query execute mode searching
-		if (search) {
+		if (search && !page) {
 			regexSearch = `%${search.toLowerCase()}%`;
 			results = await db.query(
 				"SELECT * FROM dosen WHERE LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1 ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama LIMIT $2 OFFSET $3",
@@ -37,12 +37,24 @@ const getDosen = async (req, res) => {
 		}
 
 		// bakal query execute mode paging
-		else if (page) {
+		else if (page && !search) {
 			results = await db.query(
 				"SELECT * FROM dosen ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama LIMIT $1 OFFSET $2",
 				[limit, offset]
 			);
 			countData = await db.query("SELECT COUNT(*) FROM dosen");
+		}
+
+		else if (search && page) {
+			regexSearch = `%${search.toLowerCase()}%`;
+			results = await db.query(
+				"SELECT * FROM dosen WHERE LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1 ORDER BY CASE WHEN nama LIKE 'Prof. Dr.%' THEN 1 WHEN nama LIKE 'Dr.%' THEN 2 ELSE 3 END, nama LIMIT $2 OFFSET $3",
+				[regexSearch, limit, offset]
+			);
+			countData = await db.query(
+				"SELECT COUNT(*) FROM dosen WHERE LOWER(nama) LIKE $1 OR LOWER(nidn) LIKE $1",
+				[regexSearch]
+			);
 		}
 
 		// bakal query execute mode normal, langsung terobos semua data jika tak ada query search/page
