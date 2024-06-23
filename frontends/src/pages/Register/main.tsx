@@ -65,14 +65,14 @@ const RegisterPage = () => {
 			{/* main content */}
 			<div
 				id="main-content"
-				className="flex items-center justify-center flex-1 gap-14"
+				className="flex items-center justify-center flex-1 sm:gap-14"
 			>
 				{/* Logo siptatif usr */}
 				<div>
-					<img src={topimage} className="w-[530px]" alt="Top Image" />
+					<img src={topimage} className="hidden sm:block w-[530px]" alt="Top Image" />
 				</div>
 				{/* form login */}
-				<div className="w-4/12">
+				<div className="w-10/12 sm:w-4/12">
 					{/* different form depends on isEmailValid */}
 					{isEmailValid ? (
 						<Register

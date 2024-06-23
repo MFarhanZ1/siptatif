@@ -55,16 +55,16 @@ function LoginPage() {
 				{/* main content */}
 				<div
 					id="main-content"
-					className="flex items-center justify-center flex-1 gap-14"
+					className="flex items-center justify-center flex-1 sm:gap-14"
 				>
 					{/* Logo siptatif usr */}
 					<div>
-						<img src={siptatifImage} className="w-[530px]" alt="Top Image" />
+						<img src={siptatifImage} className="hidden sm:block w-[530px]" alt="Top Image" />
 					</div>
 					{/* form login */}
-					<div className="w-4/12">
-						<Card className="py-7 px-10 w-full border border-black rounded-lg shadow-lg bg-white">
-							<h1 className="text-[42px] text-center ml-1 underline mb-6 font-poppins-semibold">
+					<div className="w-10/12 sm:w-4/12">
+						<Card className="py-7 px-5 sm:px-10 w-full border border-black rounded-lg shadow-lg bg-white">
+							<h1 className="text-[26px] sm:text-[42px]  text-center ml-1 underline mb-6 font-poppins-semibold">
 								Login <span className="italic font-ibm-plex-mono-medium tracking-[-2px]">SIPTATIF</span>
 							</h1>
 							{/* form input */}
@@ -123,7 +123,7 @@ function LoginPage() {
 								</div>
 								<div className="flex justify-end">
 									<p
-										className="p-1 cursor-pointer font-bold underline hover:text-[#6c2682]"
+										className="p-1 cursor-pointer font-bold underline hover:text-[#6c2682] text-[15px] sm:text-base"
 										onClick={() => {
 											Swal.fire({
 												title: "⚡ Otw Page Lupa Password...",
@@ -145,7 +145,7 @@ function LoginPage() {
 									type="submit"
 								/>
 							</form>
-							<p className="mt-5">
+							<p className="mt-5 text-[15px] sm:text-base">
 								Belum punya akun?
 								<span
 									className="font-bold underline cursor-pointer px-1 hover:text-[#6c2682]"

@@ -72,11 +72,11 @@ function LupaPasswordPage() {
           className="flex items-center justify-center flex-1 gap-14"
         >
           {/* Logo siptatif usr */}
-          <div>
+          <div className="hidden sm:block">
             <img src={topimage} className="w-[530px]" alt="Top Image" />
           </div>
           {/* form login */}
-          <div className="w-4/12">
+          <div className="w-10/12 sm:w-4/12">
             {reset ? (
               <ResetPassword
                 email={email}
