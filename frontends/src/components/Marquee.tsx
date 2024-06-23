@@ -6,7 +6,7 @@ interface MarqueesProps {
 
 const CustomMarquee = ({list_announcement}: MarqueesProps) => {
 	return (
-		<div className="flex items-center bg-[#FAAE2B] font-ibm-plex-mono-medium overflow-hidden border-b-2 border-t-2 border-black h-8">
+		<div className="flex items-center bg-[#FAAE2B] text-xs sm:text-base font-ibm-plex-mono-medium overflow-hidden border-b-2 border-t-2 border-black h-8">
 			<Marquee>
 				{list_announcement}
 			</Marquee>
