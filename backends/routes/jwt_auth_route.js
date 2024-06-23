@@ -15,7 +15,7 @@ router.post(
     refresh_access_token
 );
 router.post(
-    "mobile/refresh-access-token", 
+    "/mobile/refresh-access-token", 
     refresh_access_token_mobile
 );
 
