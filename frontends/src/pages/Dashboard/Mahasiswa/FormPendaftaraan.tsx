@@ -3,7 +3,10 @@ import Card from "../../../components/Card";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import { useEffect, useState } from "react";
-import { daftarTugasAkhir, getDataDosenMahasiswa } from "../../../services/MahasiswaService";
+import {
+	daftarTugasAkhir,
+	getDataDosenMahasiswa,
+} from "../../../services/MahasiswaService";
 import Swal from "sweetalert2";
 
 interface InputProps {
@@ -25,22 +28,23 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
 	const [bodyPembimbing2, setBodyPembimbing2] = useState([]);
 	const [berkasLink, setBerkasLink] = useState("");
 	const [filterPembimbing2, setFilterPembimbing2] = useState([]);
-  
-  useEffect(() => {
-    const userData = jwtDecode<MyJWTPayload>(
-      localStorage.getItem("access-token")!
-    );
-    // Pastikan userData memiliki nama dan nim sebelum menggunakannya
-    if (userData && userData.nama && userData.nim) {
-      setNama(userData.nama);
-      setNim(userData.nim);
-    } else {
-      console.error("Invalid token payload");
-    }
-  }, [])
+
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
+		const userData = jwtDecode<MyJWTPayload>(
+			localStorage.getItem("access-token")!
+		);
+		// Pastikan userData memiliki nama dan nim sebelum menggunakannya
+		if (userData && userData.nama && userData.nim) {
+			setNama(userData.nama);
+			setNim(userData.nim);
+		} else {
+			console.error("Invalid token payload");
+		}
+	}, []);
 
+	useEffect(() => {
 		const updateFilterPembimbing2 = bodyPembimbing2?.filter(
 			(data: { nidn: string }) => data.nidn !== pembimbing1
 		);
@@ -65,44 +69,51 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
 					onSubmit={(e) => {
 						e.preventDefault();
 
-            daftarTugasAkhir(
-              judulTugasAkhir, jenisPendaftaraan, jenisKategori, berkasLink, nim, pembimbing1, pembimbing2
-            )
-              .then((data) => {
-                if (data.response) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "Berhasil",
-                    text: data.message,
-                    timer: 4000,
-                    showConfirmButton: false,
-                  }).then(() => {
-                    setJudulTugasAkhir("");
-                    setPembimbing1("");
-                    setPembimbing2("");
-                    setJenisKategori("");
-                    setJenisPendaftaraan("");
-                    setBerkasLink("");
-                    onMenuClick("dashboard");
-                  })
-                } else {
-                  Swal.fire({
-                    icon: "error",
-                    title: "Gagal",
-                    text: data.message,
-                    timer: 4000,
-                    showConfirmButton: false,
-                  })
-                }
-              })
+						setIsLoading(true);
+						daftarTugasAkhir(
+							judulTugasAkhir,
+							jenisPendaftaraan,
+							jenisKategori,
+							berkasLink,
+							nim,
+							pembimbing1,
+							pembimbing2
+						).then((data) => {
+							setIsLoading(false);
+							if (data.response) {
+								Swal.fire({
+									icon: "success",
+									title: "Berhasil",
+									text: data.message,
+									timer: 4000,
+									showConfirmButton: false,
+								}).then(() => {
+									setJudulTugasAkhir("");
+									setPembimbing1("");
+									setPembimbing2("");
+									setJenisKategori("");
+									setJenisPendaftaraan("");
+									setBerkasLink("");
+									onMenuClick("dashboard");
+								});
+							} else {
+								Swal.fire({
+									icon: "error",
+									title: "Gagal",
+									text: data.message,
+									timer: 4000,
+									showConfirmButton: false,
+								});
+							}
+						});
 						// console.log(jenisPendaftaraan);
 						// console.log(nama);
 						// console.log(nim);
 						// console.log(judulTugasAkhir);
-            // console.log(jenisKategori);
+						// console.log(jenisKategori);
 						// console.log(pembimbing1);
 						// console.log(pembimbing2);
-            // console.log(berkasLink);
+						// console.log(berkasLink);
 					}}
 				>
 					<div className="flex flex-col gap-3">
@@ -126,9 +137,9 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
 							label="Nama: "
 							required={true}
 							type="text"
-              disabled
-              classNameInput="cursor-not-allowed disabled:bg-gray-100"
-              value={nama}
+							disabled
+							classNameInput="cursor-not-allowed disabled:bg-gray-100"
+							value={nama}
 							placeholder="e.g: M. Farhan Aulia Pratama"
 							onchange={(e) => setNama(e.target.value)}
 						></Input>
@@ -137,9 +148,9 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
 							label="NIM: "
 							required={true}
 							type="number"
-              disabled
-              classNameInput="cursor-not-allowed disabled:bg-gray-100"
-              value={nim}
+							disabled
+							classNameInput="cursor-not-allowed disabled:bg-gray-100"
+							value={nim}
 							placeholder="e.g: 12250113554"
 							onchange={(e) => setNim(e.target.value)}
 						></Input>
@@ -148,7 +159,7 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
 							label="Judul Tugas Akhir: "
 							required={true}
 							type="text"
-              minLength={10}
+							minLength={10}
 							value={judulTugasAkhir}
 							placeholder="e.g: Pengembangan Sistem Deteksi Plagiarisme Berbasis Algoritma Machine Learning"
 							onchange={(e) => setJudulTugasAkhir(e.target.value)}
@@ -250,7 +261,7 @@ function FormPendaftaraan({ onMenuClick }: InputProps) {
 							/>
 							<Button
 								className={`bg-[#8BD3DD] cursor-pointer border border-black rounded-md font-bold w-full mt-4 text-xl hover:bg-[#72abc8] disabled:bg-[#7dabb8]`}
-								text="Daftar Sekarang"
+								text={isLoading ? "Sedang Proses Mendaftar..." : "Daftar Sekarang"}
 								type="submit"
 							/>
 						</div>
