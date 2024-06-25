@@ -26,7 +26,7 @@ const getTugasAkhirInfoForMahasiswa = async (req, res) => {
 };
 
 const getAllTugasAkhir = async (req, res) => {
-    let { page, search } = req.query;
+    let { page, search, filter } = req.query;
     page = parseInt(page) || 1;
     const limit = 20;
     const offset = (page - 1) * limit;
@@ -37,12 +37,26 @@ const getAllTugasAkhir = async (req, res) => {
         let queryParams = [limit, offset];
         
         // Jika ada pencarian, tambahkan klausa WHERE
-        if (search) {
-            query += ` WHERE LOWER(nama_mahasiswa) LIKE $3 OR LOWER(judul_ta) LIKE $3 OR LOWER(nim) LIKE $3`;
+        if (search && !filter) {
+            query += ` WHERE (LOWER(nama_mahasiswa) LIKE $3 OR LOWER(judul_ta) LIKE $3 OR LOWER(nim) LIKE $3)`;
             queryParams.push(`%${search.toLowerCase()}%`);
         }
 
-        query += ` ORDER BY TIMESTAMP LIMIT $1 OFFSET $2`;
+        else if (!search && filter) {
+            query += ` WHERE status = $3`;
+            queryParams.push(filter);
+        }
+
+        // Jika ada pencarian, tambahkan klausa WHERE
+        else if (search && filter) {
+            query += ` WHERE (LOWER(nama_mahasiswa) LIKE $3 OR LOWER(judul_ta) LIKE $3 OR LOWER(nim) LIKE $3) AND status = $4`;
+            queryParams.push(`%${search.toLowerCase()}%`);
+            queryParams.push(filter);
+        }
+
+        query += ` ORDER BY TIMESTAMP DESC LIMIT $1 OFFSET $2`;
+
+        console.log(query, queryParams);
 
         // Jalankan query
         const data = await db.query(query, queryParams);
