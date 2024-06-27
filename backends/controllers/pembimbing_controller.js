@@ -192,6 +192,13 @@ const updatePembimbing = async (req, res) => {
 const deletePembimbing = async (req, res) => {
     const { nidn } = req.params;
     try {
+        const checkDospemInUse = await db.query("SELECT COUNT(*) FROM dosen_pembimbing dp, riwayat_pembimbing rp WHERE dp.nidn = $1 AND dp.nidn = rp.nidn", [nidn]);
+        if (checkDospemInUse.rows[0].count > 0) {
+            return res.status(400).json({
+                response: false,
+                message: "Maaf, proses delete gagal, pembimbing terkait masih menaungi TA!",
+            });
+        }
         const results = await db.query("DELETE FROM dosen_pembimbing WHERE nidn = $1", [nidn]);
         if (results.rowCount === 0) {
             return res.status(400).json({
