@@ -14,6 +14,10 @@ BEGIN
     -- jadinya kuota terpakai pembimbing terkait akan bertambah 1 lagi
     IF p_status = 'DITOLAK' THEN
         DELETE FROM riwayat_pembimbing WHERE no_reg_ta = p_no_reg_ta;
+    ELSIF p_status = 'SETUJU' THEN
+        DELETE FROM riwayat_penguji WHERE no_reg_ta = p_no_reg_ta;
+        INSERT INTO riwayat_penguji(no_reg_ta, nidn) VALUES (p_no_reg_ta, p_nidn_penguji1);
+        INSERT INTO riwayat_penguji(no_reg_ta, nidn) VALUES (p_no_reg_ta, p_nidn_penguji2);
     END IF;
 END;
 $$;
