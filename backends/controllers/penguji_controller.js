@@ -192,6 +192,13 @@ const updatePenguji = async (req, res) => {
 const deletePenguji = async (req, res) => {
     const { nidn } = req.params;
     try {
+        const checkDosujiInUse = await db.query("SELECT COUNT(*) FROM dosen_penguji dp, riwayat_penguji rp WHERE dp.nidn = $1 AND dp.nidn = rp.nidn", [nidn]);
+        if (checkDosujiInUse.rows[0].count > 0) {
+            return res.status(400).json({
+                response: false,
+                message: "Maaf, proses delete gagal, penguji terkait masih menaungi TA!",
+            });
+        }
         const results = await db.query("DELETE FROM dosen_penguji WHERE nidn = $1", [nidn]);
         if (results.rowCount === 0) {
             return res.status(400).json({
