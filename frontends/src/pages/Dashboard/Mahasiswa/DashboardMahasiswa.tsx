@@ -30,8 +30,8 @@ function decideColor(status: string) {
 const DashboardMahasiswa = () => {
 	const [body, setBody] = useState([]);
 
-	const [status, setStatus] = useState("MENUNGGU");
-	const [noRegTA, setNoRegTA] = useState("");
+	const [status, setStatus] = useState("BELUM PERNAH MENDAFTAR");
+	const [noRegTA, setNoRegTA] = useState("daftar dulu mas");
 	const [tglMendaftar, setTglMendaftar] = useState("");
 	const [judulTA, setJudulTA] = useState("");
 	const [pembimbing1, setPembimbing1] = useState("");
@@ -82,7 +82,8 @@ const DashboardMahasiswa = () => {
 			</h1>
 
 			<div className="w-full h-[300px] flex justify-center items-center rounded-xl border border-black">
-				<div className="w-full h-full bg-blue-300 rounded-l-xl p-4 overflow-auto">
+				
+				{ status != "BELUM PERNAH MENDAFTAR" && <div className="w-full h-full bg-blue-300 rounded-l-xl p-4 overflow-auto">
 					<table className="w-full border border-black">
 						<tr>
 							<td className="font-medium p-2 bg-blue-500 text-white border border-black">
@@ -119,7 +120,7 @@ const DashboardMahasiswa = () => {
 							</td>
 						</tr>
 					</table>
-				</div>
+				</div>}
 
 				<div
 					className={`${bgColor} w-full h-full flex flex-col gap-7 justify-center items-center rounded-r-xl`}
@@ -169,6 +170,16 @@ const DashboardMahasiswa = () => {
 							<th className="border border-black">Status</th>
 						</thead>
 						<tbody>
+							{status == "BELUM PERNAH MENDAFTAR" && (
+								<tr>
+									<td className="border border-black p-3 text-center underline italic">Belum ada data mas!</td>
+									<td className="border border-black p-3 text-center underline italic">Belum ada data mas!</td>
+									<td className="border border-black p-3 text-center underline italic">Belum ada data mas!</td>
+									<td className="border border-black p-3 text-center underline italic">Belum ada data mas!</td>
+									<td className="border border-black p-3 text-center underline italic">Belum ada data mas!</td>
+									<td className="border border-black p-3 text-center underline italic">Belum ada data mas!</td>
+								</tr>
+							)}
 							{body?.map(
 								(item: {
 									no_reg_ta: string;
