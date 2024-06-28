@@ -129,6 +129,12 @@ const createPenguji = async (req, res) => {
             message: "Maaf, proses insert gagal, lengkapi data anda terlebih dahulu mas/mbak!",
         });
     }
+    if (parseInt(kuota) <= 0 || parseInt(kuota) > 30) {
+        return res.status(400).json({
+            response: false,
+            message: "Maaf, proses insert gagal, kuota penguji melebihi ketentuan!",
+        });
+    }
     try {
         const results = await db.query("INSERT INTO dosen_penguji (nidn, kuota) VALUES ($1, $2)", [nidn, kuota]);
         if (results.rowCount === 0) {
@@ -167,6 +173,12 @@ const updatePenguji = async (req, res) => {
         return res.status(400).json({
             response: false,
             message: "Maaf, proses update gagal, lengkapi data anda terlebih dahulu mas/mbak!",
+        });
+    }
+    if (parseInt(kuota) <= 0 || parseInt(kuota) > 30) {
+        return res.status(400).json({
+            response: false,
+            message: "Maaf, proses insert gagal, kuota penguji melebihi ketentuan!",
         });
     }
     try {
